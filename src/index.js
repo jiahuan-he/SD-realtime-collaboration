@@ -3,33 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 const svgStyle = {
-    height: 3000,
-    viewBox: "0 0 3000 2000",
-    fill: 'blue',
+    height: 1000,
+    width: 1000,    
+    backgroundColor: '#eeeeee',
 };
 
-const rectBackground = {
-    x: "0",
-    y: "0",
-    width: "3000",
-    height: "2000",
-    fill: '#fafafa',
+const svgWrapper = {
+    overflow: "scroll",
+    height: 600,
+    width: 600,
 }
 
 const rectMoveable = {
-    width: "80",
-    height: "100",
     fill: 'blue',
     cursor: 'move',
-}
-
-const rectStatic = {
-    x: 180,
-    y: 50,
-    width: 80,
-    height: 100,
-    fill: '#888',
-    cursor: 'not-allowed',
 }
 
 class Rect extends React.Component {
@@ -41,7 +28,8 @@ class Rect extends React.Component {
         let draggable = document.getElementById(id);
         let offset
         draggable.addEventListener('mousedown', mouseDown)
-        draggable.addEventListener('mouseup', mouseUp)
+        draggable.addEventListener('mouseup', mouseUpOrLeave)
+        draggable.addEventListener('mouseleave', mouseUpOrLeave)
 
         function mouseDown(e){
             console.log("mouse down")
@@ -57,11 +45,13 @@ class Rect extends React.Component {
             if(!draggable) return
             e.preventDefault();
             const coord = getMousePosition(e);
+            console.log(coord.x-offset.x)
+            console.log(coord.y-offset.y)
             draggable.setAttributeNS(null, "x", coord.x-offset.x);
             draggable.setAttributeNS(null, "y", coord.y-offset.y);
         }
 
-        function mouseUp(e){
+        function mouseUpOrLeave(e){
             console.log("mouse up")
             draggable = null
         }
@@ -78,22 +68,24 @@ class Rect extends React.Component {
 
     render() {
         return (
-            <svg style={svgStyle}>
-                <rect style={rectBackground}/>
-                <rect x="0" y="0" id='draggable' style={rectMoveable}/>
-                <rect id='static' style={rectStatic}/>
-            </svg>
+            <div style={svgWrapper}>
+                <svg style={svgStyle} >
+                    <rect x="0" y="0" width={"5%"} height={"5%"} id='draggable' style={rectMoveable}/>
+                </svg>
+            </div>            
         );
     }
+}
+
+function SVGWrapper(props){    
+    return (<div style={svgWrapper}></div>)
 }
 
 class Game extends React.Component {
     render() {
         return (
-            <div className="game">
-                <div className="game-board">
-                    <Rect />
-                </div>
+            <div>
+                <Rect />
             </div>
         );
     }
