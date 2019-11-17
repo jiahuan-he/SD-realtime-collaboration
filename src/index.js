@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import firebase from './firebase.js'
 
-const svgStyle = {
+const boardStyle = {
     height: 1000,
     width: 1000,
     backgroundColor: '#eeeeee',
@@ -15,7 +15,12 @@ const svgWrapper = {
     width: 600,
 }
 
+const moveable = {
+    cursor: 'move',
+}
+
 const rectMoveable = {
+    cursor: 'move',
     fill: 'blue',
     cursor: 'move',
 }
@@ -75,11 +80,32 @@ class Rect extends React.Component {
     render() {
 
         return (
-            <div style={svgWrapper}>
-                <svg style={svgStyle} >
-                    <rect x={this.props.x} y={this.props.y} width={"5%"} height={"5%"} id={this.props.stockID} style={rectMoveable} />
-                </svg>
+            <div style={svgWrapper}>       
+                <svg style={boardStyle}>
+                    <g 
+                        x={this.props.x} 
+                        y={this.props.y} 
+                        id={this.props.stockID} 
+                        style={moveable}
+                    >                        
+                        <rect x={this.props.x} y={this.props.y} width={"5%"} height={"5%"} stroke="red" strokeWidth="1px" fill="white"/>
+                        <foreignObject x={this.props.x} y={this.props.y} width="50" height="50">
+                            <div>test</div>
+                        </foreignObject>                    
+                    </g>       
+                </svg>                         
             </div>
+
+            // <div style={svgWrapper}>
+
+            //     <svg style={boardStyle}>
+            //         <rect
+            //             x={this.props.x} y={this.props.y}
+            //             id={this.props.stockID}
+            //             width={"5%"} height={"5%"}
+            //             stroke="red" strokeWidth="1px" fill="white" />
+            //     </svg>
+            // </div>
         );
     }
 }
@@ -99,17 +125,17 @@ class Game extends React.Component {
 
     componentDidMount() {
         this.initPosition()
-        
+
         const IDRef = firebase.database().ref('stockIDs');
         const posRef = firebase.database().ref('stockPos');
-        
+
         IDRef.on('value', (stockIDs) => {
             // console.log(stockIDs.val())
             this.setState({
                 stockIDs: stockIDs.val(),
             })
         });
-        
+
         posRef.on('value', (stockPos) => {
             this.setState({
                 stockPos: stockPos.val(),
@@ -126,7 +152,7 @@ class Game extends React.Component {
                 "stock0": { x: 0, y: 0, },
             },
             test: 0
-        };        
+        };
     }
 
     updatePosition = (stockID, x, y) => {
@@ -137,7 +163,7 @@ class Game extends React.Component {
         // })
         firebase.database().ref('stockPos').set({
             [stockID]: { x: x, y: y, },
-        });        
+        });
     }
 
     render() {
