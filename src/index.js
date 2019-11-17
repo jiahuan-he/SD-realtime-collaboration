@@ -19,10 +19,11 @@ const moveable = {
     cursor: 'move',
 }
 
-const rectMoveable = {
+const stock = {
+    stroke: 'black',
     cursor: 'move',
-    fill: 'blue',
-    cursor: 'move',
+    strokeWidth: "1px",
+    fill: 'white'
 }
 
 class Rect extends React.Component {
@@ -88,33 +89,18 @@ class Rect extends React.Component {
                         id={this.props.stockID} 
                         style={moveable}
                     >                        
-                        <rect x={this.props.x} y={this.props.y} width={"5%"} height={"5%"} stroke="red" strokeWidth="1px" fill="white"/>
+                        <rect x={this.props.x} y={this.props.y} width={"5%"} height={"5%"} style={stock}/>
                         <foreignObject x={this.props.x} y={this.props.y} width="50" height="50">
                             <div>test</div>
-                        </foreignObject>                    
+                        </foreignObject>    
                     </g>       
                 </svg>                         
             </div>
-
-            // <div style={svgWrapper}>
-
-            //     <svg style={boardStyle}>
-            //         <rect
-            //             x={this.props.x} y={this.props.y}
-            //             id={this.props.stockID}
-            //             width={"5%"} height={"5%"}
-            //             stroke="red" strokeWidth="1px" fill="white" />
-            //     </svg>
-            // </div>
         );
     }
 }
 
-// function SVGWrapper(props) {
-//     return (<div style={svgWrapper}></div>)
-// }
-
-class Game extends React.Component {
+class Background extends React.Component {
 
     initPosition() {
         firebase.database().ref('stockIDs').set(["stock0"]);
@@ -151,6 +137,9 @@ class Game extends React.Component {
             {
                 "stock0": { x: 0, y: 0, },
             },
+            stockValues:{
+                "stock0": 1,
+            },
             test: 0
         };
     }
@@ -158,9 +147,6 @@ class Game extends React.Component {
     updatePosition = (stockID, x, y) => {
         let newPos = Object.assign({}, this.state.stockPos)
         newPos[stockID] = { x: x, y: y }
-        // this.setState({
-        //     stockPos: newPos
-        // })
         firebase.database().ref('stockPos').set({
             [stockID]: { x: x, y: y, },
         });
@@ -187,6 +173,6 @@ class Game extends React.Component {
 }
 
 ReactDOM.render(
-    <Game />,
+    <Background />,
     document.getElementById('root')
 );
