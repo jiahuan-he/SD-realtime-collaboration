@@ -26,53 +26,6 @@ const stock = {
     fill: 'white'
 }
 
-// const makeDraggable = (elementID, x, y, callback) => {
-//     const id = elementID
-//     let draggable = document.getElementById(id);
-//     let offset
-//     draggable.addEventListener('mousedown', mouseDown)
-//     draggable.addEventListener('mouseup', mouseUpOrLeave)
-//     draggable.addEventListener('mouseleave', mouseUpOrLeave)
-
-//     function mouseDown(e) {
-//         console.log("mouse down")
-//         draggable = document.getElementById(id);
-//         offset = getMousePosition(e);
-//         offset.x -= parseFloat(draggable.getAttributeNS(null, "x"));
-//         offset.y -= parseFloat(draggable.getAttributeNS(null, "y"));
-//         draggable.addEventListener('mousemove', mouseMove)
-//     }
-
-
-//     // console.log(this.props)
-
-//     const mouseMove = (e) => {
-//         console.log("mouse move")
-//         if (!draggable) return
-//         e.preventDefault();
-//         const coord = getMousePosition(e);
-//         console.log(coord.x - offset.x)
-//         console.log(coord.y - offset.y)
-//         // updatePosition(id, coord.x - offset.x, coord.y - offset.y)
-//         callback(id, coord.x - offset.x, coord.y - offset.y)
-//         draggable.setAttributeNS(null, "x", x);
-//         draggable.setAttributeNS(null, "y", y);
-//     }
-
-//     function mouseUpOrLeave(e) {
-//         console.log("mouse up")
-//         draggable = null
-//     }
-
-//     function getMousePosition(e) {
-//         const CTM = draggable.getScreenCTM();
-//         return {
-//             x: (e.clientX - CTM.e) / CTM.a,
-//             y: (e.clientY - CTM.f) / CTM.d
-//         };
-//     }
-// }
-
 class Element extends React.Component {
     componentDidMount() {
         this.makeDraggable()
@@ -99,7 +52,6 @@ class Element extends React.Component {
             const coord = getMousePosition(e);
             console.log(coord.x - offset.x)
             console.log(coord.y - offset.y)
-            // updatePosition(id, coord.x - offset.x, coord.y - offset.y)
             this.props.updatePosition(id, coord.x - offset.x, coord.y - offset.y)
             draggable.setAttributeNS(null, "x", this.props.x);
             draggable.setAttributeNS(null, "y", this.props.y);
@@ -124,16 +76,20 @@ class Element extends React.Component {
     }
 
     render() {
+        const x=this.props.x
+        const y=this.props.y
+        const id=this.props.stockID
+        const stockValue=this.props.stockValue
         return (
             <g 
-                x={this.props.x} 
-                y={this.props.y} 
-                id={this.props.stockID} 
+                x={x} 
+                y={y} 
+                id={id} 
                 style={moveable}
             >
-                <rect x={this.props.x} y={this.props.y} width={"5%"} height={"5%"} style={stock}/>
+                <rect x={x} y={y} width={"5%"} height={"5%"} style={stock}/>
                 <foreignObject x={this.props.x} y={this.props.y} width="50" height="50">
-                    <div>test</div>
+                    <div>{id+": "+stockValue}</div>                 
                 </foreignObject>    
             </g>       
         );
@@ -142,11 +98,12 @@ class Element extends React.Component {
 
 class Board extends React.Component {    
     
-    render() {
+    render() {        
         const stocks = this.props.stockIDs.map(id => {
             return <Element
                 key={id}
                 stockID={id}
+                stockValue={this.props.stockValues[id]}
                 x={this.props.stockPos[id].x}
                 y={this.props.stockPos[id].y}
                 updatePosition={this.props.updatePosition}
@@ -170,6 +127,9 @@ class Background extends React.Component {
         firebase.database().ref('stockPos').set({
             "stock0": { x: 0, y: 0, },
         });
+        firebase.database().ref('stockValues').set({
+            "stock0": 1,
+        });
     }
 
     componentDidMount() {
@@ -177,6 +137,7 @@ class Background extends React.Component {
 
         const IDRef = firebase.database().ref('stockIDs');
         const posRef = firebase.database().ref('stockPos');
+        const valueRef = firebase.database().ref('stockValues');
 
         IDRef.on('value', (stockIDs) => {
 
@@ -188,6 +149,12 @@ class Background extends React.Component {
         posRef.on('value', (stockPos) => {
             this.setState({
                 stockPos: stockPos.val(),
+            })
+        });
+
+        valueRef.on('value', (stockPos) => {
+            this.setState({
+                stockValues: stockPos.val(),
             })
         });
     }
@@ -210,8 +177,6 @@ class Background extends React.Component {
     updatePosition = (stockID, x, y) => {
         let newPos = Object.assign({}, this.state.stockPos)
         newPos[stockID] = { x: x, y: y }
-        console.log("updatePositin: x: ", x, " y: ",y)
-        console.log(this.state.stockPos["stock0"])
         firebase.database().ref('stockPos').set({
             [stockID]: { x: x, y: y, },
         });
@@ -223,6 +188,7 @@ class Background extends React.Component {
             <Board 
                 stockIDs={this.state.stockIDs}
                 stockPos={this.state.stockPos}
+                stockValues={this.state.stockValues}
                 updatePosition={this.updatePosition}
                 ></Board>
         );
