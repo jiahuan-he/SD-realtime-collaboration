@@ -27,7 +27,6 @@ class Rect extends React.Component {
 
     makeDraggable = () => {
         const id = this.props.stockID
-        const updatePosition = this.props.updatePosition
         let draggable = document.getElementById(id);
         let offset
         draggable.addEventListener('mousedown', mouseDown)
@@ -42,8 +41,8 @@ class Rect extends React.Component {
             offset.y -= parseFloat(draggable.getAttributeNS(null, "y"));
             draggable.addEventListener('mousemove', mouseMove)
         }
-        
-        
+
+
         console.log(this.props)
 
         const mouseMove = (e) => {
@@ -71,7 +70,6 @@ class Rect extends React.Component {
                 y: (e.clientY - CTM.f) / CTM.d
             };
         }
-
     }
 
     render() {
@@ -92,10 +90,30 @@ class Rect extends React.Component {
 
 class Game extends React.Component {
 
-    writeUserData(name) {
-        firebase.database().ref('test/id1').set({
-            username: name,
-            email: "email",
+    initPosition() {
+        firebase.database().ref('stockIDs').set(["stock0"]);
+        firebase.database().ref('stockPos').set({
+            "stock0": { x: 0, y: 0, },
+        });
+    }
+
+    componentDidMount() {
+        this.initPosition()
+        
+        const IDRef = firebase.database().ref('stockIDs');
+        const posRef = firebase.database().ref('stockPos');
+        
+        IDRef.on('value', (stockIDs) => {
+            // console.log(stockIDs.val())
+            this.setState({
+                stockIDs: stockIDs.val(),
+            })
+        });
+        
+        posRef.on('value', (stockPos) => {
+            this.setState({
+                stockPos: stockPos.val(),
+            })
         });
     }
 
@@ -103,44 +121,34 @@ class Game extends React.Component {
         super(props)
         this.state = {
             stockIDs: ["stock0"],
-            stockPos: 
-                {
-                    "stock0":{x: "0", y: "0",},
-                },
+            stockPos:
+            {
+                "stock0": { x: 0, y: 0, },
+            },
             test: 0
-            
-        };
-    }
-
-    testFunc = ()=> {
-        this.setState({test: 1})
+        };        
     }
 
     updatePosition = (stockID, x, y) => {
         let newPos = Object.assign({}, this.state.stockPos)
-        newPos[stockID] = {x:x, y:y}
-        this.setState({
-            stockPos: newPos
-        })
+        newPos[stockID] = { x: x, y: y }
+        // this.setState({
+        //     stockPos: newPos
+        // })
+        firebase.database().ref('stockPos').set({
+            [stockID]: { x: x, y: y, },
+        });        
     }
 
     render() {
-        // this.writeUserData("name1")
-
-        // var starCountRef = firebase.database().ref('test/');
-        // starCountRef.on('value', function (el) {
-        //     console.log(el.val())
-        // });
-        
-        console.log(this.updatePosition)
-        const stocks = this.state.stockIDs.map( id => {
-            return <Rect 
+        const stocks = this.state.stockIDs.map(id => {
+            return <Rect
                 key={id}
-                stockID={id} 
-                x={this.state.stockPos[id].x} 
+                stockID={id}
+                x={this.state.stockPos[id].x}
                 y={this.state.stockPos[id].y}
-                updatePosition = {this.updatePosition}
-                testFunc = {this.testFunc}
+                updatePosition={this.updatePosition}
+                testFunc={this.testFunc}
             />
         })
 
