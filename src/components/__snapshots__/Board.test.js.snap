@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Board should render correctly in "debug" mode 1`] = `
+<div
+  style={
+    Object {
+      "height": 500,
+      "overflow": "scroll",
+      "width": 500,
+    }
+  }
+>
+  <svg
+    style={
+      Object {
+        "backgroundColor": "#eeeeee",
+        "height": 1000,
+        "width": 1000,
+      }
+    }
+  >
+    <Element
+      key="stock1"
+      stockID="stock1"
+      stockValue={0}
+      x={157}
+      y={188}
+    />
+    <Element
+      key="stock2"
+      stockID="stock2"
+      stockValue={0}
+      x={316}
+      y={90}
+    />
+  </svg>
+</div>
+`;
