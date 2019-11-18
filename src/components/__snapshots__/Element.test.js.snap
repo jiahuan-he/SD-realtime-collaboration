@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Element should render correctly in "debug" mode 1`] = `
+<svg>
+  <Element
+    debug={true}
+    key="stock0"
+    stockID="stock0"
+    stockValue={0}
+    x={50}
+    y={50}
+  >
+    <g
+      id="stock0"
+      style={
+        Object {
+          "cursor": "move",
+        }
+      }
+      x={50}
+      y={50}
+    >
+      <rect
+        height="5%"
+        style={
+          Object {
+            "cursor": "move",
+            "fill": "white",
+            "stroke": "black",
+            "strokeWidth": "1px",
+          }
+        }
+        width="5%"
+        x={50}
+        y={50}
+      />
+      <foreignObject
+        height="50"
+        width="50"
+        x={50}
+        y={50}
+      >
+        <div>
+          stock0: 0
+        </div>
+      </foreignObject>
+    </g>
+  </Element>
+</svg>
+`;
