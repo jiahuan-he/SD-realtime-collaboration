@@ -11,8 +11,8 @@ const boardStyle = {
 
 const svgWrapper = {
     overflow: "scroll",
-    height: 600,
-    width: 600,
+    height: 500,
+    width: 500,
 }
 
 const moveable = {
@@ -24,6 +24,15 @@ const stock = {
     cursor: 'move',
     strokeWidth: "1px",
     fill: 'white'
+}
+
+const button  = {
+    backgroundColor: "white",
+    border: "1px solid",
+    color: "black",
+    padding: "10px 24px",
+    cursor: "pointer",
+    float: "left",
 }
 
 class Element extends React.Component {
@@ -88,7 +97,7 @@ class Element extends React.Component {
                 style={moveable}
             >
                 <rect x={x} y={y} width={"5%"} height={"5%"} style={stock}/>
-                <foreignObject x={this.props.x} y={this.props.y} width="50" height="50">
+                <foreignObject x={x} y={y} width="50" height="50">
                     <div>{id+": "+stockValue}</div>                 
                 </foreignObject>    
             </g>       
@@ -98,7 +107,7 @@ class Element extends React.Component {
 
 class Board extends React.Component {    
     
-    render() {        
+    render() {
         const stocks = this.props.stockIDs.map(id => {
             return <Element
                 key={id}
@@ -120,77 +129,71 @@ class Board extends React.Component {
     }
 }
 
+class Toolbar extends React.Component {
+    render() {
+        return (
+            <div>
+                <button style={button} onClick={this.props.addStock}>Stock</button>
+            </div>
+        )
+    }
+}
+
 class Background extends React.Component {
 
-    initPosition() {
-        firebase.database().ref('stockIDs').set(["stock0"]);
-        firebase.database().ref('stockPos').set({
-            "stock0": { x: 0, y: 0, },
-        });
-        firebase.database().ref('stockValues').set({
-            "stock0": 1,
-        });
+    componentDidMount() {
+        const stateRef = firebase.database().ref('state');
+
+        stateRef.on('value', (state) => {
+            this.setState(state.val())
+        })
     }
 
-    componentDidMount() {
-        this.initPosition()
+    updatePosition = (stockID, x, y) => {
+        const newPos = Object.assign({}, this.state.stockPos)
+        newPos[stockID] = { x: x, y: y }
+        firebase.database().ref('state/stockPos').set(newPos);
+    }
 
-        const IDRef = firebase.database().ref('stockIDs');
-        const posRef = firebase.database().ref('stockPos');
-        const valueRef = firebase.database().ref('stockValues');
-
-        IDRef.on('value', (stockIDs) => {
-
-            this.setState({
-                stockIDs: stockIDs.val(),
-            })
-        });
-
-        posRef.on('value', (stockPos) => {
-            this.setState({
-                stockPos: stockPos.val(),
-            })
-        });
-
-        valueRef.on('value', (stockPos) => {
-            this.setState({
-                stockValues: stockPos.val(),
-            })
-        });
+    addStock = () => {
+        const newPtr = this.state.stockPtr + 1
+        const newStockID = `stock${newPtr}`
+        const newStockPos = Object.assign({}, this.state.stockPos)
+        const newStockValues = Object.assign({}, this.state.stockValues)
+        newStockPos[newStockID] = {x:0, y:0}
+        newStockValues[newStockID] = 0
+        firebase.database().ref('state').set(
+            {
+                stockPtr: newPtr,
+                stockIDs: this.state.stockIDs.concat([newStockID]),
+                stockPos: newStockPos,
+                stockValues: newStockValues,
+            }
+        );
     }
 
     constructor(props) {
         super(props)
         this.state = {
-            stockIDs: ["stock0"],
-            stockPos:
-            {
-                "stock0": { x: 0, y: 0, },
-            },
-            stockValues:{
-                "stock0": 1,
-            },
-            test: 0
+            stockPtr: 0,
+            stockIDs: [],
+            stockPos: {},
+            stockValues:{},
         };
-    }
-
-    updatePosition = (stockID, x, y) => {
-        let newPos = Object.assign({}, this.state.stockPos)
-        newPos[stockID] = { x: x, y: y }
-        firebase.database().ref('stockPos').set({
-            [stockID]: { x: x, y: y, },
-        });
     }
 
     render() {
 
         return (
+            <div>
             <Board 
                 stockIDs={this.state.stockIDs}
                 stockPos={this.state.stockPos}
                 stockValues={this.state.stockValues}
                 updatePosition={this.updatePosition}
                 ></Board>
+            <Toolbar addStock={this.addStock}></Toolbar>
+            </div>
         );
     }
 }
