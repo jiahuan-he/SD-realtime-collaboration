@@ -19,21 +19,45 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stockPos').set(newPos);
     }
 
-    addStock = () => {
+    addStock_ = (stockName, value) => {
         const newPtr = this.state.stockPtr + 1
         const newStockID = `stock${newPtr}`
         const newStockPos = Object.assign({}, this.state.stockPos)
         const newStockValues = Object.assign({}, this.state.stockValues)
         newStockPos[newStockID] = {x:0, y:0}
         newStockValues[newStockID] = 0
-        firebase.database().ref('state').set(
-            {
-                stockPtr: newPtr,
-                stockIDs: this.state.stockIDs.concat([newStockID]),
-                stockPos: newStockPos,
-                stockValues: newStockValues,
-            }
-        );
+        const newState = {
+            stockPtr: newPtr,
+            stockIDs: this.state.stockIDs.concat([newStockID]),
+            stockPos: newStockPos,
+            stockValues: newStockValues,
+        }
+
+        console.log(newState)
+
+        firebase.database().ref('state').set(newState);
+    }
+
+    addStock= (stockName, value) => {
+        const newPtr = this.state.stockPtr + 1
+        const newStockID = stockName
+        const newStockPos = Object.assign({}, this.state.stockPos)
+        const newStockValues = Object.assign({}, this.state.stockValues)
+        newStockPos[newStockID] = {x:0, y:0}
+        console.log(value)
+        newStockValues[newStockID] = +value
+        console.log("newStockID ", newStockID)
+        
+        const newState = {
+            stockPtr: newPtr,
+            stockIDs: this.state.stockIDs.concat([newStockID]),
+            stockPos: newStockPos,
+            stockValues: newStockValues,
+        }
+
+        console.log(newState)
+
+        firebase.database().ref('state').set(newState);
     }
 
     constructor(props) {
