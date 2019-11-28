@@ -80,7 +80,10 @@ export default class Background extends React.Component {
                 stockValues={this.state.stockValues}
                 updatePosition={this.updatePosition}
                 ></Board>
-            <Toolbar addStock={this.addStock}></Toolbar>
+            <Toolbar 
+                addStock={this.addStock}
+                stockIDs={this.state.stockIDs}
+            ></Toolbar>
             </div>
         );
     }
