@@ -23,6 +23,7 @@ export default class Board extends React.Component {
                 x={this.props.stockPos[id].x}
                 y={this.props.stockPos[id].y}
                 updatePosition={this.props.updatePosition}
+                highlight = {this.props.stockBeingEdited===id?true:false}
             />
         })
 

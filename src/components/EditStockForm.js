@@ -16,13 +16,15 @@ export default class EditStockForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            stockName:"",
+            stockID:"",
             stockValue: 0,
         };
     }
 
     handleChangeName = (event) => {
-        this.setState({ stockName: event.target.value.trim()});
+        const id = event.target.value.trim()
+        this.setState({ stockID: id});
+        this.props.highlightStock(id)
     }
 
     handleChangeValue = (event) => {
@@ -30,7 +32,7 @@ export default class EditStockForm extends React.Component {
     }
 
     isValidStockID = () => {
-        return this.props.stockIDs.includes(this.state.stockName)
+        return this.props.stockIDs.includes(this.state.stockID)
     }
 
     isValidStockValue =() => {
@@ -45,8 +47,12 @@ export default class EditStockForm extends React.Component {
                 <input 
                     style={this.isValidStockID()?null:inputInvalid} 
                     type="text" 
-                    value={this.state.stockName} 
-                    onChange={this.handleChangeName} 
+                    value={this.state.stockID} 
+                    onChange={
+                        (event) => {
+                            this.handleChangeName(event)
+                        }
+                    } 
                 />
                 </label>
                 <label>
@@ -58,8 +64,8 @@ export default class EditStockForm extends React.Component {
                 </label>
                     <input type="button" value="Edit Stock" style={button}
                         onClick={() => {
-                            if(!this.state.stockName === "" || !this.state.stockValue) return
-                            this.props.updateStockValue(this.state.stockName, this.state.stockValue)
+                            if(!this.state.stockID === "" || !this.state.stockValue) return
+                            this.props.updateStockValue(this.state.stockID, this.state.stockValue)
                         }}
                     />
             </form>

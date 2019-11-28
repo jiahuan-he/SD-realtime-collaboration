@@ -60,6 +60,10 @@ export default class AddStockForm extends React.Component {
                         onClick={() => {
                             if(this.state.stockName === "") return
                             this.props.addStock(this.state.stockName, this.state.stockValue)
+                            this.setState({
+                                stockName:"",
+                                stockValue: 0
+                            })
                         }}
                     />
             </form>

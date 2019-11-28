@@ -13,6 +13,18 @@ export default class Background extends React.Component {
         })
     }
 
+    highlightStock = (stockID) =>{
+        if(this.state.stockIDs.includes(stockID)){
+            this.setState({
+                stockBeingEdited:stockID
+            })
+        } else {
+            this.setState({
+                stockBeingEdited: null
+            })
+        }
+    }
+
     updatePosition = (stockID, x, y) => {
         const newPos = Object.assign({}, this.state.stockPos)
         newPos[stockID] = { x: x, y: y }
@@ -22,7 +34,7 @@ export default class Background extends React.Component {
     updateStockValue = (stockID, value) => {
         const newValue = Object.assign({}, this.state.stockValues)
         newValue[stockID] = value
-        firebase.database().ref('state/stockValues').set(newValue);
+        firebase.database().ref('state/stockValues').set(newValue)
     }
 
     addStock_ = (stockName, value) => {
@@ -84,12 +96,14 @@ export default class Background extends React.Component {
                 stockIDs={this.state.stockIDs}
                 stockPos={this.state.stockPos}
                 stockValues={this.state.stockValues}
-                updatePosition={this.updatePosition}
+                stockBeingEdited={this.state.stockBeingEdited}
+                updatePosition={this.updatePosition}                
                 ></Board>
             <Toolbar 
                 addStock={this.addStock}
                 updateStockValue={this.updateStockValue}
                 stockIDs={this.state.stockIDs}
+                highlightStock={this.highlightStock}
             ></Toolbar>
             </div>
         );

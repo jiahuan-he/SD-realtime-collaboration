@@ -7,6 +7,13 @@ const stock = {
     fill: 'white'
 }
 
+const stockHighlight = {
+    stroke: 'green',
+    cursor: 'move',
+    strokeWidth: "2px",
+    fill: 'white'
+}
+
 const moveable = {
     cursor: 'move',
 }
@@ -72,7 +79,7 @@ export default class Element extends React.Component {
                 id={id} 
                 style={moveable}
             >
-                <rect x={x} y={y} width={"5%"} height={"5%"} style={stock}/>
+                <rect x={x} y={y} width={"5%"} height={"5%"} style={this.props.highlight?stockHighlight:stock}/>
                 <foreignObject x={x} y={y} width="50" height="50">
                     <div>{id+": "+stockValue}</div>                 
                 </foreignObject>    

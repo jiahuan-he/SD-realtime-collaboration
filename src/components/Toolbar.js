@@ -13,6 +13,7 @@ export default class Toolbar extends React.Component {
                 <EditStockForm 
                     updateStockValue={this.props.updateStockValue}
                     stockIDs={this.props.stockIDs}
+                    highlightStock={this.props.highlightStock}
                 ></EditStockForm>
             </div>
         )
