@@ -19,6 +19,12 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stockPos').set(newPos);
     }
 
+    updateStockValue = (stockID, value) => {
+        const newValue = Object.assign({}, this.state.stockValues)
+        newValue[stockID] = value
+        firebase.database().ref('state/stockValues').set(newValue);
+    }
+
     addStock_ = (stockName, value) => {
         const newPtr = this.state.stockPtr + 1
         const newStockID = `stock${newPtr}`
@@ -82,6 +88,7 @@ export default class Background extends React.Component {
                 ></Board>
             <Toolbar 
                 addStock={this.addStock}
+                updateStockValue={this.updateStockValue}
                 stockIDs={this.state.stockIDs}
             ></Toolbar>
             </div>
