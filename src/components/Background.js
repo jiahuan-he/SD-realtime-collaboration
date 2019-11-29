@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from '../firebase'
 import Board from './Board'
 import Toolbar from './Toolbar'
+import StockList from './StockList'
 
 export default class Background extends React.Component {
 
@@ -89,16 +90,22 @@ export default class Background extends React.Component {
     }
 
     render() {
-
+        const wrapperStyle = {display: "flex"}
         return (
             <div>
-            <Board 
-                stockIDs={this.state.stockIDs}
-                stockPos={this.state.stockPos}
-                stockValues={this.state.stockValues}
-                stockBeingEdited={this.state.stockBeingEdited}
-                updatePosition={this.updatePosition}                
-                ></Board>
+                <div style = {wrapperStyle}> 
+                    <Board 
+                        stockIDs={this.state.stockIDs}
+                        stockPos={this.state.stockPos}
+                        stockValues={this.state.stockValues}
+                        stockBeingEdited={this.state.stockBeingEdited}
+                        updatePosition={this.updatePosition}                
+                        ></Board>
+                    <StockList 
+                        stockIDs={this.state.stockIDs}
+                        stockValues={this.state.stockValues}
+                    ></StockList>
+            </div>
             <Toolbar 
                 addStock={this.addStock}
                 updateStockValue={this.updateStockValue}
