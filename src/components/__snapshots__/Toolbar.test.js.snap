@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toolbar should render correctly in "debug" mode 1`] = `
+<div>
+  <AddStockForm
+    stockIDs={
+      Array [
+        "stock1",
+        "stock2",
+      ]
+    }
+  />
+  <EditStockForm
+    stockIDs={
+      Array [
+        "stock1",
+        "stock2",
+      ]
+    }
+  />
+</div>
+`;
+
+exports[`Toolbar should render correctly in "debug" mode 2`] = `
+<div>
+  <AddStockForm
+    stockIDs={Array []}
+  />
+  <EditStockForm
+    stockIDs={Array []}
+  />
+</div>
+`;

@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddStockForm should render correctly in "debug" mode 1`] = `
+<form>
+  <label>
+    Stock Name
+    <input
+      onChange={[Function]}
+      style={null}
+      type="text"
+      value=""
+    />
+  </label>
+  <label>
+    Value
+    <input
+      onChange={[Function]}
+      style={null}
+      type="text"
+      value={0}
+    />
+  </label>
+  <input
+    onClick={[Function]}
+    style={
+      Object {
+        "backgroundColor": "white",
+        "border": "1px solid",
+        "color": "black",
+        "cursor": "pointer",
+        "padding": "5px 12px",
+      }
+    }
+    type="button"
+    value="Add Stock"
+  />
+</form>
+`;
+
+exports[`AddStockForm should render correctly in "debug" mode 2`] = `
+<form>
+  <label>
+    Stock Name
+    <input
+      onChange={[Function]}
+      style={null}
+      type="text"
+      value=""
+    />
+  </label>
+  <label>
+    Value
+    <input
+      onChange={[Function]}
+      style={null}
+      type="text"
+      value={0}
+    />
+  </label>
+  <input
+    onClick={[Function]}
+    style={
+      Object {
+        "backgroundColor": "white",
+        "border": "1px solid",
+        "color": "black",
+        "cursor": "pointer",
+        "padding": "5px 12px",
+      }
+    }
+    type="button"
+    value="Add Stock"
+  />
+</form>
+`;

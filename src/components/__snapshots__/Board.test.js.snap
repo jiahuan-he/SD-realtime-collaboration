@@ -20,6 +20,7 @@ exports[`Board should render correctly in "debug" mode 1`] = `
     }
   >
     <Element
+      highlight={false}
       key="stock1"
       stockID="stock1"
       stockValue={0}
@@ -27,6 +28,7 @@ exports[`Board should render correctly in "debug" mode 1`] = `
       y={188}
     />
     <Element
+      highlight={false}
       key="stock2"
       stockID="stock2"
       stockValue={0}
