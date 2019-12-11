@@ -11,28 +11,30 @@ math.import(integral)
 
 const calculateIntegral = (inFlowArr, outFlowArr, x, steps) => {
     let formula = ""
-    inFlowArr.forEach( inFlow => {
-        formula += "+"+inFlow
-    });
-   
-    outFlowArr.forEach( outFlow => {
-        formula += "-"+outFlow
-    });
+    if(inFlowArr){
+        inFlowArr.forEach( inFlow => {
+            formula += "+"+inFlow
+        });
+    }
+    
+    if(outFlowArr){
+        outFlowArr.forEach( outFlow => {
+            formula += "-"+outFlow
+        });
+    }
 
     if(!steps){
         steps = 1
     }
     const step = x/steps
     const values = []
-
-    for(let i=1; i<=steps; i++){
-        values.push(math.parse(math.format(math.integral(formula, 'x'))).compile().eval({x:i*step}))
+    if(formula.length > 0){
+        for(let i=1; i<=steps; i++){
+            values.push(math.parse(math.format(math.integral(formula, 'x'))).compile().eval({x:i*step}))
+        }
     }
-
     return values
 }
-console.log(calculateIntegral([], ['x^2'], 10, 1))
-
 
 export default class Background extends React.Component {
 
@@ -93,9 +95,7 @@ export default class Background extends React.Component {
         const newStockPos = Object.assign({}, this.state.stockPos)
         const newStockValues = Object.assign({}, this.state.stockValues)
         newStockPos[newStockID] = {x:0, y:0}
-        console.log(value)
         newStockValues[newStockID] = +value
-        console.log("newStockID ", newStockID)
         
         const newState = {
             stockPtr: newPtr,
@@ -104,9 +104,24 @@ export default class Background extends React.Component {
             stockValues: newStockValues,
         }
 
-        console.log(newState)
-
         firebase.database().ref('state').set(newState);
+    }
+
+    run = (stockID) => {
+        const inFlows = this.state.inFlows[stockID]
+        const outFlows = this.state.outFlows[stockID]
+        const res = calculateIntegral(inFlows, outFlows, 10 , 10)
+        
+        let i = 0
+        const t = setInterval(() => {
+            if(i >= res.length){
+                clearInterval(t);
+            } else {
+                this.updateStockValue(stockID, res[i])
+                i++;
+            }
+        }, 1000);
+
     }
 
     constructor(props) {
@@ -148,6 +163,7 @@ export default class Background extends React.Component {
                 highlightStock={this.highlightStock}
                 addFlow={this.addFlow}
             ></Toolbar>
+            <button onClick={() => this.run("a")}>RUN</button>
             </div>
         );
     }
