@@ -3,6 +3,36 @@ import firebase from '../firebase'
 import Board from './Board'
 import Toolbar from './Toolbar'
 import StockList from './StockList'
+import { create, all } from 'mathjs'
+import * as integral from 'mathjs-simple-integral'
+
+const math = create(all)
+math.import(integral)
+
+const calculateIntegral = (inFlowArr, outFlowArr, x, steps) => {
+    let formula = ""
+    inFlowArr.forEach( inFlow => {
+        formula += "+"+inFlow
+    });
+   
+    outFlowArr.forEach( outFlow => {
+        formula += "-"+outFlow
+    });
+
+    if(!steps){
+        steps = 1
+    }
+    const step = x/steps
+    const values = []
+
+    for(let i=1; i<=steps; i++){
+        values.push(math.parse(math.format(math.integral(formula, 'x'))).compile().eval({x:i*step}))
+    }
+
+    return values
+}
+console.log(calculateIntegral([], ['x^2'], 10, 1))
+
 
 export default class Background extends React.Component {
 
@@ -38,23 +68,23 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stockValues').set(newValue)
     }
 
-    addStock_ = (stockName, value) => {
-        const newPtr = this.state.stockPtr + 1
-        const newStockID = `stock${newPtr}`
-        const newStockPos = Object.assign({}, this.state.stockPos)
-        const newStockValues = Object.assign({}, this.state.stockValues)
-        newStockPos[newStockID] = {x:0, y:0}
-        newStockValues[newStockID] = 0
-        const newState = {
-            stockPtr: newPtr,
-            stockIDs: this.state.stockIDs.concat([newStockID]),
-            stockPos: newStockPos,
-            stockValues: newStockValues,
+    addFlow = (stockID, isInFlow, formula) => {
+        let flows
+        let path
+        if(isInFlow){
+            flows = Object.assign({}, this.state.inFlows)
+            path = 'inFlows'
+        } else {
+            flows = Object.assign({}, this.state.outFlows)
+            path = 'outFlows'
+        }
+        
+        if(!(stockID in flows)){
+            flows[stockID] = []
         }
 
-        console.log(newState)
-
-        firebase.database().ref('state').set(newState);
+        flows[stockID].push(formula)
+        firebase.database().ref(`state/${path}`).set(flows)
     }
 
     addStock= (stockName, value) => {
@@ -86,11 +116,14 @@ export default class Background extends React.Component {
             stockIDs: [],
             stockPos: {},
             stockValues:{},
+            inFlows:{},
+            outFlows:{},
         };
     }
 
     render() {
         const wrapperStyle = {display: "flex"}
+        
         return (
             <div>
                 <div style = {wrapperStyle}> 
@@ -111,6 +144,7 @@ export default class Background extends React.Component {
                 updateStockValue={this.updateStockValue}
                 stockIDs={this.state.stockIDs}
                 highlightStock={this.highlightStock}
+                addFlow={this.addFlow}
             ></Toolbar>
             </div>
         );
