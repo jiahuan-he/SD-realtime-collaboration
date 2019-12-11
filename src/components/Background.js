@@ -137,6 +137,8 @@ export default class Background extends React.Component {
                     <StockList 
                         stockIDs={this.state.stockIDs}
                         stockValues={this.state.stockValues}
+                        inFlows = {this.state.inFlows}
+                        outFlows = {this.state.outFlows}
                     ></StockList>
             </div>
             <Toolbar 
