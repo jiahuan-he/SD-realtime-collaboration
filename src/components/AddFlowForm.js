@@ -66,7 +66,7 @@ export default class AddFlowForm extends React.Component {
                 </label>
                     <input type="button" value={this.props.isInFlow?"Add InFlow":"Add OutFLow"} style={button}
                         onClick={() => {
-                            if(!this.state.stockID === "" || !this.state.formula) return
+                            if(this.state.stockID === "" || !this.isValidStockID() || !this.state.formula) return
                             this.props.addFlow(this.state.stockID, this.props.isInFlow, this.state.formula)
                         }}
                     />
