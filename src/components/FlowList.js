@@ -3,14 +3,15 @@ import React from 'react';
 const style = {
     // float: "left"
 }
-export default class StockList extends React.Component {
+export default class FlowList extends React.Component {
     render() {        
         const flows = this.props.flows.map( (flow) => {                        
-        return   <li key={flow.id}>
-            flow id: {flow.id}, 
-            from: {flow.from}, 
-            to: {flow.to}, 
-            equation:{flow.equation}</li>
+        return <li key={flow.id}>
+                flow id: {flow.id}, 
+                equation:{flow.equation}, 
+                from: {flow.from}, 
+                to: {flow.to}, 
+            </li>
         })
         return (
             <div style = {style}>

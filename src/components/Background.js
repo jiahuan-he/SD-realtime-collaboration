@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from '../firebase'
 import Board from './Board'
 import Toolbar from './Toolbar'
-import StockList from './StockList'
+import FlowList from './FlowList'
 import { create, all } from 'mathjs'
 import * as integral from 'mathjs-simple-integral'
 
@@ -88,25 +88,19 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stocks').set(stocks);
     }
 
-
-    // addFlow = (stockID, isInFlow, formula) => {
-    //     let flows
-    //     let path
-    //     if(isInFlow){
-    //         flows = Object.assign({}, this.state.inFlows)
-    //         path = 'inFlows'
-    //     } else {
-    //         flows = Object.assign({}, this.state.outFlows)
-    //         path = 'outFlows'
-    //     }
-        
-    //     if(!(stockID in flows)){
-    //         flows[stockID] = []
-    //     }
-
-    //     flows[stockID].push(formula)
-    //     firebase.database().ref(`state/${path}`).set(flows)
-    // }
+    addFlow = (flowID, equation, from, to) => {
+        const flows = Object.assign([], this.state.flows)
+        const newFlow = {
+            "id": flowID,
+            "equation":equation,
+            "from":from?from:null,
+            "to":to?to:null,
+            "arrowTo": null,
+            "arrowFrom": [],
+        }
+        flows.push(newFlow)
+        firebase.database().ref('state/flows').set(flows);
+    }
 
     
     run = (stockID) => {
@@ -144,15 +138,16 @@ export default class Background extends React.Component {
                         stockBeingEdited={this.state.stockBeingEdited}
                         updatePosition={this.updatePosition}                
                         ></Board>
-                    <StockList 
-                        stocks={this.state.stocks}
+                    <FlowList 
                         flows={this.state.flows}
-                    ></StockList>
+                    ></FlowList>
             </div>
             <Toolbar 
                 addStock={this.addStock}
+                addFlow={this.addFlow}
                 updateStockValue={this.updateStockValue}
                 stocks={this.state.stocks}
+                flows={this.state.flows}
                 highlightStock={this.highlightStock}
             ></Toolbar>
             <button onClick={() => this.run("a")}>RUN</button>

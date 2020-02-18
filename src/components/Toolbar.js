@@ -16,18 +16,12 @@ export default class Toolbar extends React.Component {
                     stocks={this.props.stocks}
                     highlightStock={this.props.highlightStock}
                 ></EditStockForm>
-                {/* <AddFlowForm
-                    isInFlow={true}
-                    addFlow={this.props.addFlow}
-                    stockIDs={this.props.stockIDs}
-                    highlightStock={this.props.highlightStock}
-                ></AddFlowForm>
                 <AddFlowForm
-                    isInFlow={false}
                     addFlow={this.props.addFlow}
-                    stockIDs={this.props.stockIDs}
+                    stocks={this.props.stocks}
+                    flows={this.props.flows}
                     highlightStock={this.props.highlightStock}
-                ></AddFlowForm> */}
+                ></AddFlowForm>                
             </div>
         )
     }

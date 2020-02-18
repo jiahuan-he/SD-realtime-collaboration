@@ -16,40 +16,66 @@ export default class AddFlowForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            stockID:"",
-            formula: "",
+            flowID:"",
+            equation: "",
+            from: "",
+            to: "",
         };
     }
 
     handleChangeName = (event) => {
         const id = event.target.value.trim()
-        this.setState({ stockID: id});
-        this.props.highlightStock(id)
+        this.setState({ flowID: id});
     }
 
-    handleChangeFormula = (event) => {
-        this.setState({ formula: event.target.value});
+    handleChangeEquation = (event) => {
+        this.setState({ equation: event.target.value});
     }
 
-    isValidStockID = () => {
-        return this.props.stockIDs.includes(this.state.stockID)
+    handleChangeFrom = (event) => {
+        this.setState({ from: event.target.value});
     }
 
-    isValidformula =() => {
-        // return !isNaN(this.state.formula)
+    handleChangeTo = (event) => {
+        this.setState({ to: event.target.value});
+    }
+
+    isValidFlowID = () => {
+        if(!this.state.flowID) return false
+        return this.props.flows.length === 0 || this.props.flows.filter((flow => flow.id == this.state.flowID)).length === 0
+    }
+
+    isValidEquation =() => {
+        if(!this.state.equation) return false
         //TODO 
         return true
+    }
+
+    isValidFrom = () => {
+        if(this.state.from){
+            if(this.props.stocks.length === 0 || this.props.stocks.filter((stock => stock.id == this.state.from)).length === 0) return false
+        }
+        if(this.state.from && this.state.to && this.state.from === this.state.to) return false
+        return true 
+    }
+
+    isValidTo = () => {
+        if(this.state.to){
+            if(this.props.stocks.length === 0 || this.props.stocks.filter((stock => stock.id == this.state.to)).length === 0) return false
+        }
+        if(this.state.from && this.state.to && this.state.from === this.state.to) return false
+        return true 
     }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
                 <label>
-                    Stock Name
+                    Flow Name
                 <input 
-                    style={this.isValidStockID()?null:inputInvalid} 
+                    style={this.isValidFlowID()?null:inputInvalid} 
                     type="text" 
-                    value={this.state.stockID} 
+                    value={this.state.flowID} 
                     onChange={
                         (event) => {
                             this.handleChangeName(event)
@@ -58,18 +84,37 @@ export default class AddFlowForm extends React.Component {
                 />
                 </label>
                 <label>
-                    Formula
+                    Equation
                 <input 
-                    style={this.isValidformula()?null:inputInvalid} 
+                    style={this.isValidEquation()?null:inputInvalid} 
                     type="text" 
-                    value={this.state.formula} onChange={this.handleChangeFormula} />
+                    value={this.state.equation} onChange={this.handleChangeEquation} />
                 </label>
-                    <input type="button" value={this.props.isInFlow?"Add InFlow":"Add OutFLow"} style={button}
-                        onClick={() => {
-                            if(this.state.stockID === "" || !this.isValidStockID() || !this.state.formula) return
-                            this.props.addFlow(this.state.stockID, this.props.isInFlow, this.state.formula)
-                        }}
-                    />
+                <label>
+                    From
+                <input 
+                    style={this.isValidFrom()?null:inputInvalid} 
+                    type="text" 
+                    value={this.state.from} onChange={this.handleChangeFrom} />
+                </label>
+                <label>
+                    To
+                <input 
+                    style={this.isValidTo()?null:inputInvalid} 
+                    type="text" 
+                    value={this.state.to} onChange={this.handleChangeTo}/>
+                </label>
+
+                <input type="button" value={"Add Flow"} style={button}
+                    onClick={() => {
+                        if(!this.isValidEquation() 
+                        || !this.isValidFlowID()
+                        || !this.isValidFrom()
+                        || !this.isValidTo()
+                        ) return
+                        this.props.addFlow(this.state.flowID, this.state.equation, this.state.from, this.state.to) 
+                    }}
+                />
             </form>
         )
     }
