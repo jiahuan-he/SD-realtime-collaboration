@@ -24,7 +24,7 @@ export default class Element extends React.Component {
     }
 
     makeDraggable = () => {
-        const id = this.props.stockID
+        const id = this.props.stock.id
         let draggable = document.getElementById(id);
         let offset
 
@@ -45,8 +45,8 @@ export default class Element extends React.Component {
             console.log(coord.x - offset.x)
             console.log(coord.y - offset.y)
             this.props.updatePosition(id, coord.x - offset.x, coord.y - offset.y)
-            draggable.setAttributeNS(null, "x", this.props.x);
-            draggable.setAttributeNS(null, "y", this.props.y);
+            draggable.setAttributeNS(null, "x", this.props.stock.posX);
+            draggable.setAttributeNS(null, "y", this.props.stock.posY);
         }
 
         const mouseUpOrLeave = (e) => {
@@ -68,10 +68,10 @@ export default class Element extends React.Component {
     }
 
     render() {
-        const x=this.props.x
-        const y=this.props.y
-        const id=this.props.stockID
-        const stockValue=this.props.stockValue
+        const x=this.props.stock.posX
+        const y=this.props.stock.posY
+        const id=this.props.stock.id
+        const stockValue=this.props.stock.value
         return (
             <g 
                 x={x} 

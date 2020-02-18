@@ -47,7 +47,7 @@ export default class Background extends React.Component {
     }
 
     highlightStock = (stockID) =>{
-        if(this.state.stockIDs.includes(stockID)){
+        if(this.state.stocks.filter( (stock => stockID == stock.id))){
             this.setState({
                 stockBeingEdited:stockID
             })
@@ -59,54 +59,56 @@ export default class Background extends React.Component {
     }
 
     updatePosition = (stockID, x, y) => {
-        const newPos = Object.assign({}, this.state.stockPos)
-        newPos[stockID] = { x: x, y: y }
-        firebase.database().ref('state/stockPos').set(newPos);
+        const stocks = Object.assign([], this.state.stocks)
+        const targetStock = stocks.find( stock => stock.id === stockID)
+        targetStock.posX = x
+        targetStock.posY = y
+        firebase.database().ref('state/stocks').set(stocks);
     }
 
     updateStockValue = (stockID, value) => {
-        const newValue = Object.assign({}, this.state.stockValues)
-        newValue[stockID] = value
-        firebase.database().ref('state/stockValues').set(newValue)
-    }
-
-    addFlow = (stockID, isInFlow, formula) => {
-        let flows
-        let path
-        if(isInFlow){
-            flows = Object.assign({}, this.state.inFlows)
-            path = 'inFlows'
-        } else {
-            flows = Object.assign({}, this.state.outFlows)
-            path = 'outFlows'
-        }
-        
-        if(!(stockID in flows)){
-            flows[stockID] = []
-        }
-
-        flows[stockID].push(formula)
-        firebase.database().ref(`state/${path}`).set(flows)
+        const stocks = Object.assign([], this.state.stocks)
+        const targetStock = stocks.find( stock => stock.id === stockID)
+        targetStock.initValue = value
+        firebase.database().ref('state/stocks').set(stocks)
     }
 
     addStock= (stockName, value) => {
-        const newPtr = this.state.stockPtr + 1
-        const newStockID = stockName
-        const newStockPos = Object.assign({}, this.state.stockPos)
-        const newStockValues = Object.assign({}, this.state.stockValues)
-        newStockPos[newStockID] = {x:0, y:0}
-        newStockValues[newStockID] = +value
-        
-        const newState = {
-            stockPtr: newPtr,
-            stockIDs: this.state.stockIDs.concat([newStockID]),
-            stockPos: newStockPos,
-            stockValues: newStockValues,
+        const stocks = Object.assign([], this.state.stocks)
+        const newStock = {
+            "id": stockName,
+            "initValue":+value,
+            "value":+value,
+            "posX": 0,
+            "posY": 0,
+            "arrowTo": null,
+            "arrowFrom": [],
         }
-
-        firebase.database().ref('state').set(newState);
+        stocks.push(newStock)
+        firebase.database().ref('state/stocks').set(stocks);
     }
 
+
+    // addFlow = (stockID, isInFlow, formula) => {
+    //     let flows
+    //     let path
+    //     if(isInFlow){
+    //         flows = Object.assign({}, this.state.inFlows)
+    //         path = 'inFlows'
+    //     } else {
+    //         flows = Object.assign({}, this.state.outFlows)
+    //         path = 'outFlows'
+    //     }
+        
+    //     if(!(stockID in flows)){
+    //         flows[stockID] = []
+    //     }
+
+    //     flows[stockID].push(formula)
+    //     firebase.database().ref(`state/${path}`).set(flows)
+    // }
+
+    
     run = (stockID) => {
         const inFlows = this.state.inFlows[stockID]
         const outFlows = this.state.outFlows[stockID]
@@ -121,19 +123,14 @@ export default class Background extends React.Component {
                 i++;
             }
         }, 1000);
-
     }
 
     constructor(props) {
         super(props)
         this.state = {
-            stockPtr: 0,
-            stockIDs: [],
-            stockPos: {},
-            stockValues:{},
-            inFlows:{},
-            outFlows:{},
-        };
+            stocks: [],
+            flows: [],
+        }
     }
 
     render() {
@@ -143,25 +140,20 @@ export default class Background extends React.Component {
             <div>
                 <div style = {wrapperStyle}> 
                     <Board 
-                        stockIDs={this.state.stockIDs}
-                        stockPos={this.state.stockPos}
-                        stockValues={this.state.stockValues}
+                        stocks={this.state.stocks}
                         stockBeingEdited={this.state.stockBeingEdited}
                         updatePosition={this.updatePosition}                
                         ></Board>
                     <StockList 
-                        stockIDs={this.state.stockIDs}
-                        stockValues={this.state.stockValues}
-                        inFlows = {this.state.inFlows}
-                        outFlows = {this.state.outFlows}
+                        stocks={this.state.stocks}
+                        flows={this.state.flows}
                     ></StockList>
             </div>
             <Toolbar 
                 addStock={this.addStock}
                 updateStockValue={this.updateStockValue}
-                stockIDs={this.state.stockIDs}
+                stocks={this.state.stocks}
                 highlightStock={this.highlightStock}
-                addFlow={this.addFlow}
             ></Toolbar>
             <button onClick={() => this.run("a")}>RUN</button>
             </div>

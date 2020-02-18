@@ -9,14 +9,14 @@ export default class Toolbar extends React.Component {
             <div>
                 <AddStockForm 
                     addStock={this.props.addStock}
-                    stockIDs={this.props.stockIDs}
+                    stocks={this.props.stocks}
                     ></AddStockForm>
                 <EditStockForm 
                     updateStockValue={this.props.updateStockValue}
-                    stockIDs={this.props.stockIDs}
+                    stocks={this.props.stocks}
                     highlightStock={this.props.highlightStock}
                 ></EditStockForm>
-                <AddFlowForm
+                {/* <AddFlowForm
                     isInFlow={true}
                     addFlow={this.props.addFlow}
                     stockIDs={this.props.stockIDs}
@@ -27,7 +27,7 @@ export default class Toolbar extends React.Component {
                     addFlow={this.props.addFlow}
                     stockIDs={this.props.stockIDs}
                     highlightStock={this.props.highlightStock}
-                ></AddFlowForm>
+                ></AddFlowForm> */}
             </div>
         )
     }

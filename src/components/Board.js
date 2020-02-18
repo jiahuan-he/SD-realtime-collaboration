@@ -15,15 +15,12 @@ const svgWrapper = {
 export default class Board extends React.Component {    
     
     render() {
-        const stocks = this.props.stockIDs.map(id => {
+        const stocks = this.props.stocks.map(stock => {
             return <Element
-                key={id}
-                stockID={id}
-                stockValue={this.props.stockValues[id]}
-                x={this.props.stockPos[id].x}
-                y={this.props.stockPos[id].y}
+                key={stock.id}
+                stock = {stock}
                 updatePosition={this.props.updatePosition}
-                highlight = {this.props.stockBeingEdited===id?true:false}
+                highlight = {this.props.stockBeingEdited===stock.id?true:false}
             />
         })
 

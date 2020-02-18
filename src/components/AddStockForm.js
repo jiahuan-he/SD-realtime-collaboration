@@ -29,8 +29,9 @@ export default class AddStockForm extends React.Component {
         this.setState({ stockValue: event.target.value});
     }
 
-    isValidStockID = () => {
-        return !this.props.stockIDs.includes(this.state.stockName)
+    isValidStockID = () => {    
+        if(!this.state.stockName) return false
+        return this.props.stocks.length === 0 || this.props.stocks.filter((stock => stock.id == this.state.stockName)).length === 0
     }
 
     isValidStockValue =() => {
@@ -58,7 +59,7 @@ export default class AddStockForm extends React.Component {
                 </label>
                     <input type="button" value="Add Stock" style={button}
                         onClick={() => {
-                            if(this.state.stockName === "") return
+                            if(this.state.stockName === "" || !this.isValidStockID) return
                             this.props.addStock(this.state.stockName, this.state.stockValue)
                             this.setState({
                                 stockName:"",

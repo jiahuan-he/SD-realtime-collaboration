@@ -32,7 +32,7 @@ export default class EditStockForm extends React.Component {
     }
 
     isValidStockID = () => {
-        return this.props.stockIDs.includes(this.state.stockID)
+        return this.props.stocks.filter((stock) => stock.id === this.state.stockID).length === 1
     }
 
     isValidStockValue =() => {
