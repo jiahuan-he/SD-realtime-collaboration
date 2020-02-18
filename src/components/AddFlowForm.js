@@ -112,6 +112,8 @@ export default class AddFlowForm extends React.Component {
                         || !this.isValidFrom()
                         || !this.isValidTo()
                         ) return
+                        if(this.state.from) this.props.addDependenciesToStock(this.state.flowID, this.state.from)
+                        if(this.state.to) this.props.addDependenciesToStock(this.state.flowID, this.state.to)
                         this.props.addFlow(this.state.flowID, this.state.equation, this.state.from, this.state.to) 
                     }}
                 />

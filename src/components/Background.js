@@ -3,6 +3,7 @@ import firebase from '../firebase'
 import Board from './Board'
 import Toolbar from './Toolbar'
 import FlowList from './FlowList'
+import StockList from './StockList'
 import { create, all } from 'mathjs'
 import * as integral from 'mathjs-simple-integral'
 
@@ -81,10 +82,17 @@ export default class Background extends React.Component {
             "value":+value,
             "posX": 0,
             "posY": 0,
-            "arrowTo": null,
-            "arrowFrom": [],
+            "dependencies": [stockName],
+            "equation": null,
         }
         stocks.push(newStock)
+        firebase.database().ref('state/stocks').set(stocks);
+    }
+
+    addDependenciesToStock = (dependency, stockID) => {
+        const stocks = Object.assign([], this.state.stocks)
+        const targetStock = stocks.find( stock => stock.id === stockID)
+        targetStock.dependencies.push(dependency)
         firebase.database().ref('state/stocks').set(stocks);
     }
 
@@ -95,13 +103,13 @@ export default class Background extends React.Component {
             "equation":equation,
             "from":from?from:null,
             "to":to?to:null,
-            "arrowTo": null,
-            "arrowFrom": [],
+            "dependencies": [],
         }
         flows.push(newFlow)
         firebase.database().ref('state/flows').set(flows);
     }
 
+    //TODO add addEquationForm
     
     run = (stockID) => {
         const inFlows = this.state.inFlows[stockID]
@@ -138,9 +146,10 @@ export default class Background extends React.Component {
                         stockBeingEdited={this.state.stockBeingEdited}
                         updatePosition={this.updatePosition}                
                         ></Board>
-                    <FlowList 
-                        flows={this.state.flows}
-                    ></FlowList>
+                    <div>
+                        <StockList stocks={this.state.stocks}></StockList>
+                        <FlowList flows={this.state.flows}></FlowList>
+                    </div>
             </div>
             <Toolbar 
                 addStock={this.addStock}
@@ -149,6 +158,7 @@ export default class Background extends React.Component {
                 stocks={this.state.stocks}
                 flows={this.state.flows}
                 highlightStock={this.highlightStock}
+                addDependenciesToStock={this.addDependenciesToStock}
             ></Toolbar>
             <button onClick={() => this.run("a")}>RUN</button>
             </div>

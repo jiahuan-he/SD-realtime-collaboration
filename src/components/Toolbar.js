@@ -21,6 +21,7 @@ export default class Toolbar extends React.Component {
                     stocks={this.props.stocks}
                     flows={this.props.flows}
                     highlightStock={this.props.highlightStock}
+                    addDependenciesToStock={this.props.addDependenciesToStock}
                 ></AddFlowForm>                
             </div>
         )
