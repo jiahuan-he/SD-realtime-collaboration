@@ -89,11 +89,19 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stocks').set(stocks);
     }
 
-    addDependenciesToStock = (dependency, stockID) => {
+    addDependenciesToStockOrFlow = (dependency, id) => {
         const stocks = Object.assign([], this.state.stocks)
-        const targetStock = stocks.find( stock => stock.id === stockID)
-        targetStock.dependencies.push(dependency)
-        firebase.database().ref('state/stocks').set(stocks);
+        const flows = Object.assign([], this.state.flows)
+        const targetStock = stocks.find( stock => stock.id === id)
+        const targetFlow = flows.find( flow => flow.id === id)
+        if(targetStock) {
+            targetStock.dependencies.push(dependency)
+            firebase.database().ref('state/stocks').set(stocks);
+        }
+        else if(targetFlow) {
+            targetFlow.dependencies.push(dependency)
+            firebase.database().ref('state/flows').set(flows);
+        }        
     }
 
     addFlow = (flowID, equation, from, to) => {
@@ -107,6 +115,16 @@ export default class Background extends React.Component {
         }
         flows.push(newFlow)
         firebase.database().ref('state/flows').set(flows);
+    }
+
+    addArrow = (from, to) => {
+        const arrows = Object.assign([], this.state.arrows)
+        const newArrow = {
+            "from":from,
+            "to":to,
+        }
+        arrows.push(newArrow)
+        firebase.database().ref('state/arrows').set(arrows)
     }
 
     //TODO add addEquationForm
@@ -132,6 +150,7 @@ export default class Background extends React.Component {
         this.state = {
             stocks: [],
             flows: [],
+            arrows: [],
         }
     }
 
@@ -158,7 +177,8 @@ export default class Background extends React.Component {
                 stocks={this.state.stocks}
                 flows={this.state.flows}
                 highlightStock={this.highlightStock}
-                addDependenciesToStock={this.addDependenciesToStock}
+                addDependenciesToStockOrFlow={this.addDependenciesToStockOrFlow}
+                addArrow={this.addArrow}
             ></Toolbar>
             <button onClick={() => this.run("a")}>RUN</button>
             </div>

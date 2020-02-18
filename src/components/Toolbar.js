@@ -2,6 +2,7 @@ import React from 'react';
 import AddStockForm from './AddStockForm';
 import EditStockForm from './EditStockForm';
 import AddFlowForm from './AddFlowForm'
+import AddArrowForm from './AddArrowForm'
 
 export default class Toolbar extends React.Component {
     render() {
@@ -21,8 +22,14 @@ export default class Toolbar extends React.Component {
                     stocks={this.props.stocks}
                     flows={this.props.flows}
                     highlightStock={this.props.highlightStock}
-                    addDependenciesToStock={this.props.addDependenciesToStock}
+                    addDependenciesToStockOrFlow={this.props.addDependenciesToStockOrFlow}
                 ></AddFlowForm>                
+                <AddArrowForm
+                    stocks={this.props.stocks}
+                    flows={this.props.flows}
+                    addDependenciesToStockOrFlow={this.props.addDependenciesToStockOrFlow}
+                    addArrow={this.props.addArrow}
+                ></AddArrowForm>
             </div>
         )
     }
