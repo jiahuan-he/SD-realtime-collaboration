@@ -45,5 +45,6 @@
   },
   "setupFiles": [
     "./src/setupTests.js"
-  ]
+  ],
+  "homepage": "."
 }
