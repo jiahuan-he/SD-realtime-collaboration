@@ -17,7 +17,6 @@ export default class AddFlowForm extends React.Component {
         super(props);
         this.state = {
             flowID:"",
-            equation: "",
             from: "",
             to: "",
         };
@@ -26,10 +25,6 @@ export default class AddFlowForm extends React.Component {
     handleChangeName = (event) => {
         const id = event.target.value.trim()
         this.setState({ flowID: id});
-    }
-
-    handleChangeEquation = (event) => {
-        this.setState({ equation: event.target.value});
     }
 
     handleChangeFrom = (event) => {
@@ -43,12 +38,6 @@ export default class AddFlowForm extends React.Component {
     isValidFlowID = () => {
         if(!this.state.flowID) return false
         return this.props.flows.length === 0 || this.props.flows.filter((flow => flow.id == this.state.flowID)).length === 0
-    }
-
-    isValidEquation =() => {
-        if(!this.state.equation) return false
-        //TODO 
-        return true
     }
 
     isValidFrom = () => {
@@ -84,13 +73,6 @@ export default class AddFlowForm extends React.Component {
                 />
                 </label>
                 <label>
-                    Equation
-                <input 
-                    style={this.isValidEquation()?null:inputInvalid} 
-                    type="text" 
-                    value={this.state.equation} onChange={this.handleChangeEquation} />
-                </label>
-                <label>
                     From
                 <input 
                     style={this.isValidFrom()?null:inputInvalid} 
@@ -107,14 +89,13 @@ export default class AddFlowForm extends React.Component {
 
                 <input type="button" value={"Add Flow"} style={button}
                     onClick={() => {
-                        if(!this.isValidEquation() 
-                        || !this.isValidFlowID()
+                        if(!this.isValidFlowID()
                         || !this.isValidFrom()
                         || !this.isValidTo()
                         ) return
                         if(this.state.from) this.props.addDependenciesToStockOrFlow(this.state.flowID, this.state.from)
                         if(this.state.to) this.props.addDependenciesToStockOrFlow(this.state.flowID, this.state.to)
-                        this.props.addFlow(this.state.flowID, this.state.equation, this.state.from, this.state.to) 
+                        this.props.addFlow(this.state.flowID, this.state.from, this.state.to) 
                     }}
                 />
             </form>

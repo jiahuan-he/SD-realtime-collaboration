@@ -104,11 +104,11 @@ export default class Background extends React.Component {
         }        
     }
 
-    addFlow = (flowID, equation, from, to) => {
+    addFlow = (flowID, from, to) => {
         const flows = Object.assign([], this.state.flows)
         const newFlow = {
             "id": flowID,
-            "equation":equation,
+            "equation":null,
             "from":from?from:null,
             "to":to?to:null,
             "dependencies": [],
