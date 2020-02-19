@@ -95,10 +95,12 @@ export default class Background extends React.Component {
         const targetStock = stocks.find( stock => stock.id === id)
         const targetFlow = flows.find( flow => flow.id === id)
         if(targetStock) {
+            if(!targetStock.dependencies) targetStock.dependencies = []
             targetStock.dependencies.push(dependency)
             firebase.database().ref('state/stocks').set(stocks);
         }
         else if(targetFlow) {
+            if(!targetFlow.dependencies) targetFlow.dependencies = []
             targetFlow.dependencies.push(dependency)
             firebase.database().ref('state/flows').set(flows);
         }        
@@ -114,6 +116,7 @@ export default class Background extends React.Component {
             "dependencies": [],
         }
         flows.push(newFlow)
+        console.log(flows)
         firebase.database().ref('state/flows').set(flows);
     }
 
@@ -126,8 +129,21 @@ export default class Background extends React.Component {
         arrows.push(newArrow)
         firebase.database().ref('state/arrows').set(arrows)
     }
-
-    //TODO add addEquationForm
+    
+    addEquation = (equation, id) => {
+        const stocks = Object.assign([], this.state.stocks)
+        const flows = Object.assign([], this.state.flows)
+        const targetStock = stocks.find( stock => stock.id === id)
+        const targetFlow = flows.find( flow => flow.id === id)
+        if(targetStock) {
+            targetStock.equation = equation
+            firebase.database().ref('state/stocks').set(stocks);
+        }
+        else if(targetFlow) {
+            targetFlow.equation = equation
+            firebase.database().ref('state/flows').set(flows);
+        } 
+    }
     
     run = (stockID) => {
         const inFlows = this.state.inFlows[stockID]
@@ -179,6 +195,7 @@ export default class Background extends React.Component {
                 highlightStock={this.highlightStock}
                 addDependenciesToStockOrFlow={this.addDependenciesToStockOrFlow}
                 addArrow={this.addArrow}
+                addEquation={this.addEquation}
             ></Toolbar>
             <button onClick={() => this.run("a")}>RUN</button>
             </div>

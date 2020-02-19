@@ -3,6 +3,7 @@ import AddStockForm from './AddStockForm';
 import EditStockForm from './EditStockForm';
 import AddFlowForm from './AddFlowForm'
 import AddArrowForm from './AddArrowForm'
+import AddEquationForm from './AddEquationForm'
 
 export default class Toolbar extends React.Component {
     render() {
@@ -30,6 +31,11 @@ export default class Toolbar extends React.Component {
                     addDependenciesToStockOrFlow={this.props.addDependenciesToStockOrFlow}
                     addArrow={this.props.addArrow}
                 ></AddArrowForm>
+                <AddEquationForm
+                    stocks={this.props.stocks}
+                    flows={this.props.flows}
+                    addEquation={this.props.addEquation}
+                ></AddEquationForm>
             </div>
         )
     }
