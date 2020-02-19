@@ -12,10 +12,11 @@ export default class Toolbar extends React.Component {
                 <AddStockForm 
                     addStock={this.props.addStock}
                     stocks={this.props.stocks}
+                    flows={this.props.flows}
                     ></AddStockForm>
                 <EditStockForm 
                     updateStockValue={this.props.updateStockValue}
-                    stocks={this.props.stocks}
+                    stocks={this.props.stocks}                    
                     highlightStock={this.props.highlightStock}
                 ></EditStockForm>
                 <AddFlowForm
