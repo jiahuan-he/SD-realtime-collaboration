@@ -48,7 +48,7 @@ export default class Background extends React.Component {
     }
 
     highlightStock = (stockID) =>{
-        if(this.state.stocks.filter( (stock => stockID == stock.id))){
+        if(this.state.stocks.filter( (stock => stockID === stock.id))){
             this.setState({
                 stockBeingEdited:stockID
             })

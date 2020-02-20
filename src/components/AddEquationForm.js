@@ -32,8 +32,8 @@ export default class AddEquationForm extends React.Component {
     isValidId = () => {
         if(!this.state.id) return false
         
-        if(this.props.stocks.filter((stock => stock.id == this.state.id)).length === 0
-        && this.props.flows.filter((flow => flow.id == this.state.id)).length === 0
+        if(this.props.stocks.filter((stock => stock.id === this.state.id)).length === 0
+        && this.props.flows.filter((flow => flow.id === this.state.id)).length === 0
         ) return false
         
         return true 

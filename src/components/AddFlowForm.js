@@ -37,13 +37,13 @@ export default class AddFlowForm extends React.Component {
 
     isValidFlowID = () => {
         if(!this.state.flowID) return false
-        return this.props.flows.filter((flow => flow.id == this.state.flowID)).length === 0
-        && this.props.stocks.filter((stock => stock.id == this.state.stockName)).length === 0
+        return this.props.flows.filter((flow => flow.id === this.state.flowID)).length === 0
+        && this.props.stocks.filter((stock => stock.id === this.state.stockName)).length === 0
     }
 
     isValidFrom = () => {
         if(this.state.from){
-            if(this.props.stocks.length === 0 || this.props.stocks.filter((stock => stock.id == this.state.from)).length === 0) return false
+            if(this.props.stocks.length === 0 || this.props.stocks.filter((stock => stock.id === this.state.from)).length === 0) return false
         }
         if(this.state.from && this.state.to && this.state.from === this.state.to) return false
         return true 
@@ -51,7 +51,7 @@ export default class AddFlowForm extends React.Component {
 
     isValidTo = () => {
         if(this.state.to){
-            if(this.props.stocks.length === 0 || this.props.stocks.filter((stock => stock.id == this.state.to)).length === 0) return false
+            if(this.props.stocks.length === 0 || this.props.stocks.filter((stock => stock.id === this.state.to)).length === 0) return false
         }
         if(this.state.from && this.state.to && this.state.from === this.state.to) return false
         return true 

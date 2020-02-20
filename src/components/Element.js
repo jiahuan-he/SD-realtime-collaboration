@@ -54,6 +54,7 @@ export default class Element extends React.Component {
             draggable = null
         }
 
+        // mouse position to svg position
         const getMousePosition = (e) => {
             const CTM = draggable.getScreenCTM();
             return {

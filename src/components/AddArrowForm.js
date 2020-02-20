@@ -32,8 +32,8 @@ export default class AddArrowForm extends React.Component {
     isValidFrom = () => {
         if(!this.state.from) return false
         
-        if(this.props.stocks.filter((stock => stock.id == this.state.from)).length === 0
-        && this.props.flows.filter((flow => flow.id == this.state.from)).length === 0
+        if(this.props.stocks.filter((stock => stock.id === this.state.from)).length === 0
+        && this.props.flows.filter((flow => flow.id === this.state.from)).length === 0
         ) return false
 
         if(this.state.from === this.state.to) return false
@@ -44,8 +44,8 @@ export default class AddArrowForm extends React.Component {
     isValidTo = () => {
         if(!this.state.to) return false
         
-        if(this.props.stocks.filter((stock => stock.id == this.state.to)).length === 0
-        && this.props.flows.filter((flow => flow.id == this.state.to)).length === 0
+        if(this.props.stocks.filter((stock => stock.id === this.state.to)).length === 0
+        && this.props.flows.filter((flow => flow.id === this.state.to)).length === 0
         ) return false
 
         if(this.state.from === this.state.to) return false
