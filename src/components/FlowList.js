@@ -11,6 +11,7 @@ export default class FlowList extends React.Component {
                 equation:{flow.equation}, 
                 from: {flow.from}, 
                 to: {flow.to}, 
+                dependencies: {flow.dependencies.join(", ")}, 
             </li>
         })
         return (
