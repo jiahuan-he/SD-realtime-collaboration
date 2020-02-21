@@ -1,5 +1,6 @@
 import React from 'react';
 import Element from './Element'
+import Flow from './Flow'
 
 const boardStyle = {
     height: 1000,
@@ -12,6 +13,8 @@ const svgWrapper = {
     width: 500,
 }
 
+const markerId = "arrow"
+
 export default class Board extends React.Component {    
     
     render() {
@@ -23,11 +26,38 @@ export default class Board extends React.Component {
                 highlight = {this.props.stockBeingEdited===stock.id?true:false}
             />
         })
-
+        
+        const flows = this.props.flows
+            .filter((flow) => flow.from && flow.to)
+            .map(flow => {
+                const from = this.props.stocks.find((stock) => stock.id === flow.from)
+                const to = this.props.stocks.find((stock) => stock.id === flow.to)
+                const pos = {
+                    from: {
+                        x: from.posX,
+                        y: from.posY,
+                    },
+                    to: {
+                        x: to.posX,
+                        y: to.posY,
+                    },
+                }
+                return <Flow    
+                    key={flow.id}  
+                    pos={pos}     
+                    markerId={markerId}               
+                />
+            })
         return (
             <div style={svgWrapper}>
                 <svg style={boardStyle}>
-                    {stocks}
+                    <defs>
+                        <marker id={markerId} markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
+                        <path d="M2,2 L2,11 L10,6 L2,2" />
+                        </marker>
+                    </defs>
+                    {stocks}                    
+                    {flows}                    
                 </svg>
             </div>
         );

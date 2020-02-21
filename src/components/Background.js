@@ -178,6 +178,7 @@ export default class Background extends React.Component {
                 <div style = {wrapperStyle}> 
                     <Board 
                         stocks={this.state.stocks}
+                        flows={this.state.flows}
                         stockBeingEdited={this.state.stockBeingEdited}
                         updatePosition={this.updatePosition}                
                         ></Board>
