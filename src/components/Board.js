@@ -1,6 +1,7 @@
 import React from 'react';
 import Element from './Element'
 import Flow from './Flow'
+import FlowText from './FlowText'
 
 const boardStyle = {
     height: 1000,
@@ -48,6 +49,28 @@ export default class Board extends React.Component {
                     markerId={markerId}               
                 />
             })
+
+        const flowTexts = this.props.flows
+        .filter((flow) => flow.from && flow.to)
+        .map(flow => {
+            const from = this.props.stocks.find((stock) => stock.id === flow.from)
+            const to = this.props.stocks.find((stock) => stock.id === flow.to)
+            const pos = {
+                from: {
+                    x: from.posX,
+                    y: from.posY,
+                },
+                to: {
+                    x: to.posX,
+                    y: to.posY,
+                },
+            }
+            return <FlowText    
+                key={flow.id}
+                pos={pos} 
+                flowText={flow.id}
+            />
+        })
         return (
             <div style={svgWrapper}>
                 <svg style={boardStyle}>
@@ -57,7 +80,8 @@ export default class Board extends React.Component {
                         </marker>
                     </defs>
                     {stocks}                    
-                    {flows}                    
+                    {flows}
+                    {flowTexts}                    
                 </svg>
             </div>
         );
