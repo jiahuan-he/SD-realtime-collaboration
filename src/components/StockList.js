@@ -3,12 +3,17 @@ import React from 'react';
 const style = {
     // float: "left"
 }
+
+const listStyleNeedsEquation = {
+    color: "red",
+}
+
 export default class StockList extends React.Component {
     render() {        
         const stocks = this.props.stocks.map( (stock) => {
-        return <li key={stock.id}>
+        return <li key={stock.id} style={stock.equation?null:listStyleNeedsEquation} >
                 stock id: {stock.id}, 
-                equation:{" "+stock.equation}, 
+                equation:{stock.equation?" "+stock.equation:" NEEDS EQUATION"}, 
                 initValue: {" "+stock.initValue}, 
                 currentValue: {" "+stock.value},
                 dependencies: {stock.dependencies.join(", ")},                 

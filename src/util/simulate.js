@@ -1,7 +1,3 @@
-// import { create, all } from 'mathjs'
-
-// const config = { }
-// const math = create(all, config)
 const { evaluate } = require('mathjs')
 
 const flows = [{
@@ -28,12 +24,10 @@ const stocks = [{"dependencies" : [ "tank1", "flow" ],
 "value" : 0
 } ]
     
-const simulate = (stocks, flows, timeFrom, timeTo, timeStep) => {
+export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => {
     
     const equationToExpression = (equation) => {
-        const arr = equation.split(/([\+\-\*\/^])/g);        
-        
-
+        const arr = equation.split(/([\+\-\*\/^])/g)
         for(let i=0; i<arr.length; i++){            
             if(/^[a-z0-9]+$/i.test(arr[i])){
                 const foundStock = stocks.find( (stock) => stock.id === arr[i])
@@ -56,26 +50,26 @@ const simulate = (stocks, flows, timeFrom, timeTo, timeStep) => {
         res[flow.id] = [evaluate(equationToExpression(flow.equation))]
     })
 
-    for(let i=timeFrom; i<timeTo; i+= timeStep){
+    const dataPoints = []
+    for(let i=timeFrom; i<=timeTo; i+= timeStep){
         stocks.forEach(stock => {
             let len = res[stock.id].length
             const prevValue = res[stock.id][len-1]
-            console.log("stock: "+ equationToExpression(stock.equation))
             res[stock.id].push(prevValue + timeStep*evaluate(equationToExpression(stock.equation)))
         });
 
+        const dp = {}
+        stocksToSimulate.forEach(stock => {
+            dp[stock] = res[stock][res[stock].length-1]
+        })
+        dp.name = i
+        dataPoints.push(dp)
+
         flows.forEach(flow => {
             // let len = res[flow.id].length
-            console.log("flow: "+ equationToExpression(flow.equation))
             res[flow.id].push(evaluate(equationToExpression(flow.equation)))
         });
     }
-    return res
+    return dataPoints
 }
-console.log(simulate(stocks, flows, 0, 10, 1))
-
-
-
-
-
-
+// console.log(simulate(stocks, flows, 0, 10, 1, ["tank1", "tank2"]))

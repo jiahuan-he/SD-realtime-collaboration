@@ -168,6 +168,7 @@ export default class Background extends React.Component {
             stocks: [],
             flows: [],
             arrows: [],
+            simulation: {}, //fromTime, toTime, timeStep, stockName, 
         }
     }
 
@@ -200,7 +201,7 @@ export default class Background extends React.Component {
                 addArrow={this.addArrow}
                 addEquation={this.addEquation}
             ></Toolbar>
-            <button onClick={() => this.run("a")}>RUN</button>
+            {/* <button onClick={() => this.run("a")}>RUN</button> */}
             </div>
         );
     }
