@@ -4,6 +4,7 @@ import Board from './Board'
 import Toolbar from './Toolbar'
 import FlowList from './FlowList'
 import StockList from './StockList'
+import ArrowList from './ArrowList'
 import { create, all } from 'mathjs'
 import * as integral from 'mathjs-simple-integral'
 
@@ -185,6 +186,7 @@ export default class Background extends React.Component {
                     <div>
                         <StockList stocks={this.state.stocks}></StockList>
                         <FlowList flows={this.state.flows}></FlowList>
+                        <ArrowList arrows={this.state.arrows}></ArrowList>
                     </div>
             </div>
             <Toolbar 
