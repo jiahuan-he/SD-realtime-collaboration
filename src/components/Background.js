@@ -5,38 +5,7 @@ import Toolbar from './Toolbar'
 import FlowList from './FlowList'
 import StockList from './StockList'
 import ArrowList from './ArrowList'
-import { create, all } from 'mathjs'
-import * as integral from 'mathjs-simple-integral'
-
-const math = create(all)
-math.import(integral)
-
-const calculateIntegral = (inFlowArr, outFlowArr, x, steps) => {
-    let formula = ""
-    if(inFlowArr){
-        inFlowArr.forEach( inFlow => {
-            formula += "+"+inFlow
-        });
-    }
-    
-    if(outFlowArr){
-        outFlowArr.forEach( outFlow => {
-            formula += "-"+outFlow
-        });
-    }
-
-    if(!steps){
-        steps = 1
-    }
-    const step = x/steps
-    const values = []
-    if(formula.length > 0){
-        for(let i=1; i<=steps; i++){
-            values.push(math.parse(math.format(math.integral(formula, 'x'))).compile().eval({x:i*step}))
-        }
-    }
-    return values
-}
+import Chart from './Chart'
 
 export default class Background extends React.Component {
 
@@ -145,21 +114,9 @@ export default class Background extends React.Component {
             firebase.database().ref('state/flows').set(flows);
         } 
     }
-    
-    run = (stockID) => {
-        const inFlows = this.state.inFlows[stockID]
-        const outFlows = this.state.outFlows[stockID]
-        const res = calculateIntegral(inFlows, outFlows, 10 , 10)
-        
-        let i = 0
-        const t = setInterval(() => {
-            if(i >= res.length){
-                clearInterval(t);
-            } else {
-                this.updateStockValue(stockID, res[i])
-                i++;
-            }
-        }, 1000);
+
+    addSimulationData = (data) => {
+        firebase.database().ref('state/simulationData').set(data);
     }
 
     constructor(props) {
@@ -168,13 +125,13 @@ export default class Background extends React.Component {
             stocks: [],
             flows: [],
             arrows: [],
-            simulation: {}, //fromTime, toTime, timeStep, stockName, 
+            simulationData: [], 
         }
     }
 
     render() {
         const wrapperStyle = {display: "flex"}
-        
+
         return (
             <div>
                 <div style = {wrapperStyle}> 
@@ -188,6 +145,9 @@ export default class Background extends React.Component {
                         <StockList stocks={this.state.stocks}></StockList>
                         <FlowList flows={this.state.flows}></FlowList>
                         <ArrowList arrows={this.state.arrows}></ArrowList>
+                        {this.state.simulationData.length>0
+                        &&<Chart simulationData={this.state.simulationData}></Chart>}
+                        
                     </div>
             </div>
             <Toolbar 
@@ -200,8 +160,8 @@ export default class Background extends React.Component {
                 addDependenciesToStockOrFlow={this.addDependenciesToStockOrFlow}
                 addArrow={this.addArrow}
                 addEquation={this.addEquation}
+                addSimulationData={this.addSimulationData}
             ></Toolbar>
-            {/* <button onClick={() => this.run("a")}>RUN</button> */}
             </div>
         );
     }

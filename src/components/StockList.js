@@ -15,7 +15,6 @@ export default class StockList extends React.Component {
                 stock id: {stock.id}, 
                 equation:{stock.equation?" "+stock.equation:" NEEDS EQUATION"}, 
                 initValue: {" "+stock.initValue}, 
-                currentValue: {" "+stock.value},
                 dependencies: {stock.dependencies.join(", ")},                 
             </li>
         })

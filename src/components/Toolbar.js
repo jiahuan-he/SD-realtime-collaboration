@@ -4,6 +4,7 @@ import EditStockForm from './EditStockForm';
 import AddFlowForm from './AddFlowForm'
 import AddArrowForm from './AddArrowForm'
 import AddEquationForm from './AddEquationForm'
+import SimulateForm from './SimulateForm'
 
 export default class Toolbar extends React.Component {
     render() {
@@ -37,6 +38,12 @@ export default class Toolbar extends React.Component {
                     flows={this.props.flows}
                     addEquation={this.props.addEquation}
                 ></AddEquationForm>
+                <SimulateForm
+                    stocks={this.props.stocks}
+                    flows={this.props.flows}
+                    addSimulationData={this.props.addSimulationData}
+                >
+                </SimulateForm>
             </div>
         )
     }

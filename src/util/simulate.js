@@ -26,12 +26,16 @@ const stocks = [{"dependencies" : [ "tank1", "flow" ],
     
 export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => {
     
+    console.log(stocks)
+    console.log(flows)
+    console.log(stocksToSimulate)
     const equationToExpression = (equation) => {
         const arr = equation.split(/([\+\-\*\/^])/g)
         for(let i=0; i<arr.length; i++){            
-            if(/^[a-z0-9]+$/i.test(arr[i])){
+            if(/^[a-z0-9]+$/i.test(arr[i]) && isNaN(arr[i])){
                 const foundStock = stocks.find( (stock) => stock.id === arr[i])
                 const foundFlow = flows.find( (flow) => flow.id === arr[i])
+                
                 const foundVar = foundStock ? foundStock:foundFlow
                 const len = res[foundVar.id].length
                 arr[i] = res[foundVar.id][len-1]
@@ -51,7 +55,7 @@ export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => 
     })
 
     const dataPoints = []
-    for(let i=timeFrom; i<=timeTo; i+= timeStep){
+    for(let i=timeFrom; i<=timeTo; i = i+timeStep){        
         stocks.forEach(stock => {
             let len = res[stock.id].length
             const prevValue = res[stock.id][len-1]
@@ -62,7 +66,7 @@ export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => 
         stocksToSimulate.forEach(stock => {
             dp[stock] = res[stock][res[stock].length-1]
         })
-        dp.name = i
+        dp.stock = i
         dataPoints.push(dp)
 
         flows.forEach(flow => {
