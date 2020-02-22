@@ -47,7 +47,7 @@ export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => 
     const res = {}
     // populate initial stock values
     stocks.forEach(stock => {
-        res[stock.id] = [stock.initValue]
+        res[stock.id] = [stock.initValue]        
     });
     // populate initial flow values
     flows.forEach(flow => {
@@ -55,19 +55,21 @@ export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => 
     })
 
     const dataPoints = []
-    for(let i=timeFrom; i<=timeTo; i = i+timeStep){        
-        stocks.forEach(stock => {
-            let len = res[stock.id].length
-            const prevValue = res[stock.id][len-1]
-            res[stock.id].push(prevValue + timeStep*evaluate(equationToExpression(stock.equation)))
-        });
-
+    for(let i=timeFrom; i<=timeTo; i = i+timeStep){    
         const dp = {}
         stocksToSimulate.forEach(stock => {
             dp[stock] = res[stock][res[stock].length-1]
         })
         dp.stock = i
         dataPoints.push(dp)
+            
+        stocks.forEach(stock => {
+            let len = res[stock.id].length
+            const prevValue = res[stock.id][len-1]
+            res[stock.id].push(prevValue + timeStep*evaluate(equationToExpression(stock.equation)))
+        });
+
+
 
         flows.forEach(flow => {
             // let len = res[flow.id].length
