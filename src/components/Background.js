@@ -40,7 +40,7 @@ export default class Background extends React.Component {
     updateStockValue = (stockID, value) => {
         const stocks = Object.assign([], this.state.stocks)
         const targetStock = stocks.find( stock => stock.id === stockID)
-        targetStock.initValue = value
+        targetStock.initValue = +value
         firebase.database().ref('state/stocks').set(stocks)
     }
 
