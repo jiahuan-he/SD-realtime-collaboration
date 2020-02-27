@@ -45,8 +45,6 @@ export default class Element extends React.Component {
             console.log(coord.x - offset.x)
             console.log(coord.y - offset.y)
             this.props.updatePosition(id, coord.x - offset.x, coord.y - offset.y)
-            draggable.setAttributeNS(null, "x", this.props.stock.posX);
-            draggable.setAttributeNS(null, "y", this.props.stock.posY);
         }
 
         const mouseUpOrLeave = (e) => {
