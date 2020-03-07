@@ -137,7 +137,7 @@ export default class Background extends React.Component {
 
     render() {
         const wrapperStyle = {display: "flex"}
-
+        const XAxisDataKey = "__STEP__"
         return (
             <div>
                 <div style = {wrapperStyle}> 
@@ -152,7 +152,7 @@ export default class Background extends React.Component {
                         <FlowList flows={this.state.flows}></FlowList>
                         <ArrowList arrows={this.state.arrows}></ArrowList>
                         {this.state.simulationData.length>0
-                        &&<Chart simulationData={this.state.simulationData}></Chart>}
+                        &&<Chart simulationData={this.state.simulationData} XAxisDataKey={XAxisDataKey}></Chart>}
                         
                     </div>
             </div>
@@ -167,6 +167,7 @@ export default class Background extends React.Component {
                 addArrow={this.addArrow}
                 addEquation={this.addEquation}
                 addSimulationData={this.addSimulationData}
+                XAxisDataKey={XAxisDataKey}
             ></Toolbar>
             </div>
         );

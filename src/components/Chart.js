@@ -13,9 +13,9 @@ const colors = [
     "9e579d"
 ]
 
-export default ({simulationData}) => {
+export default ({simulationData, XAxisDataKey}) => {
     const lines = Object.keys(simulationData[0])
-    .filter(key => key !== "stock")
+    .filter(key => key !== XAxisDataKey)
     .map((key,i) => <Line key={i} type="monotone" dataKey={key} stroke={"#"+colors[i%colors.length]} />);
     return <LineChart
         width={500}
@@ -23,7 +23,7 @@ export default ({simulationData}) => {
         data={simulationData}
     >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="stock" />
+        <XAxis dataKey={XAxisDataKey} />
         <YAxis />
         <Tooltip />
         <Legend />

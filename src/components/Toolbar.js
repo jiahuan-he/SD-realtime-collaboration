@@ -42,6 +42,7 @@ export default class Toolbar extends React.Component {
                     stocks={this.props.stocks}
                     flows={this.props.flows}
                     addSimulationData={this.props.addSimulationData}
+                    XAxisDataKey={this.props.XAxisDataKey}
                 >
                 </SimulateForm>
             </div>

@@ -1,34 +1,7 @@
 const { evaluate } = require('mathjs')
-
-const flows = [{
-"dependencies" : [ "tank1" ],
-"equation" : "0.05*tank1",
-"from" : "tank1",
-"id" : "flow",
-"to" : "tank2"
-}]
-const stocks = [{"dependencies" : [ "tank1", "flow" ],
-"equation" : "-flow",
-"id" : "tank1",
-"initValue" : 100,
-"posX" : 31,
-"posY" : 115,
-"value" : 100
-}, {
-"dependencies" : [ "tank2", "flow" ],
-"equation" : "flow",
-"id" : "tank2",
-"initValue" : 0,
-"posX" : 228,
-"posY" : 115,
-"value" : 0
-} ]
     
-export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => {
+export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate, XAxisDataKey) => {
     
-    console.log(stocks)
-    console.log(flows)
-    console.log(stocksToSimulate)
     const equationToExpression = (equation) => {
         const arr = equation.split(/([\+\-\*\/^])/g)
         for(let i=0; i<arr.length; i++){            
@@ -60,19 +33,15 @@ export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate) => 
         stocksToSimulate.forEach(stock => {
             dp[stock] = res[stock][res[stock].length-1]
         })
-        dp.stock = i
+        dp[XAxisDataKey] = i
         dataPoints.push(dp)
-            
         stocks.forEach(stock => {
             let len = res[stock.id].length
             const prevValue = res[stock.id][len-1]
             res[stock.id].push(prevValue + timeStep*evaluate(equationToExpression(stock.equation)))
         });
 
-
-
         flows.forEach(flow => {
-            // let len = res[flow.id].length
             res[flow.id].push(evaluate(equationToExpression(flow.equation)))
         });
     }

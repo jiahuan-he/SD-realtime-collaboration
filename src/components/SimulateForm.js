@@ -111,14 +111,16 @@ export default class SimulateForm extends React.Component {
                         || !this.isValidTimeStep()
                         ) return
                         const stocks = this.state.stocksToSimulate.replace(/ /g,'').split(",")
-                        this.props.addSimulationData(simulate(
+                        const data = simulate(
                             this.props.stocks,
                             this.props.flows,
                             +this.state.timeFrom,
                             +this.state.timeTo,
                             +this.state.timeStep,
-                            stocks
-                        ))
+                            stocks,
+                            this.props.XAxisDataKey,
+                        )
+                        this.props.addSimulationData(data)
                     }}
                 />
             </form>
