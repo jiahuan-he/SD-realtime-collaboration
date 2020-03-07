@@ -53,7 +53,7 @@ export default class Background extends React.Component {
             "posX": 0,
             "posY": 0,
             "dependencies": [stockName],
-            "equation": null,
+            "equation": "",
         }
         stocks.push(newStock)
         firebase.database().ref('state/stocks').set(stocks);
@@ -80,14 +80,20 @@ export default class Background extends React.Component {
         const flows = Object.assign([], this.state.flows)
         const newFlow = {
             "id": flowID,
-            "equation":null,
-            "from":from?from:null,
-            "to":to?to:null,
+            "equation": "",
+            "from":from?from: "",
+            "to":to?to: "",
             "dependencies": [],
         }
+        const stocks = Object.assign([], this.state.stocks)
+        
+        // add flow names to stocks' equation by default
+        if(from) stocks.find( stock => stock.id === from).equation += `-${flowID}`
+        if(to) stocks.find( stock => stock.id === to).equation += `+${flowID}`
+
         flows.push(newFlow)
-        console.log(flows)
         firebase.database().ref('state/flows').set(flows);
+        firebase.database().ref('state/stocks').set(stocks);
     }
 
     addArrow = (from, to) => {
