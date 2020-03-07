@@ -65,6 +65,10 @@ export default class AddEquationForm extends React.Component {
                     onClick={() => {
                         if(!this.isValidId() || !this.isValidEquation()) return                        
                         this.props.addEquation(this.state.equation, this.state.id)
+                        this.setState({
+                            id: "",
+                            equation: "",
+                        })
                     }}
                 />
             </form>

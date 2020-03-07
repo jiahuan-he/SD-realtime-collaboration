@@ -75,6 +75,10 @@ export default class AddArrowForm extends React.Component {
                         if(!this.isValidFrom() || !this.isValidTo()) return
                         this.props.addDependenciesToStockOrFlow(this.state.from, this.state.to)
                         this.props.addArrow(this.state.from, this.state.to)
+                        this.setState({
+                            from: "",
+                            to: "",
+                        })
                     }}
                 />
             </form>

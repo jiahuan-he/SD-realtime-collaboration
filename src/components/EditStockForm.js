@@ -56,16 +56,21 @@ export default class EditStockForm extends React.Component {
                 />
                 </label>
                 <label>
-                    Value
+                    Init Value
                 <input 
                     style={this.isValidStockValue()?null:inputInvalid} 
                     type="text" 
                     value={this.state.stockValue} onChange={this.handleChangeValue} />
                 </label>
-                    <input type="button" value="Edit Stock" style={button}
+                    <input type="button" value="Edit Stock InitValue" style={button}
                         onClick={() => {
                             if(!this.state.stockID === "" || !this.state.stockValue) return
                             this.props.updateStockValue(this.state.stockID, this.state.stockValue)
+                            this.setState({
+                                stockID:"",
+                                stockValue: 0,
+                            })
+                            this.props.highlightStock("")
                         }}
                     />
             </form>

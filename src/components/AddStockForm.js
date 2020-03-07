@@ -52,7 +52,7 @@ export default class AddStockForm extends React.Component {
                 />
                 </label>
                 <label>
-                    Value
+                    Init Value
                 <input 
                     style={this.isValidStockValue()?null:inputInvalid} 
                     type="text" 
