@@ -1,9 +1,12 @@
 const { evaluate } = require('mathjs')
     
 export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate, XAxisDataKey) => {
-    
-    const equationToExpression = (equation) => {
-        const arr = equation.split(/([\+\-\*\/^])/g)
+    console.log(stocks)
+    console.log(flows)
+    console.log(stocksToSimulate)
+
+    const equationToExpression = (equation) => {        
+        const arr = equation.replace(/ /g,'').split(/([\+\-\*\/^])/g)
         for(let i=0; i<arr.length; i++){            
             if(/^[a-z0-9]+$/i.test(arr[i]) && isNaN(arr[i])){
                 const foundStock = stocks.find( (stock) => stock.id === arr[i])
@@ -24,7 +27,9 @@ export default (stocks, flows, timeFrom, timeTo, timeStep, stocksToSimulate, XAx
     });
     // populate initial flow values
     flows.forEach(flow => {
-        res[flow.id] = [evaluate(equationToExpression(flow.equation))]
+        const expression = equationToExpression(flow.equation)
+        console.log(expression)
+        res[flow.id] = [evaluate(expression)]
     })
 
     const dataPoints = []
