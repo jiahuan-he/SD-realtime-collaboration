@@ -50,10 +50,22 @@ export default class Board extends React.Component {
         })
         
         const flows = this.props.flows
-            .filter((flow) => flow.from && flow.to)
             .map(flow => {
-                const from = this.props.stocks.find((stock) => stock.id === flow.from)
-                const to = this.props.stocks.find((stock) => stock.id === flow.to)
+                let from
+                if(flow.from){
+                    from = this.props.stocks.find((stock) => stock.id === flow.from)
+                } else {
+                    from = this.props.cloudsOrigin.find( cloud => cloud.flow === flow.id)
+                }
+                let to                
+                if(flow.to){
+                    to = this.props.stocks.find((stock) => stock.id === flow.to)
+                } else {
+                    to = this.props.cloudsDestination.find( cloud => cloud.flow === flow.id)
+                }
+                console.log(flow)
+                console.log(to)
+                
                 const pos = {
                     from: {
                         x: from.posX,
