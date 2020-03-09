@@ -2,6 +2,7 @@ import React from 'react';
 import Element from './Element'
 import Flow from './Flow'
 import FlowText from './FlowText'
+import Cloud from './Cloud'
 
 const boardStyle = {
     height: 1000,
@@ -25,6 +26,26 @@ export default class Board extends React.Component {
                 stock = {stock}
                 updatePosition={this.props.updatePosition}
                 highlight = {this.props.stockBeingEdited===stock.id?true:false}
+            />
+        })
+
+        const cloudsOrigin = this.props.cloudsOrigin.map( cloud => {
+            return <Cloud
+                key={cloud.flow}
+                flow={cloud.flow}
+                posX={cloud.posX}
+                posY={cloud.posY}
+                updateCloudPosition={this.props.updateCloudPosition}
+            />
+        })
+
+        const cloudsDestination = this.props.cloudsDestination.map( cloud => {
+            return <Cloud
+                key={cloud.flow}
+                flow={cloud.flow}
+                posX={cloud.posX}
+                posY={cloud.posY}
+                updateCloudPosition={this.props.updateCloudPosition}
             />
         })
         
@@ -81,7 +102,9 @@ export default class Board extends React.Component {
                     </defs>
                     {stocks}                    
                     {flows}
-                    {flowTexts}                    
+                    {flowTexts}  
+                    {cloudsOrigin}
+                    {cloudsDestination}
                 </svg>
             </div>
         );

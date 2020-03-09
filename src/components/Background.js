@@ -37,6 +37,21 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stocks').set(stocks);
     }
 
+    updateCloudPosition = (cloudByFlow, x, y) => {
+        let targetCloud
+        const cloudsOrigin = Object.assign([], this.state.cloudsOrigin)
+        const cloudsDestination = Object.assign([], this.state.cloudsDestination)
+        if(cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)){
+            targetCloud = cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)
+        } else {
+            targetCloud = cloudsDestination.find(cloud => cloud.flow === cloudByFlow)
+        }
+        targetCloud.posX = x
+        targetCloud.posY = y
+        firebase.database().ref('state/cloudsOrigin').set(cloudsOrigin);
+        firebase.database().ref('state/cloudsDestination').set(cloudsDestination);
+    }
+
     updateStockValue = (stockID, value) => {
         const stocks = Object.assign([], this.state.stocks)
         const targetStock = stocks.find( stock => stock.id === stockID)
@@ -57,6 +72,21 @@ export default class Background extends React.Component {
         }
         stocks.push(newStock)
         firebase.database().ref('state/stocks').set(stocks);
+    }
+
+    addCloud= (flowID, from, to) => {
+        if(from && to && from.trim().length>0 && to.trim().length>0) return
+        const isOrigin = from ? false:true
+        let clouds = isOrigin ? this.state.cloudsOrigin:this.state.cloudsDestination        
+        clouds = Object.assign([], clouds)
+        const ref = isOrigin?'state/cloudsOrigin':'state/cloudsDestination'
+        const newCloud = {
+            "flow":flowID,
+            "posX": 0,
+            "posY": 0,
+        }
+        clouds.push(newCloud)
+        firebase.database().ref(ref).set(clouds);
     }
 
     addDependenciesToStockOrFlow = (dependency, id) => {
@@ -132,6 +162,8 @@ export default class Background extends React.Component {
             flows: [],
             arrows: [],
             simulationData: [], 
+            cloudsOrigin: [],
+            cloudsDestination: [],
         }
     }
 
@@ -144,8 +176,11 @@ export default class Background extends React.Component {
                     <Board 
                         stocks={this.state.stocks}
                         flows={this.state.flows}
+                        cloudsOrigin={this.state.cloudsOrigin}
+                        cloudsDestination={this.state.cloudsDestination}
                         stockBeingEdited={this.state.stockBeingEdited}
-                        updatePosition={this.updatePosition}                
+                        updatePosition={this.updatePosition}    
+                        updateCloudPosition={this.updateCloudPosition}
                         ></Board>
                     <div>
                         <StockList stocks={this.state.stocks}></StockList>
@@ -165,6 +200,7 @@ export default class Background extends React.Component {
                 highlightStock={this.highlightStock}
                 addDependenciesToStockOrFlow={this.addDependenciesToStockOrFlow}
                 addArrow={this.addArrow}
+                addCloud={this.addCloud}
                 addEquation={this.addEquation}
                 addSimulationData={this.addSimulationData}
                 XAxisDataKey={XAxisDataKey}
