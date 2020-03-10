@@ -49,7 +49,7 @@ export default class Board extends React.Component {
             />
         })
         
-        const flows = this.props.flows
+        const flowPos = this.props.flows
             .map(flow => {
                 let from
                 if(flow.from){
@@ -64,8 +64,11 @@ export default class Board extends React.Component {
                     to = this.props.cloudsDestination.find( cloud => cloud.flow === flow.id)
                 }
                 
-                const pos = {
+                return {
+                    id: flow.id,
                     from: {
+                        // eclipse position x, y are at the center, whereas rect svg position x, y are positioned at the top left corner
+                        // 25 is the width/height of the rect svg
                         x: flow.from?from.posX+25:from.posX,
                         y: flow.from?from.posY+25:from.posY,
                     },
@@ -73,34 +76,25 @@ export default class Board extends React.Component {
                         x: flow.to?to.posX+25:to.posX,
                         y: flow.to?to.posY+25:to.posY,
                     },
-                }
-                return <Flow    
+                }                
+            })
+        
+        const flows = flowPos.map( flow => {
+            return <Flow    
                     key={flow.id}  
-                    pos={pos}     
+                    from={flow.from}
+                    to={flow.to}
                     markerId={markerId}               
                 />
-            })
+        })
 
-        const flowTexts = this.props.flows
-        .filter((flow) => flow.from && flow.to)
-        .map(flow => {
-            const from = this.props.stocks.find((stock) => stock.id === flow.from)
-            const to = this.props.stocks.find((stock) => stock.id === flow.to)
-            const pos = {
-                from: {
-                    x: from.posX,
-                    y: from.posY,
-                },
-                to: {
-                    x: to.posX,
-                    y: to.posY,
-                },
-            }
-            return <FlowText    
-                key={flow.id}
-                pos={pos} 
-                flowText={flow.id}
-            />
+        const flowTexts = flowPos.map( flow => {
+            return <FlowText
+                    key={flow.id}  
+                    from={flow.from}
+                    to={flow.to}
+                    flowText={flow.id}  
+                />
         })
         return (
             <div style={svgWrapper}>

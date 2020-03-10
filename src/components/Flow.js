@@ -7,12 +7,12 @@ const style ={
     opacity: 0.4,
 
 }
-export default ({pos, markerId}) => {
+export default ({from, to, markerId}) => {
     return <line 
-        x1={pos.from.x} 
-        y1={pos.from.y} 
-        x2={pos.to.x} 
-        y2={pos.to.y} 
+        x1={from.x} 
+        y1={from.y} 
+        x2={to.x} 
+        y2={to.y} 
         style={style}
         markerEnd={`url(#${markerId})`}
     />
