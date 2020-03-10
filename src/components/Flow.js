@@ -9,10 +9,10 @@ const style ={
 }
 export default ({pos, markerId}) => {
     return <line 
-        x1={pos.from.x+25} 
-        y1={pos.from.y+25} 
-        x2={pos.to.x+25} 
-        y2={pos.to.y+25} 
+        x1={pos.from.x} 
+        y1={pos.from.y} 
+        x2={pos.to.x} 
+        y2={pos.to.y} 
         style={style}
         markerEnd={`url(#${markerId})`}
     />

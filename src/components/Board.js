@@ -63,17 +63,15 @@ export default class Board extends React.Component {
                 } else {
                     to = this.props.cloudsDestination.find( cloud => cloud.flow === flow.id)
                 }
-                console.log(flow)
-                console.log(to)
                 
                 const pos = {
                     from: {
-                        x: from.posX,
-                        y: from.posY,
+                        x: flow.from?from.posX+25:from.posX,
+                        y: flow.from?from.posY+25:from.posY,
                     },
                     to: {
-                        x: to.posX,
-                        y: to.posY,
+                        x: flow.to?to.posX+25:to.posX,
+                        y: flow.to?to.posY+25:to.posY,
                     },
                 }
                 return <Flow    
@@ -112,11 +110,11 @@ export default class Board extends React.Component {
                         <path d="M2,2 L2,11 L10,6 L2,2" />
                         </marker>
                     </defs>
-                    {stocks}                    
-                    {flows}
+                    {stocks}                                        
                     {flowTexts}  
                     {cloudsOrigin}
                     {cloudsDestination}
+                    {flows}
                 </svg>
             </div>
         );

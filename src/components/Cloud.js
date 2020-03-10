@@ -68,7 +68,7 @@ export default class Cloud extends React.Component {
                 style={moveable}
             >
                 <ellipse cx={x} cy={y} rx={rx} ry={ry} style={stock}/>
-                <foreignObject x={x-rx/1.5} y={y-ry/2} width={70} height={50}>
+                <foreignObject x={x-rx/1.5} y={y-ry/2} width={80} height={50}>
                     <div>{"CLOUD"}</div>
                 </foreignObject>    
             </g>       
