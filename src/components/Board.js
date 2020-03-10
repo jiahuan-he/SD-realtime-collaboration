@@ -1,5 +1,5 @@
 import React from 'react';
-import Element from './Element'
+import Stock from './Stock'
 import Flow from './Flow'
 import FlowText from './FlowText'
 import Cloud from './Cloud'
@@ -21,7 +21,7 @@ export default class Board extends React.Component {
     
     render() {
         const stocks = this.props.stocks.map(stock => {
-            return <Element
+            return <Stock
                 key={stock.id}
                 stock = {stock}
                 updatePosition={this.props.updatePosition}

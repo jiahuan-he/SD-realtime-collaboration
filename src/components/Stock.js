@@ -18,7 +18,7 @@ const moveable = {
     cursor: 'move',
 }
 
-export default class Element extends React.Component {
+export default class Stock extends React.Component {
     componentDidMount() {
         this.makeDraggable()
     }
@@ -70,7 +70,7 @@ export default class Element extends React.Component {
         const x=this.props.stock.posX
         const y=this.props.stock.posY
         const id=this.props.stock.id
-        const stockValue=this.props.stock.value
+        const initValue=this.props.stock.initValue
         return (
             <g 
                 x={x} 
@@ -80,7 +80,7 @@ export default class Element extends React.Component {
             >
                 <rect x={x} y={y} width={"5%"} height={"5%"} style={this.props.highlight?stockHighlight:stock}/>
                 <foreignObject x={x} y={y} width="50" height="50">
-                    <div>{id+": "+stockValue}</div>                 
+                    <div>{id+": "+initValue}</div>                 
                 </foreignObject>    
             </g>       
         );

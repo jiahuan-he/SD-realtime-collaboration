@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme'
-import Element from './Element'
+import Stock from './Stock'
 // Avoid Warning: render(): Rendering components directly into document.body is discouraged.
 beforeAll(() => {
     const div = document.createElement('div');
@@ -8,7 +8,7 @@ beforeAll(() => {
     document.body.appendChild(div);
   })
 
-describe('Element', () => {
+describe('Stock', () => {
     it('should render correctly in "debug" mode', () => {
         const props = {
             id: "stock0",
@@ -16,15 +16,15 @@ describe('Element', () => {
             x: 50,
             y: 50,
         }
-        const element = mount(<svg>
-            <Element
+        const stock = mount(<svg>
+            <Stock
                 key={props.id}
                 stockID={props.id}
                 stockValue={props.stockValue}
                 x={props.x}
                 y={props.y}
             debug
-            ></Element></svg>, { attachTo: window.domNode });
-        expect(element).toMatchSnapshot();
+            ></Stock></svg>, { attachTo: window.domNode });
+        expect(stock).toMatchSnapshot();
     });
 });
