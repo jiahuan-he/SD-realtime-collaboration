@@ -4,6 +4,7 @@ import Flow from './Flow'
 import FlowText from './FlowText'
 import Cloud from './Cloud'
 import Arrow from './Arrow'
+import AddArrowForm from './AddArrowForm';
 
 const boardStyle = {
     height: 1000,
@@ -12,8 +13,8 @@ const boardStyle = {
 };
 const svgWrapper = {
     overflow: "scroll",
-    height: 500,
-    width: 500,
+    height: 600,
+    width: 600,
 }
 
 const markerId = "arrow"
@@ -102,6 +103,7 @@ export default class Board extends React.Component {
             const fromStock = this.props.stocks.find((stock) => stock.id === arrow.from)
             const flowTextPos = flowPos.find( flow => flow.id === arrow.to)
             return <Arrow 
+                key={arrow.from+arrow.to}
                 markerId = {markerId}
                 from={{
                     x: fromStock.posX+50,
