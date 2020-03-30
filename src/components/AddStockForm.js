@@ -60,7 +60,7 @@ export default class AddStockForm extends React.Component {
                 </label>
                     <input type="button" value="Add Stock" style={button}
                         onClick={() => {
-                            if(this.state.stockName === "" || !this.isValidStockID) return
+                            if(this.state.stockName === "" || !this.isValidStockID()) return
                             this.props.addStock(this.state.stockName, this.state.stockValue)
                             this.setState({
                                 stockName:"",
