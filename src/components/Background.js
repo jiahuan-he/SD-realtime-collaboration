@@ -37,6 +37,14 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stocks').set(stocks);
     }
 
+    updateParameterPosition = (parameterName, x, y) => {
+        const parameters = Object.assign([], this.state.parameters)
+        const targetParameter = parameters.find( parameters => parameters.name === parameterName)
+        targetParameter.posX = x
+        targetParameter.posY = y
+        firebase.database().ref('state/parameters').set(parameters);
+    }
+
     updateCloudPosition = (cloudByFlow, x, y) => {
         let targetCloud
         const cloudsOrigin = Object.assign([], this.state.cloudsOrigin)
@@ -197,6 +205,7 @@ export default class Background extends React.Component {
                         stockBeingEdited={this.state.stockBeingEdited}
                         updatePosition={this.updatePosition}    
                         updateCloudPosition={this.updateCloudPosition}
+                        updateParameterPosition={this.updateParameterPosition}
                         ></Board>
                     <div>
                         <StockList stocks={this.state.stocks}></StockList>

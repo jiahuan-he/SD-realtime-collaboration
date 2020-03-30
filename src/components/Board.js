@@ -4,7 +4,7 @@ import Flow from './Flow'
 import FlowText from './FlowText'
 import Cloud from './Cloud'
 import Arrow from './Arrow'
-import AddArrowForm from './AddArrowForm';
+import Parameter from './Parameter'
 
 const boardStyle = {
     height: 1000,
@@ -116,6 +116,14 @@ export default class Board extends React.Component {
             />
         })
 
+        const parameters = this.props.parameters.map( parameter => {
+            return <Parameter 
+                key={parameter.name}
+                parameter={parameter}
+                updateParameterPosition={this.props.updateParameterPosition}
+            ></Parameter>
+        })
+
         return (
             <div style={svgWrapper}>
                 <svg style={boardStyle}>
@@ -139,6 +147,7 @@ export default class Board extends React.Component {
                     {cloudsDestination}
                     {flows}
                     {arrows}
+                    {parameters}
                 </svg>
             </div>
         );
