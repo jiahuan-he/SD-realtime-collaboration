@@ -1,7 +1,7 @@
 import React from 'react'
 
 const style ={
-    stroke: "#00a8cc",
+    stroke: "#f8615a",
     strokeWidth: 1.5,
     zIndex: -10,
     opacity: 1,
