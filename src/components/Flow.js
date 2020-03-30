@@ -1,8 +1,8 @@
 import React from 'react'
 
 const style ={
-    stroke: "black",
-    strokeWidth: 2,
+    stroke: "#2b580c",
+    strokeWidth: 4,
     zIndex: -10,
     opacity: 0.4,
 

@@ -176,6 +176,7 @@ export default class Background extends React.Component {
                     <Board 
                         stocks={this.state.stocks}
                         flows={this.state.flows}
+                        arrows={this.state.arrows}
                         cloudsOrigin={this.state.cloudsOrigin}
                         cloudsDestination={this.state.cloudsDestination}
                         stockBeingEdited={this.state.stockBeingEdited}

@@ -3,6 +3,7 @@ import Stock from './Stock'
 import Flow from './Flow'
 import FlowText from './FlowText'
 import Cloud from './Cloud'
+import Arrow from './Arrow'
 
 const boardStyle = {
     height: 1000,
@@ -96,12 +97,38 @@ export default class Board extends React.Component {
                     flowText={flow.id}  
                 />
         })
+
+        const arrows = this.props.arrows.map( arrow => {
+            const fromStock = this.props.stocks.find((stock) => stock.id === arrow.from)
+            const flowTextPos = flowPos.find( flow => flow.id === arrow.to)
+            return <Arrow 
+                markerId = {markerId}
+                from={{
+                    x: fromStock.posX+50,
+                    y: fromStock.posY,
+                }}
+                to={{
+                    x: (flowTextPos.from.x + flowTextPos.to.x)/2,
+                    y: (flowTextPos.from.y + flowTextPos.to.y)/2,
+                }}            
+            />
+        })
+
         return (
             <div style={svgWrapper}>
                 <svg style={boardStyle}>
                     <defs>
-                        <marker id={markerId} markerWidth="13" markerHeight="13" refX="2" refY="6" orient="auto">
-                        <path d="M2,2 L2,11 L10,6 L2,2" />
+                        <marker id={markerId} viewBox="0 0 10 10" refX="5" refY="5"
+                            markerWidth="6" markerHeight="6"
+                            orient="auto-start-reverse"
+                            fill="#2b580c"
+                        >
+                        <marker id={markerId} viewBox="0 0 10 10" refX="5" refY="5"
+                            markerWidth="6" markerHeight="6"
+                            orient="auto-start-reverse"
+                            fill="#2b580c"
+                        ></marker>
+                        <path d="M 0 0 L 10 5 L 0 10 z"/>
                         </marker>
                     </defs>
                     {stocks}                                        
@@ -109,6 +136,7 @@ export default class Board extends React.Component {
                     {cloudsOrigin}
                     {cloudsDestination}
                     {flows}
+                    {arrows}
                 </svg>
             </div>
         );
