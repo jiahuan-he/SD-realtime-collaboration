@@ -29,10 +29,11 @@ export default class AddStockForm extends React.Component {
         this.setState({ stockValue: event.target.value});
     }
 
-    isValidStockID = () => {    
+    isValidStockID = () => {
         if(!this.state.stockName) return false
         return this.props.stocks.filter((stock => stock.id === this.state.stockName)).length === 0 
         && this.props.flows.filter((flow => flow.id === this.state.stockName)).length === 0
+        && this.props.parameters.filter((parameter => parameter.name === this.state.stockName)).length === 0
     }
 
     isValidStockValue =() => {

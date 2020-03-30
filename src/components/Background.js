@@ -74,6 +74,19 @@ export default class Background extends React.Component {
         firebase.database().ref('state/stocks').set(stocks);
     }
 
+    addParameter= (parameterName, value) => {
+        const parameters = Object.assign([], this.state.parameters)
+        const newParameter = {
+            "name": parameterName,
+            "value":+value,
+            "posX": 0,
+            "posY": 0,
+        }
+        console.log("add parameter")
+        parameters.push(newParameter)
+        firebase.database().ref('state/parameters').set(parameters);
+    }
+
     addCloud= (flowID, from, to) => {
         if(from && to && from.trim().length>0 && to.trim().length>0) return
         const isOrigin = from ? false:true
@@ -164,6 +177,7 @@ export default class Background extends React.Component {
             simulationData: [], 
             cloudsOrigin: [],
             cloudsDestination: [],
+            parameters: [],
         }
     }
 
@@ -177,6 +191,7 @@ export default class Background extends React.Component {
                         stocks={this.state.stocks}
                         flows={this.state.flows}
                         arrows={this.state.arrows}
+                        parameters={this.state.parameters}
                         cloudsOrigin={this.state.cloudsOrigin}
                         cloudsDestination={this.state.cloudsDestination}
                         stockBeingEdited={this.state.stockBeingEdited}
@@ -195,9 +210,11 @@ export default class Background extends React.Component {
             <Toolbar 
                 addStock={this.addStock}
                 addFlow={this.addFlow}
+                addParameter={this.addParameter}
                 updateStockValue={this.updateStockValue}
                 stocks={this.state.stocks}
                 flows={this.state.flows}
+                parameters={this.state.parameters}
                 highlightStock={this.highlightStock}
                 addDependenciesToStockOrFlow={this.addDependenciesToStockOrFlow}
                 addArrow={this.addArrow}

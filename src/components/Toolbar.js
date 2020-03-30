@@ -5,6 +5,7 @@ import AddFlowForm from './AddFlowForm'
 import AddArrowForm from './AddArrowForm'
 import AddEquationForm from './AddEquationForm'
 import SimulateForm from './SimulateForm'
+import AddParameterForm from './AddParameterForm'
 
 export default class Toolbar extends React.Component {
     render() {
@@ -14,7 +15,14 @@ export default class Toolbar extends React.Component {
                     addStock={this.props.addStock}
                     stocks={this.props.stocks}
                     flows={this.props.flows}
+                    parameters={this.props.parameters}
                     ></AddStockForm>
+                <AddParameterForm
+                    addParameter={this.props.addParameter}
+                    stocks={this.props.stocks}
+                    flows={this.props.flows}
+                    parameters={this.props.parameters}
+                ></AddParameterForm>
                 <EditStockForm 
                     updateStockValue={this.props.updateStockValue}
                     stocks={this.props.stocks}                    
@@ -24,6 +32,7 @@ export default class Toolbar extends React.Component {
                     addFlow={this.props.addFlow}
                     stocks={this.props.stocks}
                     flows={this.props.flows}
+                    parameters={this.props.parameters}
                     highlightStock={this.props.highlightStock}
                     addDependenciesToStockOrFlow={this.props.addDependenciesToStockOrFlow}
                     addCloud={this.props.addCloud}
