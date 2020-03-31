@@ -116,7 +116,7 @@ export default class Board extends React.Component {
 
         const getParameterPos = (parameter) => {
             return {
-                x: parameter.posX,
+                x: parameter.posX+4*parameter.name.length,// 4*length is the best proportion so x is at the center of the text
                 y: parameter.posY,
             }
         }

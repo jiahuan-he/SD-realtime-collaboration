@@ -2,7 +2,7 @@ import React from 'react'
 
 const moveableText = {
     cursor: 'move',
-    fontSize: "x-large"
+    fontSize: "large"
 }
 
 export default class Parameter extends React.Component {

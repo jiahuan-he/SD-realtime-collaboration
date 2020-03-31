@@ -88,7 +88,7 @@ export default class Background extends React.Component {
             "name": parameterName,
             "value":+value,
             "posX": 0,
-            "posY": 0,
+            "posY": 10, // offset the text a bit so the text doesn't come off the background
         }
         console.log("add parameter")
         parameters.push(newParameter)
