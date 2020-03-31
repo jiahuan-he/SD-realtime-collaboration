@@ -224,6 +224,7 @@ export default class Background extends React.Component {
                 stocks={this.state.stocks}
                 flows={this.state.flows}
                 parameters={this.state.parameters}
+                arrows={this.state.arrows}
                 highlightStock={this.highlightStock}
                 addDependenciesToStockOrFlow={this.addDependenciesToStockOrFlow}
                 addArrow={this.addArrow}

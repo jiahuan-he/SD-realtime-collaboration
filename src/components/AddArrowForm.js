@@ -34,10 +34,11 @@ export default class AddArrowForm extends React.Component {
         
         if(this.props.stocks.filter((stock => stock.id === this.state.from)).length === 0
         && this.props.flows.filter((flow => flow.id === this.state.from)).length === 0
+        && this.props.parameters.filter((parameter => parameter.name === this.state.from)).length === 0
         ) return false
 
         if(this.state.from === this.state.to) return false
-        
+        if(this.props.arrows.filter(arrow => arrow.from === this.state.from && arrow.to === this.state.to).length>0) return false
         return true 
     }
 
@@ -46,9 +47,11 @@ export default class AddArrowForm extends React.Component {
         
         if(this.props.stocks.filter((stock => stock.id === this.state.to)).length === 0
         && this.props.flows.filter((flow => flow.id === this.state.to)).length === 0
+        && this.props.parameters.filter((parameter => parameter.name === this.state.to)).length === 0
         ) return false
 
         if(this.state.from === this.state.to) return false
+        if(this.props.arrows.filter(arrow => arrow.from === this.state.from && arrow.to === this.state.to).length>0) return false
         
         return true 
     }

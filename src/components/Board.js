@@ -99,20 +99,58 @@ export default class Board extends React.Component {
                 />
         })
 
+        const getFlowCenter = (flow) => {
+            const pos = flowPos.find(f => f.id === flow.id)
+            return {
+                x: (pos.from.x + pos.to.x)/2,
+                y: (pos.from.y + pos.to.y)/2,
+            }
+        }
+
+        const getStockCorner = (stock) => {
+            return {
+                x: stock.posX+50,
+                y: stock.posY,
+            }
+        }
+
+        const getParameterPos = (parameter) => {
+            return {
+                x: parameter.posX,
+                y: parameter.posY,
+            }
+        }
+
         const arrows = this.props.arrows.map( arrow => {
+            let from
             const fromStock = this.props.stocks.find((stock) => stock.id === arrow.from)
-            const flowTextPos = flowPos.find( flow => flow.id === arrow.to)
+            const fromFlow = this.props.flows.find((flow) => flow.id === arrow.from)
+            const fromParameter = this.props.parameters.find((parameter) => parameter.name === arrow.from)
+            if(fromStock){
+                from = getStockCorner(fromStock)
+            } else if(fromFlow){
+                from = getFlowCenter(fromFlow)
+            } else {
+                from = getParameterPos(fromParameter)
+            }
+
+            let to
+            const toStock = this.props.stocks.find((stock) => stock.id === arrow.to)
+            const toFlow = this.props.flows.find((flow) => flow.id === arrow.to)
+            const toParameter = this.props.parameters.find((parameter) => parameter.name === arrow.to)
+            if(toStock){
+                to = getStockCorner(toStock)
+            } else if(toFlow){
+                to = getFlowCenter(toFlow)
+            } else {
+                to = getParameterPos(toParameter)
+            }
+
             return <Arrow 
                 key={arrow.from+arrow.to}
                 markerId = {markerId}
-                from={{
-                    x: fromStock.posX+50,
-                    y: fromStock.posY,
-                }}
-                to={{
-                    x: (flowTextPos.from.x + flowTextPos.to.x)/2,
-                    y: (flowTextPos.from.y + flowTextPos.to.y)/2,
-                }}            
+                from={from}
+                to={to}
             />
         })
 

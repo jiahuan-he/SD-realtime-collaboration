@@ -40,6 +40,8 @@ export default class Toolbar extends React.Component {
                 <AddArrowForm
                     stocks={this.props.stocks}
                     flows={this.props.flows}
+                    parameters={this.props.parameters}
+                    arrows={this.props.arrows}
                     addDependenciesToStockOrFlow={this.props.addDependenciesToStockOrFlow}
                     addArrow={this.props.addArrow}
                 ></AddArrowForm>

@@ -62,27 +62,5 @@ export default class Parameter extends React.Component {
             id={id} 
             style={moveableText}
             >{id}</text>)
-        // return (
-        //     <g 
-        //         x={x} 
-        //         y={y} 
-        //         id={id} 
-        //         style={moveable}
-        //     >
-        //         <foreignObject 
-        //             x={x} 
-        //             y={y} 
-        //             width="40" 
-        //             height="20" 
-        //         >
-        //         <text 
-        //             x={x} 
-        //             y={y} 
-        //             id={id} 
-        //             style={moveable}
-        //             style={style}>{id}</text>
-        //         </foreignObject>    
-        //     </g>       
-        // );
     }
 }
