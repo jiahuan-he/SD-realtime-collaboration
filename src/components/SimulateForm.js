@@ -114,6 +114,7 @@ export default class SimulateForm extends React.Component {
                         const data = simulate(
                             this.props.stocks,
                             this.props.flows,
+                            this.props.parameters,
                             +this.state.timeFrom,
                             +this.state.timeTo,
                             +this.state.timeStep,
