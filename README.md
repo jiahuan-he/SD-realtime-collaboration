@@ -19,9 +19,9 @@
 
 ### 1. Motivation
   1. The Current Software doesn’t support real-time collaboration (ex. Vensim)
-  2. The goal is to create a web-based tool that supports 
-    1. real-time collaboration: multiple clients can view/edit the same silumation in realtime.
-    2. simulation: the system can run and visualize a System Dynamics simulation comprised of stocks, flows, and parameters.
+  2. The goal is to create a web-based tool that supports
+      1. real-time collaboration: multiple clients can view/edit the same silumation in realtime.
+      2. simulation: the system can run and visualize a System Dynamics simulation comprised of stocks, flows, and parameters.
 
 
 ### 2. Setup 
