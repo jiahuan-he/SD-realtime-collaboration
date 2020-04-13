@@ -106,6 +106,63 @@ Run `npm start` will start the web app at port `http://localhost:3000/`
   })
   ```
 #### 4.3. Computing simulation data
+The simulation data is calculated at the client and pushed to the firebase realtime database instance, then the client(s)
+subscribing to the instance rerenders the view to generate the chart.   
+Consider the example that a model is constructed as such:
+```
+tank1 ===flow1===> tank2
+```
+And the values are
+```
+        initValue equation
+tank1:  100       -flow1
+tank2:  0         flow1
+flow1:            0.1*tank1   
+```
+The simulation is configured as 
+```
+fromTime: 0, toTime: 5, timeStep:1
+```
+A JavaScript object that looks like this is used to keep track of the values of the stocks and flows at every time step:
+```
+{
+   "tank1":[],
+   "tank2":[],
+   "flow1":[]
+}
+```
+The following procedure is iterated until the length of the arrays hits `toTime`:
+Replacing the stock/flow names in their equations with their previous values, then evaluate the values using `math.js`
+and push the new values onto the arrays.
+(Note: for the flows, `new value = evaluated expressoin`;  
+whereas for the stocks, `new value = old value + evaluated expression`)  
+Then step 1 `(t=0)`:
+```
+{
+   "tank1":[100],
+   "tank2":[0],
+   "flow1":[10]
+}
+```
+step 2 `(t=1)`:
+```
+{
+   "tank1":[100, 90],
+   "tank2":[0,   10],
+   "flow1":[10,  9]
+}
+```
+...
+...
+
+Final step `(t=5)`:
+```
+{
+   "tank1":[100, 90, 81,  72.9, 65.61, 59.049],
+   "tank2":[0,   10, 19,  27.1, 34.39, 40.951],
+   "flow1":[10,  9,  8.1, 7.29, 6.561, 5.9049]
+}
+```
 #### 4.4. Areas of improvements
 
 ### 5. Testing
