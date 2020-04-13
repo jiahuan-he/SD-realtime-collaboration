@@ -13,7 +13,7 @@ const boardStyle = {
 };
 const svgWrapper = {
     overflow: "scroll",
-    height: 600,
+    height: 500,
     width: 600,
 }
 

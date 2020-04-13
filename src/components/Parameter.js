@@ -61,6 +61,6 @@ export default class Parameter extends React.Component {
             y={y} 
             id={id} 
             style={moveableText}
-            >{id}</text>)
+        >{id}: {this.props.parameter.value}</text>)
     }
 }

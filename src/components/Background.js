@@ -210,7 +210,7 @@ export default class Background extends React.Component {
                     <div>
                         <StockList stocks={this.state.stocks}></StockList>
                         <FlowList flows={this.state.flows}></FlowList>
-                        <ArrowList arrows={this.state.arrows}></ArrowList>
+                        {/* <ArrowList arrows={this.state.arrows}></ArrowList> */}
                         {this.state.simulationData.length>0
                         &&<Chart simulationData={this.state.simulationData} XAxisDataKey={XAxisDataKey}></Chart>}
                         
