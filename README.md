@@ -8,12 +8,12 @@
 
 
 ### 2. Setup 
-#### 1. environment
+#### 2.1. environment
 1. `node.js`>=`v10.16.3`
 2. `npm`>=`6.9.0`
 
 
-#### 2. npm packages
+#### 2.2. npm packages
 run `npm install` to install the packages
 - [firebase](https://www.npmjs.com/package/firebase)  
 - [mathjs](https://www.npmjs.com/package/mathjs)  
@@ -23,10 +23,10 @@ run `npm install` to install the packages
 - [react-scripts](https://www.npmjs.com/package/react-scripts)  
 - [recharts](https://www.npmjs.com/package/recharts)  
 
-#### 3. firebase 
-This project depends on firebase. A `config.js` file needs to be filled and put under the path `./src/config.js`.
+#### 2.3. firebase 
+This project depends on firebase Real-time database. A `config.js` file needs to be filled and put under the path `./src/config.js`.
 The file needs to contain the following content
-```
+```javascript
 var firebaseConfig = {
   apiKey: "api-key",
   authDomain: "project-id.firebaseapp.com",
@@ -40,8 +40,52 @@ var firebaseConfig = {
 ```
 Read the [official instruction](https://firebase.google.com/docs/web/setup) for the complete guide on how to setup firebase
 
-#### 4. start
+#### 2.4. start
 Run `npm start` will start the web app at port `http://localhost:3000/`  
 
-### 3. Implementation
-#### 1. React Components
+### 3. How To Use 
+
+### 4. Implementation
+
+#### 4.1. React 
+##### 4.1.1. Components Description
+- Background: The root component
+  - Board: The diagramming area, which is a `svg` wrapper that contains the svg shapes
+    - Cloud
+    - Arrow
+    - Parameter
+    - Stock
+    - Flow
+    - FlowText
+  - Toobar: The container for all the forms that add/modify/run the simulation
+    - AddParameterForm
+    - AddStockForm
+    - AddFlowForm
+    - SimulateForm: to set up variables for the simulation and submit a simulation run
+    - AddEquationForm
+    - AddArrowForm
+    - EditStockForm
+  - Stocklist: auxiliary view to display stock information
+  - Flowlist: auxiliary view to display flow information
+  - Chart: chart to display simulation result
+##### 4.1.2. UML  
+<img src="assets/405-SD-colab-UML.jpg" alt="drawing" width="800"/>
+
+#### 4.2. Synchronization with `firebase`
+<img src="assets/405-SD-colab-firebase.png" alt="drawing" width="400"/>
+
+- Firebase Real-time database is an essential part of the implementation. Real-time database serves as the state that lives on the cloud, which takes part in react framework's uni-directional dataflow.  
+  
+- User interactions trigger actions to invoke the methods to modify the state
+  ```javascript
+  firebase.database().ref('state/stocks').set(stocks);
+  ```
+- The view's local state subscrib to the cloud state and gets updated whenever the cloud state changes  
+  (example: to a new stock)
+  ```javascript
+  const stateRef = firebase.database().ref('state');
+  stateRef.on('value', (state) => {
+    this.setState(state.val())
+  })
+  ```
+#### 4.3. Calculation for simulation
