@@ -1,13 +1,13 @@
 ## CMPT405 Project - A Web-based System Dynamics Realtime Collaboration Tool
 
 #### Table of Contents
-1. [Motivation](#1-motivation)
-2. [Setup](#2-setup)
-    2.1. [Environment](#21-environment)
-    2.2. [npm packages](#22-npm-packages)
+1. [Motivation](#1-motivation)  
+2. [Setup](#2-setup)  
+    2.1. [Environment](#21-environment)  
+    2.2. [npm packages](#22-npm-packages)  
     2.3. [firebase](#23-firebase)  
-    2.4. [start](#24-start)
-3. [How To Use](#3-how-to-use)
+    2.4. [start](#24-start)  
+3. [How To Use](#3-how-to-use)  
 4. [Implementation](#4-implementation)  
     4.1. [React](#41-react)  
        &nbsp;&nbsp;4.1.1. [Components Description](#411-components-description)  
