@@ -16,6 +16,8 @@
     4.3. [Computing simulation data](#43-computing-simulation-data)  
 5. [Testing](#5-testing)  
 6. [Areas of Improvements](#6-areas-of-improvements)  
+    6.1. [TypeScript](#61-typescript)  
+    6.2. [GUI](#61-gui)  
 
 ### 1. Motivation
   1. The Current Software doesn’t support real-time collaboration (ex. Vensim)
@@ -165,3 +167,10 @@ Final step `(t=5)`:
 ```
 ### 5. Testing
 ### 6. Areas of improvements
+#### 6.1. TypeScript
+- TypeScript's static type checking feature, along with proper IDE setup and development configureation, would make
+the development faster by reducing debugging time caused by small errors
+- TypeScript would also improve the system's code maintainability and refactorability
+#### 6.2. GUI 
+- More clicking, less typing: The system would be easier to use if some interactions with the system could be done
+by clicking instead of typing. Eg. selecting stocks/flows to edit the initial value and add equation
