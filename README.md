@@ -14,8 +14,8 @@
        &nbsp;&nbsp;4.1.2. [UML](#412-uml)  
     4.2. [Synchronization with `firebase`](#42-synchronization-with-firebase)  
     4.3. [Computing simulation data](#43-computing-simulation-data)  
-    4.4. [Areas of Improvements](#44-areas-of-improvements)  
 5. [Testing](#5-testing)  
+6. [Areas of Improvements](#6-areas-of-improvements)  
 
 ### 1. Motivation
   1. The Current Software doesn’t support real-time collaboration (ex. Vensim)
@@ -163,6 +163,5 @@ Final step `(t=5)`:
    "flow1":[10,  9,  8.1, 7.29, 6.561, 5.9049]
 }
 ```
-#### 4.4. Areas of improvements
-
 ### 5. Testing
+### 6. Areas of improvements
