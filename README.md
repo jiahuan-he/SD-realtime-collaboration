@@ -7,7 +7,7 @@
     2.2. [npm packages](#22-npm-packages)  
     2.3. [firebase](#23-firebase)  
     2.4. [start](#24-start)  
-3. [How to interact with the system](#3-how-to-interact-with-the-system)  
+3. [User Manual](#3-user-manual)  
 4. [Implementation](#4-implementation)  
     4.1. [React](#41-react)  
        &nbsp;&nbsp;4.1.1. [Components Description](#411-components-description)  
@@ -60,7 +60,7 @@ Read the [official instruction](https://firebase.google.com/docs/web/setup) for 
 #### 2.4. start
 Run `npm start` will start the web app at port `http://localhost:3000/`  
 
-### 3. How to interact with the system
+### 3. User Manual
 
 ### 4. Implementation
 
