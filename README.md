@@ -1,5 +1,13 @@
 ## CMPT405 Project - A Web-based System Dynamics Realtime Collaboration Tool
 
+#### Table of Contents
+1. [Motivation](#1-motivation)  
+2. [Setup](#2-setup)  
+  2.1. [Environment](#21-environment)  
+  2.2. [npm packages](#22-npm-packages)  
+  2.3. [firebase](#23-firebase)  
+
+
 ### 1. Motivation
   1. The Current Software doesn’t support real-time collaboration (ex. Vensim)
   2. The goal is to create a web-based tool that supports 
@@ -89,3 +97,6 @@ Run `npm start` will start the web app at port `http://localhost:3000/`
   })
   ```
 #### 4.3. Calculation for simulation
+#### 4.4. Area of Improvements
+
+### 5. Testing
