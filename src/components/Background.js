@@ -5,6 +5,7 @@ import Toolbar from './Toolbar'
 import FlowList from './FlowList'
 import StockList from './StockList'
 import Chart from './Chart'
+import { Redirect } from 'react-router-dom'
 
 export default class Background extends React.Component {
 
@@ -177,7 +178,10 @@ export default class Background extends React.Component {
 
     constructor(props) {
         super(props)
-        this._FB_PATH = `simulations/${this.props.location.state.simulationID}/`
+        if(this.props.location.state){
+            this._FB_PATH = `simulations/${this.props.location.state.simulationID}/`
+        } 
+        
         this.state = {
             stocks: [],
             flows: [],
@@ -190,10 +194,14 @@ export default class Background extends React.Component {
     }
 
     render() {
+        if(!this._FB_PATH){
+            return <Redirect to={{pathname: '/'}}/>
+        }
         const wrapperStyle = {display: "flex"}
         const XAxisDataKey = "__STEP__"
         return (
             <div>
+                <b>Simulation: {this.props.location.state.simulationID}</b>
                 <div style = {wrapperStyle}> 
                     <Board 
                         stocks={this.state.stocks}
