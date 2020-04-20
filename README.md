@@ -36,7 +36,6 @@
 run `npm install` to install the packages
 - [firebase](https://www.npmjs.com/package/firebase)  
 - [mathjs](https://www.npmjs.com/package/mathjs)  
-- [mathjs-simple-integral](https://www.npmjs.com/package/mathjs-simple-integral)  
 - [react](https://www.npmjs.com/package/react)  
 - [react-dom](https://www.npmjs.com/package/react-dom)  
 - [react-scripts](https://www.npmjs.com/package/react-scripts)  
@@ -93,13 +92,13 @@ Run `npm start` will start the web app at port `http://localhost:3000/`
 #### 4.2. Synchronization with `firebase`
 <img src="assets/405-SD-colab-firebase.png" alt="drawing" width="400"/>
 
-- Firebase Real-time database is an essential part of the implementation. Real-time database serves as the state that lives on the cloud, which takes part in react framework's uni-directional dataflow.  
+- Firebase Real-time database is an essential part of the implementation. Real-time database serves as the `state` that lives on the cloud, which takes part in `react` framework's uni-directional dataflow.  
   
-- User interactions trigger actions to invoke the methods to modify the state
+- User interactions trigger actions to invoke the methods to modify the `state`
   ```javascript
   firebase.database().ref('state/stocks').set(stocks);
   ```
-- The view's local state subscrib to the cloud state and gets updated whenever the cloud state changes  
+- The view's local `state` subscrib to the cloud `state` and gets updated whenever the cloud `state` changes  
   (example: to a new stock)
   ```javascript
   const stateRef = firebase.database().ref('state');
@@ -136,7 +135,7 @@ A JavaScript object that looks like this is used to keep track of the values of 
 The following procedure is iterated until the length of the arrays hits `toTime`:
 Replacing the stock/flow names in their equations with their previous values, then evaluate the values using `math.js`
 and push the new values onto the arrays.
-(Note: for the flows, `new value = evaluated expressoin`;  
+(Note: for the flows, `new value = evaluated expression`;  
 whereas for the stocks, `new value = old value + evaluated expression`)  
 Then step 1 `(t=0)`:
 ```

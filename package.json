@@ -5,7 +5,6 @@
   "dependencies": {
     "firebase": "^7.2.2",
     "mathjs": "^6.2.5",
-    "mathjs-simple-integral": "^0.1.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-scripts": "^3.4.0",
