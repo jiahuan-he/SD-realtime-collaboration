@@ -4,16 +4,15 @@ import Board from './Board'
 import Toolbar from './Toolbar'
 import FlowList from './FlowList'
 import StockList from './StockList'
-import ArrowList from './ArrowList'
 import Chart from './Chart'
 
 export default class Background extends React.Component {
 
-    componentDidMount() {
-        const stateRef = firebase.database().ref('state');
-
-        stateRef.on('value', (state) => {
-            this.setState(state.val())
+    componentDidMount() {        
+        firebase.database().ref(this._FB_PATH+'state').on('value', (state) => {
+            if(state.val()) {
+                this.setState(state.val())
+            }
         })
     }
 
@@ -34,7 +33,7 @@ export default class Background extends React.Component {
         const targetStock = stocks.find( stock => stock.id === stockID)
         targetStock.posX = x
         targetStock.posY = y
-        firebase.database().ref('state/stocks').set(stocks);
+        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
     }
 
     updateParameterPosition = (parameterName, x, y) => {
@@ -42,7 +41,7 @@ export default class Background extends React.Component {
         const targetParameter = parameters.find( parameters => parameters.name === parameterName)
         targetParameter.posX = x
         targetParameter.posY = y
-        firebase.database().ref('state/parameters').set(parameters);
+        firebase.database().ref(this._FB_PATH+'state/parameters').set(parameters);
     }
 
     updateCloudPosition = (cloudByFlow, x, y) => {
@@ -56,15 +55,15 @@ export default class Background extends React.Component {
         }
         targetCloud.posX = x
         targetCloud.posY = y
-        firebase.database().ref('state/cloudsOrigin').set(cloudsOrigin);
-        firebase.database().ref('state/cloudsDestination').set(cloudsDestination);
+        firebase.database().ref(this._FB_PATH+'state/cloudsOrigin').set(cloudsOrigin);
+        firebase.database().ref(this._FB_PATH+'state/cloudsDestination').set(cloudsDestination);
     }
 
     updateStockValue = (stockID, value) => {
         const stocks = Object.assign([], this.state.stocks)
         const targetStock = stocks.find( stock => stock.id === stockID)
         targetStock.initValue = +value
-        firebase.database().ref('state/stocks').set(stocks)
+        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks)
     }
 
     addStock= (stockName, value) => {
@@ -79,7 +78,7 @@ export default class Background extends React.Component {
             "equation": "",
         }
         stocks.push(newStock)
-        firebase.database().ref('state/stocks').set(stocks);
+        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
     }
 
     addParameter= (parameterName, value) => {
@@ -92,7 +91,7 @@ export default class Background extends React.Component {
         }
         console.log("add parameter")
         parameters.push(newParameter)
-        firebase.database().ref('state/parameters').set(parameters);
+        firebase.database().ref(this._FB_PATH+'state/parameters').set(parameters);
     }
 
     addCloud= (flowID, from, to) => {
@@ -100,7 +99,7 @@ export default class Background extends React.Component {
         const isOrigin = from ? false:true
         let clouds = isOrigin ? this.state.cloudsOrigin:this.state.cloudsDestination        
         clouds = Object.assign([], clouds)
-        const ref = isOrigin?'state/cloudsOrigin':'state/cloudsDestination'
+        const ref = isOrigin?this._FB_PATH+'state/cloudsOrigin':this._FB_PATH+'state/cloudsDestination'
         const newCloud = {
             "flow":flowID,
             "posX": 0,
@@ -118,12 +117,12 @@ export default class Background extends React.Component {
         if(targetStock) {
             if(!targetStock.dependencies) targetStock.dependencies = []
             targetStock.dependencies.push(dependency)
-            firebase.database().ref('state/stocks').set(stocks);
+            firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
         }
         else if(targetFlow) {
             if(!targetFlow.dependencies) targetFlow.dependencies = []
             targetFlow.dependencies.push(dependency)
-            firebase.database().ref('state/flows').set(flows);
+            firebase.database().ref(this._FB_PATH+'state/flows').set(flows);
         }        
     }
 
@@ -143,8 +142,8 @@ export default class Background extends React.Component {
         if(to) stocks.find( stock => stock.id === to).equation += `+${flowID}`
 
         flows.push(newFlow)
-        firebase.database().ref('state/flows').set(flows);
-        firebase.database().ref('state/stocks').set(stocks);
+        firebase.database().ref(this._FB_PATH+'state/flows').set(flows);
+        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
     }
 
     addArrow = (from, to) => {
@@ -154,7 +153,7 @@ export default class Background extends React.Component {
             "to":to,
         }
         arrows.push(newArrow)
-        firebase.database().ref('state/arrows').set(arrows)
+        firebase.database().ref(this._FB_PATH+'state/arrows').set(arrows)
     }
     
     addEquation = (equation, id) => {
@@ -164,20 +163,21 @@ export default class Background extends React.Component {
         const targetFlow = flows.find( flow => flow.id === id)
         if(targetStock) {
             targetStock.equation = equation
-            firebase.database().ref('state/stocks').set(stocks);
+            firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
         }
         else if(targetFlow) {
             targetFlow.equation = equation
-            firebase.database().ref('state/flows').set(flows);
+            firebase.database().ref(this._FB_PATH+'state/flows').set(flows);
         } 
     }
 
     addSimulationData = (data) => {
-        firebase.database().ref('state/simulationData').set(data);
+        firebase.database().ref(this._FB_PATH+'state/simulationData').set(data);
     }
 
     constructor(props) {
         super(props)
+        this._FB_PATH = `simulations/${this.props.location.state.simulationID}/`
         this.state = {
             stocks: [],
             flows: [],

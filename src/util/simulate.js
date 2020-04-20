@@ -6,7 +6,7 @@ export default (stocks, flows, parameters, timeFrom, timeTo, timeStep, stocksToS
     console.log(stocksToSimulate)
 
     const equationToExpression = (equation) => {        
-        const arr = equation.replace(/ /g,'').split(/([\+\-\*\/^])/g)
+        const arr = equation.replace(/ /g,'').split(/([+\-*/^])/g)
         for(let i=0; i<arr.length; i++){            
             if(/^[a-z0-9]+$/i.test(arr[i]) && isNaN(arr[i])){
                 const foundParamter = parameters.find( (parameter) => parameter.name === arr[i])                
@@ -57,4 +57,3 @@ export default (stocks, flows, parameters, timeFrom, timeTo, timeStep, stocksToS
     }
     return dataPoints
 }
-// console.log(simulate(stocks, flows, 0, 10, 1, ["tank1", "tank2"]))
