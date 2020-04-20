@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom';
 import Background from './components/Background'
 import Signin from './components/Signin'
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route,
-    Link
 } from "react-router-dom";
 
 ReactDOM.render(
