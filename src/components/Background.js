@@ -201,7 +201,7 @@ export default class Background extends React.Component {
         const XAxisDataKey = "__STEP__"
         return (
             <div>
-                <b>Simulation: {this.props.location.state.simulationID}</b>
+                <b>Simulation ID: {this.props.location.state.simulationID}</b>
                 <div style = {wrapperStyle}> 
                     <Board 
                         stocks={this.state.stocks}

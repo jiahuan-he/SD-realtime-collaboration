@@ -46,7 +46,7 @@ export default class Background extends React.Component {
             <label>SimulationID
                 <input type="text" value={this.state.value} onChange={this.handleChange} />
             </label>
-            <input type="button" value="Creat/Join Simulation" style={button} onClick={this.handleSubmit} />
+            <input type="button" value="Create/Join Simulation" style={button} onClick={this.handleSubmit} />
         </form>)
         const redirect = <Redirect to={{
             pathname: '/simulation',
