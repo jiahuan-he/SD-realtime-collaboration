@@ -101,8 +101,7 @@ Run `npm start` will start the web app at port `http://localhost:3000/`
 #### 4.2. Synchronization with `firebase`
 <img src="assets/405-SD-colab-firebase.png" alt="drawing" width="400"/>
 
-- Firebase Real-time database is an essential part of the implementation. Real-time database serves as the `state` that lives on the cloud, which takes part in `react` framework's uni-directional dataflow.  
-  
+- Firebase Realtime Database is an essential part of the implementation, which maintains the `state` on the cloud
 - User interactions trigger actions to invoke the methods to modify the `state`
   ```javascript
   firebase.database().ref('state/stocks').set(stocks);
@@ -116,8 +115,7 @@ Run `npm start` will start the web app at port `http://localhost:3000/`
   })
   ```
 #### 4.3. Computing simulation data
-The simulation data is calculated at the client and pushed to the firebase realtime database instance, then the client(s)
-subscribing to the instance rerenders the view to generate the chart.   
+The simulation data is calculated at the client with the help from [mathjs](https://www.npmjs.com/package/mathjs) and pushed to the firebase realtime database instance, then the client(s) subscribing to the instance rerenders the view to generate the chart using [recharts](https://www.npmjs.com/package/recharts).   
 Consider the example that a model is constructed as such:
 ```
 tank1 ===flow1===> tank2
