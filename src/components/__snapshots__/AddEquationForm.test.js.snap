@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditStockForm should render correctly in "debug" mode 1`] = `
+exports[`AddEquationForm should render correctly in "debug" mode 1`] = `
 <form>
   <label>
-    Stock Name
+    Name
     <input
       onChange={[Function]}
       style={
@@ -16,12 +16,16 @@ exports[`EditStockForm should render correctly in "debug" mode 1`] = `
     />
   </label>
   <label>
-    Init Value
+    Equation
     <input
       onChange={[Function]}
-      style={null}
+      style={
+        Object {
+          "border": "2px solid #ed6663",
+        }
+      }
       type="text"
-      value={0}
+      value=""
     />
   </label>
   <input
@@ -36,7 +40,7 @@ exports[`EditStockForm should render correctly in "debug" mode 1`] = `
       }
     }
     type="button"
-    value="Edit Stock InitValue"
+    value="Add Equation"
   />
 </form>
 `;
