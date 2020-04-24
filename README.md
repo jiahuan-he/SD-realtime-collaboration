@@ -17,7 +17,10 @@
 5. [Testing](#5-testing)  
 6. [Areas of Improvements](#6-areas-of-improvements)  
     6.1. [TypeScript](#61-typescript)  
-    6.2. [GUI](#61-gui)  
+    6.2. [GUI](#62-gui)  
+    6.3. [Authentication](#63-authentication)  
+    6.4. [More Features](#64-more-features)  
+    6.5. [More Testing](#65-more-testing)  
 
 ### 1. Motivation
   1. A lot of System Dynamics modeling projects are often undertaken in large teams, so inter-team communication and collaboration are crucial.   
