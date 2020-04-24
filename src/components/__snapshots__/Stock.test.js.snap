@@ -1,14 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Element should render correctly in "debug" mode 1`] = `
+exports[`Stock should render correctly in "debug" mode 1`] = `
 <svg>
-  <Element
+  <Stock
     debug={true}
-    key="stock0"
-    stockID="stock0"
-    stockValue={0}
-    x={50}
-    y={50}
+    stock={
+      Object {
+        "id": "stock0",
+        "initValue": 0,
+        "posX": 50,
+        "posY": 50,
+      }
+    }
   >
     <g
       id="stock0"
@@ -45,6 +48,6 @@ exports[`Element should render correctly in "debug" mode 1`] = `
         </div>
       </foreignObject>
     </g>
-  </Element>
+  </Stock>
 </svg>
 `;

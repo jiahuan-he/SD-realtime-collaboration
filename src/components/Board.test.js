@@ -3,27 +3,49 @@ import { shallow } from 'enzyme';
 import Board from './Board';
 describe('Board', () => {
     it('should render correctly in "debug" mode', () => {
+
         const props = {
-            "stockIDs": ["stock1", "stock2"],
-            "stockPos": {
-                "stock1": {
-                    "x": 157,
-                    "y": 188
-                },
-                "stock2": {
-                    "x": 316,
-                    "y": 90
-                }
-            },
-            "stockValues": {
-                "stock1": 0,
-                "stock2": 0,
-            }
+            "arrows": [{
+                "from": "a",
+                "to": "f"
+            }],
+            "flows": [{
+                "dependencies": ["a"],
+                "equation": "-1",
+                "from": "a",
+                "id": "f",
+                "to": "b"
+            }],
+            "stocks": [{
+                "dependencies": ["a", "f"],
+                "equation": "-f",
+                "id": "a",
+                "initValue": 100,
+                "posX": 57,
+                "posY": 242,
+                "value": 0
+            }, {
+                "dependencies": ["b", "f"],
+                "equation": "+f",
+                "id": "b",
+                "initValue": 0,
+                "posX": 288,
+                "posY": 245,
+                "value": 0
+            }],
+            "cloudsOrigin":[],
+            "cloudsDestination":[],
+            "parameters":[],
+            "stockBeingEdited":null
         }
         const board = shallow(<Board
-            stockIDs={props.stockIDs}
-            stockPos={props.stockPos}
-            stockValues={props.stockValues}
+            stocks={props.stocks}
+            flows={props.flows}
+            arrows={props.arrows}
+            parameters={props.parameters}
+            cloudsOrigin={props.cloudsOrigin}
+            cloudsDestination={props.cloudsDestination}
+            stockBeingEdited={props.stockBeingEdited}
             debug
         ></Board>);
         expect(board).toMatchSnapshot();

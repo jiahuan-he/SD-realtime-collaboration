@@ -4,23 +4,18 @@ import EditStockForm from './EditStockForm';
 describe('EditStockForm', () => {
     it('should render correctly in "debug" mode', () => {
         const props = {
-            "stockIDs": ["stock1", "stock2"],
-        };
+            "stocks": [{
+                "dependencies": ["tank1", "flow"],
+                "equation": "-flow",
+                "id": "tank1",
+                "initValue": 100,
+                "posX": 55,
+                "posY": 217,
+                "value": 100
+            }]
+        }
         const form = shallow(<EditStockForm
-            stockIDs={props.stockIDs}
-            debug
-        ></EditStockForm>);
-        expect(form).toMatchSnapshot();
-    });
-});
-
-describe('EditStockForm', () => {
-    it('should render correctly in "debug" mode', () => {
-        const props = {
-            "stockIDs": [],
-        };
-        const form = shallow(<EditStockForm
-            stockIDs={props.stockIDs}
+            stocks={props.stocks}
             debug
         ></EditStockForm>);
         expect(form).toMatchSnapshot();
