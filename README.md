@@ -172,6 +172,7 @@ Final step `(t=5)`:
 }
 ```
 ### 5. Testing
+Currently, snapshot testing using `enzyme` covers most of the react components to ensure them render correctly. 
 ### 6. Areas of improvements
 #### 6.1. TypeScript
 - TypeScript's static type checking feature, along with proper IDE setup and development configureation, would make
@@ -180,3 +181,13 @@ the development faster by reducing debugging time caused by small errors
 #### 6.2. GUI 
 - More clicking, less typing: The system would be easier to use if some interactions with the system could be done
 by clicking instead of typing. Eg. selecting stocks/flows to edit the initial value and add equation
+- Aesthetics, customizable appearance etc. 
+
+#### 6.3. Authentication
+- More security measures should be implemented. Currently, users are able to "signin" using a shared "Simulation ID". However, it is not the most reliable measure.
+#### 6.4. More Features
+- Simulation roll back to previous state
+- In-app chat 
+- Save simulation data
+#### 6.5. More Testing
+- Unit testing, more snapshot testing covering all react components, etc.
