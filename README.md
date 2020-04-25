@@ -74,6 +74,23 @@ Read the [official instruction](https://firebase.google.com/docs/web/setup) for 
 Run `npm start` will start the web app at port `http://localhost:3000/`  
 
 ### 3. User Manual
+#### 3.1. create/join a modelling workplace
+<img src="/gifs/0-enter-simulation-id.gif" width="500">
+
+#### 3.2. create the stocks
+<img src="/gifs/1-create-stocks.gif" width="500">
+
+#### 3.3. add the flow and parameter
+<img src="/gifs/2-flow-parameter.gif" width="500">
+
+#### 3.4. add the arrow and specify the equation
+<img src="/gifs/3-arrow-and-equation.gif" width="500">
+
+#### 3.5. set up simulation parameters and run the simulation
+<img src="/gifs/4-simulation.gif" width="500">
+
+#### 3.6. change the simulation parameters and rerun
+<img src="/gifs/5-rerun-simulation.gif" width="500">
 
 ### 4. Implementation
 
