@@ -55,9 +55,9 @@ An charting library for visualizing System Dynamics simulation.
 
 #### 2.3. firebase 
 This project depends on firebase Real-time database. A `config.js` file needs to be filled and put under the path `./src/config.js`.
-The file needs to contain the following content
+The file needs to contain the following content. Note: __`export` key word is necessary.__
 ```javascript
-var firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "api-key",
   authDomain: "project-id.firebaseapp.com",
   databaseURL: "https://project-id.firebaseio.com",
