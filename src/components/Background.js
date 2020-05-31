@@ -45,21 +45,6 @@ export default class Background extends React.Component {
         firebase.database().ref(this._FB_PATH+'state/parameters').set(parameters);
     }
 
-    updateCloudPosition = (cloudByFlow, x, y) => {
-        let targetCloud
-        const cloudsOrigin = Object.assign([], this.state.cloudsOrigin)
-        const cloudsDestination = Object.assign([], this.state.cloudsDestination)
-        if(cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)){
-            targetCloud = cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)
-        } else {
-            targetCloud = cloudsDestination.find(cloud => cloud.flow === cloudByFlow)
-        }
-        targetCloud.posX = x
-        targetCloud.posY = y
-        firebase.database().ref(this._FB_PATH+'state/cloudsOrigin').set(cloudsOrigin);
-        firebase.database().ref(this._FB_PATH+'state/cloudsDestination').set(cloudsDestination);
-    }
-
     updateStockValue = (stockID, value) => {
         const stocks = Object.assign([], this.state.stocks)
         const targetStock = stocks.find( stock => stock.id === stockID)
@@ -204,6 +189,7 @@ export default class Background extends React.Component {
                 <b>Simulation ID: {this.props.location.state.simulationID}</b>
                 <div style = {wrapperStyle}> 
                     <Board 
+                        _FB_PATH = {this._FB_PATH}
                         stocks={this.state.stocks}
                         flows={this.state.flows}
                         arrows={this.state.arrows}
