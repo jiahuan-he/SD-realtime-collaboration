@@ -22,18 +22,12 @@ const markerId = "arrow"
 
 const updateCloudPosition = (cloudByFlow, x, y, _FB_PATH) => {    
     firebase.database().ref(_FB_PATH+'state').once('value').then((state) => {
-        let targetCloud    
-        const cloudsOrigin = Object.assign([], state.val().cloudsOrigin)
-        const cloudsDestination = Object.assign([], state.val().cloudsDestination)
-        if(cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)){
-            targetCloud = cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)
-        } else {
-            targetCloud = cloudsDestination.find(cloud => cloud.flow === cloudByFlow)
-        }
+        let targetCloud
+        const clouds = Object.assign([], state.val().clouds)
+        targetCloud = clouds.find(cloud => cloud.flow === cloudByFlow)
         targetCloud.posX = x
         targetCloud.posY = y
-        firebase.database().ref(_FB_PATH+'state/cloudsOrigin').set(cloudsOrigin);
-        firebase.database().ref(_FB_PATH+'state/cloudsDestination').set(cloudsDestination)
+        firebase.database().ref(_FB_PATH+'state/clouds').set(clouds)
     })
 }
 
@@ -98,7 +92,7 @@ export default class Board extends React.Component {
             />
         })
 
-        const cloudsOrigin = this.props.cloudsOrigin.map( cloud => {
+        const clouds = this.props.clouds.map( cloud => {
             return <DraggableCloud
                 elementId={cloud.flow}
                 _FB_PATH={this.props._FB_PATH}
@@ -106,17 +100,8 @@ export default class Board extends React.Component {
                 flow={cloud.flow}
                 posX={cloud.posX}
                 posY={cloud.posY}
-                updateCloudPosition={this.props.updateCloudPosition}
-            />
-        })
-
-        const cloudsDestination = this.props.cloudsDestination.map( cloud => {
-            return <DraggableCloud
-                elementId={cloud.flow}
-                key={cloud.flow}
-                flow={cloud.flow}
-                posX={cloud.posX}
-                posY={cloud.posY}
+                from={cloud.from}
+                to={cloud.to}
                 updateCloudPosition={this.props.updateCloudPosition}
             />
         })
@@ -126,14 +111,14 @@ export default class Board extends React.Component {
                 let from
                 if(flow.from){
                     from = this.props.stocks.find((stock) => stock.id === flow.from)
-                } else {
-                    from = this.props.cloudsOrigin.find( cloud => cloud.flow === flow.id)
+                } else {                    
+                    from = this.props.clouds.find( cloud => cloud.flow === flow.id && cloud.flowTo) // if cloud.to exists, the flow originates FROM a cloud
                 }
-                let to                
+                let to
                 if(flow.to){
                     to = this.props.stocks.find((stock) => stock.id === flow.to)
                 } else {
-                    to = this.props.cloudsDestination.find( cloud => cloud.flow === flow.id)
+                    to = this.props.cloudsDestination.find( cloud => cloud.flow === flow.id && cloud.flowFrom) // if cloud.to exists, the flow goes TO a cloud
                 }
                 
                 return {
@@ -250,9 +235,8 @@ export default class Board extends React.Component {
                         </marker>
                     </defs>
                     {stocks}                                        
-                    {flowTexts}  
-                    {cloudsOrigin}
-                    {cloudsDestination}
+                    {flowTexts}
+                    {clouds}
                     {flows}
                     {arrows}
                     {parameters}
