@@ -11,49 +11,8 @@ const moveable = {
     cursor: 'move',
 }
 
-export default class Cloud extends React.Component {
-    componentDidMount() {
-        this.makeDraggable()
-    }
-
-    makeDraggable = () => {
-        const id = this.props.flow
-        let draggable = document.getElementById(id);
-        let offset
-
-        const mouseDown = (e) => {
-            draggable = document.getElementById(id);
-            offset = getMousePosition(e);
-            offset.x -= parseFloat(draggable.getAttributeNS(null, "x"));
-            offset.y -= parseFloat(draggable.getAttributeNS(null, "y"));
-            draggable.addEventListener('mousemove', mouseMove)
-        }
-
-        const mouseMove = (e) => {
-            if (!draggable) return
-            e.preventDefault();
-            const coord = getMousePosition(e);
-            this.props.updateCloudPosition(id, coord.x - offset.x, coord.y - offset.y)
-        }
-
-        const mouseUpOrLeave = (e) => {
-            draggable = null
-        }
-
-        // mouse position to svg position
-        const getMousePosition = (e) => {
-            const CTM = draggable.getScreenCTM();
-            return {
-                x: (e.clientX - CTM.e) / CTM.a,
-                y: (e.clientY - CTM.f) / CTM.d
-            };
-        }
-
-        draggable.addEventListener('mousedown', mouseDown)
-        draggable.addEventListener('mouseup', mouseUpOrLeave)
-        draggable.addEventListener('mouseleave', mouseUpOrLeave)
-    }
-
+export default class Cloud extends React.Component {                
+    
     render() {
         const x=this.props.posX
         const y=this.props.posY
