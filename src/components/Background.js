@@ -29,22 +29,6 @@ export default class Background extends React.Component {
         }
     }
 
-    updatePosition = (stockID, x, y) => {
-        const stocks = Object.assign([], this.state.stocks)
-        const targetStock = stocks.find( stock => stock.id === stockID)
-        targetStock.posX = x
-        targetStock.posY = y
-        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
-    }
-
-    updateParameterPosition = (parameterName, x, y) => {
-        const parameters = Object.assign([], this.state.parameters)
-        const targetParameter = parameters.find( parameters => parameters.name === parameterName)
-        targetParameter.posX = x
-        targetParameter.posY = y
-        firebase.database().ref(this._FB_PATH+'state/parameters').set(parameters);
-    }
-
     updateStockValue = (stockID, value) => {
         const stocks = Object.assign([], this.state.stocks)
         const targetStock = stocks.find( stock => stock.id === stockID)
@@ -70,12 +54,12 @@ export default class Background extends React.Component {
     addParameter= (parameterName, value) => {
         const parameters = Object.assign([], this.state.parameters)
         const newParameter = {
+            "id":parameterName,
             "name": parameterName,
             "value":+value,
             "posX": 0,
             "posY": 10, // offset the text a bit so the text doesn't come off the background
         }
-        console.log("add parameter")
         parameters.push(newParameter)
         firebase.database().ref(this._FB_PATH+'state/parameters').set(parameters);
     }
@@ -198,10 +182,7 @@ export default class Background extends React.Component {
                         arrows={this.state.arrows}
                         parameters={this.state.parameters}
                         clouds={this.state.clouds}
-                        stockBeingEdited={this.state.stockBeingEdited}
-                        updatePosition={this.updatePosition}    
-                        updateCloudPosition={this.updateCloudPosition}
-                        updateParameterPosition={this.updateParameterPosition}
+                        stockBeingEdited={this.state.stockBeingEdited}                                                  
                         ></Board>
                     <div>
                         <StockList stocks={this.state.stocks}></StockList>

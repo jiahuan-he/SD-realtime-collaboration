@@ -20,18 +20,18 @@ const svgWrapper = {
 
 const markerId = "arrow"
 
-const updateCloudPosition = (cloudByFlow, x, y, _FB_PATH) => {    
-    firebase.database().ref(_FB_PATH+'state').once('value').then((state) => {
-        let targetCloud
-        const clouds = Object.assign([], state.val().clouds)
-        targetCloud = clouds.find(cloud => cloud.flow === cloudByFlow)
-        targetCloud.posX = x
-        targetCloud.posY = y
-        firebase.database().ref(_FB_PATH+'state/clouds').set(clouds)
+const updatePosition = (elementId, x, y, FB_PATH, FB_PATH_SUFFIX) => {    
+    firebase.database().ref(`${FB_PATH}state`).once('value').then((state) => {
+        let targetElement        
+        const elements = Object.assign([], state.val()[FB_PATH_SUFFIX])
+        targetElement = elements.find(el => el.id === elementId)
+        targetElement.posX = x
+        targetElement.posY = y
+        firebase.database().ref(`${FB_PATH}state/${FB_PATH_SUFFIX}`).set(elements)
     })
 }
 
-const makeDraggable = (id, updatePositionHandler, _FB_PATH) => {    
+const makeDraggable = (id, updatePositionHandler, FB_PATH, FB_PATH_SUFFIX) => {
     let draggable = document.getElementById(id);
     let offset
 
@@ -47,7 +47,7 @@ const makeDraggable = (id, updatePositionHandler, _FB_PATH) => {
         if (!draggable) return
         e.preventDefault();
         const coord = getMousePosition(e);
-        updatePositionHandler(id, coord.x - offset.x, coord.y - offset.y, _FB_PATH)
+        updatePositionHandler(id, coord.x - offset.x, coord.y - offset.y, FB_PATH, FB_PATH_SUFFIX)
     }
 
     const mouseUpOrLeave = (e) => {
@@ -68,41 +68,43 @@ const makeDraggable = (id, updatePositionHandler, _FB_PATH) => {
     draggable.addEventListener('mouseleave', mouseUpOrLeave)
 }
 
-const DraggableComponent = (Component, updatePositionHandler) => 
+const DraggableComponent = (Component) => 
     class extends React.Component {
         componentDidMount() {
-            makeDraggable(this.props.elementId, updatePositionHandler, this.props._FB_PATH)
+            makeDraggable(this.props.elementId, this.props.updatePosition, this.props.FB_PATH, this.props.FB_PATH_SUFFIX)
         }
         render() {
             return <Component {...this.props}/>
         }
     }
 
-const DraggableCloud = DraggableComponent(Cloud, updateCloudPosition)
+const DraggableCloud = DraggableComponent(Cloud)
+const DraggableStock = DraggableComponent(Stock)
+const DraggableParameter = DraggableComponent(Parameter)
 
 export default class Board extends React.Component {    
     
     render() {
         const stocks = this.props.stocks.map(stock => {
-            return <Stock
+            return <DraggableStock
                 key={stock.id}
-                stock = {stock}
-                updatePosition={this.props.updatePosition}
+                {...stock}
                 highlight = {this.props.stockBeingEdited===stock.id?true:false}
+                elementId={stock.id}
+                FB_PATH={this.props._FB_PATH}
+                FB_PATH_SUFFIX={"stocks"}
+                updatePosition={updatePosition}
             />
         })
 
         const clouds = this.props.clouds.map( cloud => {
-            return <DraggableCloud
-                elementId={cloud.flow}
-                _FB_PATH={this.props._FB_PATH}
+            return <DraggableCloud                
                 key={cloud.flow}
-                flow={cloud.flow}
-                posX={cloud.posX}
-                posY={cloud.posY}
-                from={cloud.from}
-                to={cloud.to}
-                updateCloudPosition={this.props.updateCloudPosition}
+                {...cloud}
+                elementId={cloud.id}
+                FB_PATH={this.props._FB_PATH}
+                FB_PATH_SUFFIX={"clouds"}
+                updatePosition={updatePosition}
             />
         })
         
@@ -210,11 +212,13 @@ export default class Board extends React.Component {
         })
 
         const parameters = this.props.parameters.map( parameter => {
-            return <Parameter 
-                key={parameter.name}
-                parameter={parameter}
-                updateParameterPosition={this.props.updateParameterPosition}
-            ></Parameter>
+            return <DraggableParameter 
+                key={parameter.id}
+                {...parameter}
+                elementId={parameter.id}
+                FB_PATH={this.props._FB_PATH}
+                FB_PATH_SUFFIX={"parameters"}
+                updatePosition={updatePosition}/>
         })
 
         return (
