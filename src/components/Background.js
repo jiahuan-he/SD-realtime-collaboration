@@ -82,12 +82,14 @@ export default class Background extends React.Component {
 
     addCloud= (flowID, from, to) => {
         if(from && to && from.trim().length>0 && to.trim().length>0) return
-        const isOrigin = from ? false:true
-        let clouds = isOrigin ? this.state.cloudsOrigin:this.state.cloudsDestination        
+        if(!from && !to) return        
+        let clouds = this.state.clouds
         clouds = Object.assign([], clouds)
-        const ref = isOrigin?this._FB_PATH+'state/cloudsOrigin':this._FB_PATH+'state/cloudsDestination'
+        const ref = this._FB_PATH+'state/clouds'
         const newCloud = {
             "flow":flowID,
+            "flowFrom": from,
+            "flowTo":to,
             "posX": 0,
             "posY": 0,
         }
@@ -175,6 +177,7 @@ export default class Background extends React.Component {
             cloudsOrigin: [],
             cloudsDestination: [],
             parameters: [],
+            clouds:[],
         }
     }
 
@@ -194,8 +197,7 @@ export default class Background extends React.Component {
                         flows={this.state.flows}
                         arrows={this.state.arrows}
                         parameters={this.state.parameters}
-                        cloudsOrigin={this.state.cloudsOrigin}
-                        cloudsDestination={this.state.cloudsDestination}
+                        clouds={this.state.clouds}
                         stockBeingEdited={this.state.stockBeingEdited}
                         updatePosition={this.updatePosition}    
                         updateCloudPosition={this.updateCloudPosition}
