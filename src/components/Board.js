@@ -21,13 +21,13 @@ const svgWrapper = {
 const markerId = "arrow"
 
 const updatePosition = (elementId, x, y, FB_PATH, FB_PATH_SUFFIX) => {    
-    firebase.database().ref(`${FB_PATH}state`).once('value').then((state) => {
+    firebase.database().ref(`${FB_PATH}/state`).once('value').then((state) => {
         let targetElement        
         const elements = Object.assign([], state.val()[FB_PATH_SUFFIX])
         targetElement = elements.find(el => el.id === elementId)
         targetElement.posX = x
         targetElement.posY = y
-        firebase.database().ref(`${FB_PATH}state/${FB_PATH_SUFFIX}`).set(elements)
+        firebase.database().ref(`${FB_PATH}/state/${FB_PATH_SUFFIX}`).set(elements)
     })
 }
 
@@ -91,7 +91,7 @@ export default class Board extends React.Component {
                 {...stock}
                 highlight = {this.props.stockBeingEdited===stock.id?true:false}
                 elementId={stock.id}
-                FB_PATH={this.props._FB_PATH}
+                FB_PATH={this.props.FB_PATH}
                 FB_PATH_SUFFIX={"stocks"}
                 updatePosition={updatePosition}
             />
@@ -102,7 +102,7 @@ export default class Board extends React.Component {
                 key={cloud.flow}
                 {...cloud}
                 elementId={cloud.id}
-                FB_PATH={this.props._FB_PATH}
+                FB_PATH={this.props.FB_PATH}
                 FB_PATH_SUFFIX={"clouds"}
                 updatePosition={updatePosition}
             />
@@ -216,7 +216,7 @@ export default class Board extends React.Component {
                 key={parameter.id}
                 {...parameter}
                 elementId={parameter.id}
-                FB_PATH={this.props._FB_PATH}
+                FB_PATH={this.props.FB_PATH}
                 FB_PATH_SUFFIX={"parameters"}
                 updatePosition={updatePosition}/>
         })
