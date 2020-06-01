@@ -53,10 +53,6 @@ export default class Background extends React.Component {
             state: { simulationID: this.state.simulationID}            
         }}        
         />
-        
         return this.state.path ? redirect : form
-
-
-
     }
 }

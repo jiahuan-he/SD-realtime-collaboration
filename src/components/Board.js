@@ -5,6 +5,7 @@ import FlowText from './FlowText'
 import Cloud from './Cloud'
 import Arrow from './Arrow'
 import Parameter from './Parameter'
+import firebase from '../firebase'
 
 const boardStyle = {
     height: 1000,
@@ -19,35 +20,91 @@ const svgWrapper = {
 
 const markerId = "arrow"
 
+const updatePosition = (elementId, x, y, FB_PATH, FB_PATH_SUFFIX) => {    
+    firebase.database().ref(`${FB_PATH}/state`).once('value').then((state) => {
+        let targetElement        
+        const elements = Object.assign([], state.val()[FB_PATH_SUFFIX])
+        targetElement = elements.find(el => el.id === elementId)
+        targetElement.posX = x
+        targetElement.posY = y
+        firebase.database().ref(`${FB_PATH}/state/${FB_PATH_SUFFIX}`).set(elements)
+    })
+}
+
+const makeDraggable = (id, updatePositionHandler, FB_PATH, FB_PATH_SUFFIX) => {
+    let draggable = document.getElementById(id);
+    let offset
+
+    const mouseDown = (e) => {
+        draggable = document.getElementById(id);
+        offset = getMousePosition(e);
+        offset.x -= parseFloat(draggable.getAttributeNS(null, "x"));
+        offset.y -= parseFloat(draggable.getAttributeNS(null, "y"));
+        draggable.addEventListener('mousemove', mouseMove)
+    }
+
+    const mouseMove = (e) => {
+        if (!draggable) return
+        e.preventDefault();
+        const coord = getMousePosition(e);
+        updatePositionHandler(id, coord.x - offset.x, coord.y - offset.y, FB_PATH, FB_PATH_SUFFIX)
+    }
+
+    const mouseUpOrLeave = (e) => {
+        draggable = null
+    }
+
+    // mouse position to svg position
+    const getMousePosition = (e) => {
+        const CTM = draggable.getScreenCTM();
+        return {
+            x: (e.clientX - CTM.e) / CTM.a,
+            y: (e.clientY - CTM.f) / CTM.d
+        };
+    }
+
+    draggable.addEventListener('mousedown', mouseDown)
+    draggable.addEventListener('mouseup', mouseUpOrLeave)
+    draggable.addEventListener('mouseleave', mouseUpOrLeave)
+}
+
+const DraggableComponent = (Component) => 
+    class extends React.Component {
+        componentDidMount() {
+            makeDraggable(this.props.elementId, this.props.updatePosition, this.props.FB_PATH, this.props.FB_PATH_SUFFIX)
+        }
+        render() {
+            return <Component {...this.props}/>
+        }
+    }
+
+const DraggableCloud = DraggableComponent(Cloud)
+const DraggableStock = DraggableComponent(Stock)
+const DraggableParameter = DraggableComponent(Parameter)
+
 export default class Board extends React.Component {    
     
     render() {
         const stocks = this.props.stocks.map(stock => {
-            return <Stock
+            return <DraggableStock
                 key={stock.id}
-                stock = {stock}
-                updatePosition={this.props.updatePosition}
+                {...stock}
                 highlight = {this.props.stockBeingEdited===stock.id?true:false}
+                elementId={stock.id}
+                FB_PATH={this.props.FB_PATH}
+                FB_PATH_SUFFIX={"stocks"}
+                updatePosition={updatePosition}
             />
         })
 
-        const cloudsOrigin = this.props.cloudsOrigin.map( cloud => {
-            return <Cloud
+        const clouds = this.props.clouds.map( cloud => {
+            return <DraggableCloud                
                 key={cloud.flow}
-                flow={cloud.flow}
-                posX={cloud.posX}
-                posY={cloud.posY}
-                updateCloudPosition={this.props.updateCloudPosition}
-            />
-        })
-
-        const cloudsDestination = this.props.cloudsDestination.map( cloud => {
-            return <Cloud
-                key={cloud.flow}
-                flow={cloud.flow}
-                posX={cloud.posX}
-                posY={cloud.posY}
-                updateCloudPosition={this.props.updateCloudPosition}
+                {...cloud}
+                elementId={cloud.id}
+                FB_PATH={this.props.FB_PATH}
+                FB_PATH_SUFFIX={"clouds"}
+                updatePosition={updatePosition}
             />
         })
         
@@ -56,14 +113,14 @@ export default class Board extends React.Component {
                 let from
                 if(flow.from){
                     from = this.props.stocks.find((stock) => stock.id === flow.from)
-                } else {
-                    from = this.props.cloudsOrigin.find( cloud => cloud.flow === flow.id)
+                } else {                    
+                    from = this.props.clouds.find( cloud => cloud.flow === flow.id && cloud.flowTo) // if cloud.to exists, the flow originates FROM a cloud
                 }
-                let to                
+                let to
                 if(flow.to){
                     to = this.props.stocks.find((stock) => stock.id === flow.to)
                 } else {
-                    to = this.props.cloudsDestination.find( cloud => cloud.flow === flow.id)
+                    to = this.props.cloudsDestination.find( cloud => cloud.flow === flow.id && cloud.flowFrom) // if cloud.to exists, the flow goes TO a cloud
                 }
                 
                 return {
@@ -155,11 +212,13 @@ export default class Board extends React.Component {
         })
 
         const parameters = this.props.parameters.map( parameter => {
-            return <Parameter 
-                key={parameter.name}
-                parameter={parameter}
-                updateParameterPosition={this.props.updateParameterPosition}
-            ></Parameter>
+            return <DraggableParameter 
+                key={parameter.id}
+                {...parameter}
+                elementId={parameter.id}
+                FB_PATH={this.props.FB_PATH}
+                FB_PATH_SUFFIX={"parameters"}
+                updatePosition={updatePosition}/>
         })
 
         return (
@@ -180,9 +239,8 @@ export default class Board extends React.Component {
                         </marker>
                     </defs>
                     {stocks}                                        
-                    {flowTexts}  
-                    {cloudsOrigin}
-                    {cloudsDestination}
+                    {flowTexts}
+                    {clouds}
                     {flows}
                     {arrows}
                     {parameters}

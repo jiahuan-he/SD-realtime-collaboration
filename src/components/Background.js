@@ -7,10 +7,26 @@ import StockList from './StockList'
 import Chart from './Chart'
 import { Redirect } from 'react-router-dom'
 
+const deleteSimulationFormStyle = {
+    display:"inline-block",
+    marginLeft:"10px",
+}
+
+const simulationIdStyle = {
+    display:"inline-block",
+}
+
+const deleteButtonStyle = {
+    color:"red",
+    backgroundColor: "white",
+    border: "1px solid",
+    padding: "5px 12px",
+}
+
 export default class Background extends React.Component {
 
     componentDidMount() {        
-        firebase.database().ref(this._FB_PATH+'state').on('value', (state) => {
+        firebase.database().ref(this.state.FB_PATH+'/state').on('value', (state) => {
             if(state.val()) {
                 this.setState(state.val())
             }
@@ -29,42 +45,11 @@ export default class Background extends React.Component {
         }
     }
 
-    updatePosition = (stockID, x, y) => {
-        const stocks = Object.assign([], this.state.stocks)
-        const targetStock = stocks.find( stock => stock.id === stockID)
-        targetStock.posX = x
-        targetStock.posY = y
-        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
-    }
-
-    updateParameterPosition = (parameterName, x, y) => {
-        const parameters = Object.assign([], this.state.parameters)
-        const targetParameter = parameters.find( parameters => parameters.name === parameterName)
-        targetParameter.posX = x
-        targetParameter.posY = y
-        firebase.database().ref(this._FB_PATH+'state/parameters').set(parameters);
-    }
-
-    updateCloudPosition = (cloudByFlow, x, y) => {
-        let targetCloud
-        const cloudsOrigin = Object.assign([], this.state.cloudsOrigin)
-        const cloudsDestination = Object.assign([], this.state.cloudsDestination)
-        if(cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)){
-            targetCloud = cloudsOrigin.find(cloud => cloud.flow === cloudByFlow)
-        } else {
-            targetCloud = cloudsDestination.find(cloud => cloud.flow === cloudByFlow)
-        }
-        targetCloud.posX = x
-        targetCloud.posY = y
-        firebase.database().ref(this._FB_PATH+'state/cloudsOrigin').set(cloudsOrigin);
-        firebase.database().ref(this._FB_PATH+'state/cloudsDestination').set(cloudsDestination);
-    }
-
     updateStockValue = (stockID, value) => {
         const stocks = Object.assign([], this.state.stocks)
         const targetStock = stocks.find( stock => stock.id === stockID)
         targetStock.initValue = +value
-        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks)
+        firebase.database().ref(this.state.FB_PATH+'/state/stocks').set(stocks)
     }
 
     addStock= (stockName, value) => {
@@ -79,30 +64,32 @@ export default class Background extends React.Component {
             "equation": "",
         }
         stocks.push(newStock)
-        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
+        firebase.database().ref(this.state.FB_PATH+'/state/stocks').set(stocks);
     }
 
     addParameter= (parameterName, value) => {
         const parameters = Object.assign([], this.state.parameters)
         const newParameter = {
+            "id":parameterName,
             "name": parameterName,
             "value":+value,
             "posX": 0,
             "posY": 10, // offset the text a bit so the text doesn't come off the background
         }
-        console.log("add parameter")
         parameters.push(newParameter)
-        firebase.database().ref(this._FB_PATH+'state/parameters').set(parameters);
+        firebase.database().ref(this.state.FB_PATH+'/state/parameters').set(parameters);
     }
 
     addCloud= (flowID, from, to) => {
         if(from && to && from.trim().length>0 && to.trim().length>0) return
-        const isOrigin = from ? false:true
-        let clouds = isOrigin ? this.state.cloudsOrigin:this.state.cloudsDestination        
+        if(!from && !to) return        
+        let clouds = this.state.clouds
         clouds = Object.assign([], clouds)
-        const ref = isOrigin?this._FB_PATH+'state/cloudsOrigin':this._FB_PATH+'state/cloudsDestination'
+        const ref = this.state.FB_PATH+'/state/clouds'
         const newCloud = {
             "flow":flowID,
+            "flowFrom": from,
+            "flowTo":to,
             "posX": 0,
             "posY": 0,
         }
@@ -118,12 +105,12 @@ export default class Background extends React.Component {
         if(targetStock) {
             if(!targetStock.dependencies) targetStock.dependencies = []
             targetStock.dependencies.push(dependency)
-            firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
+            firebase.database().ref(this.state.FB_PATH+'/state/stocks').set(stocks);
         }
         else if(targetFlow) {
             if(!targetFlow.dependencies) targetFlow.dependencies = []
             targetFlow.dependencies.push(dependency)
-            firebase.database().ref(this._FB_PATH+'state/flows').set(flows);
+            firebase.database().ref(this.state.FB_PATH+'/state/flows').set(flows);
         }        
     }
 
@@ -143,8 +130,8 @@ export default class Background extends React.Component {
         if(to) stocks.find( stock => stock.id === to).equation += `+${flowID}`
 
         flows.push(newFlow)
-        firebase.database().ref(this._FB_PATH+'state/flows').set(flows);
-        firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
+        firebase.database().ref(this.state.FB_PATH+'/state/flows').set(flows);
+        firebase.database().ref(this.state.FB_PATH+'/state/stocks').set(stocks);
     }
 
     addArrow = (from, to) => {
@@ -154,7 +141,7 @@ export default class Background extends React.Component {
             "to":to,
         }
         arrows.push(newArrow)
-        firebase.database().ref(this._FB_PATH+'state/arrows').set(arrows)
+        firebase.database().ref(this.state.FB_PATH+'/state/arrows').set(arrows)
     }
     
     addEquation = (equation, id) => {
@@ -164,24 +151,20 @@ export default class Background extends React.Component {
         const targetFlow = flows.find( flow => flow.id === id)
         if(targetStock) {
             targetStock.equation = equation
-            firebase.database().ref(this._FB_PATH+'state/stocks').set(stocks);
+            firebase.database().ref(this.state.FB_PATH+'/state/stocks').set(stocks);
         }
         else if(targetFlow) {
             targetFlow.equation = equation
-            firebase.database().ref(this._FB_PATH+'state/flows').set(flows);
+            firebase.database().ref(this.state.FB_PATH+'/state/flows').set(flows);
         } 
     }
 
     addSimulationData = (data) => {
-        firebase.database().ref(this._FB_PATH+'state/simulationData').set(data);
+        firebase.database().ref(this.state.FB_PATH+'/state/simulationData').set(data);
     }
 
     constructor(props) {
-        super(props)
-        if(this.props.location.state){
-            this._FB_PATH = `simulations/${this.props.location.state.simulationID}/`
-        } 
-        
+        super(props)       
         this.state = {
             stocks: [],
             flows: [],
@@ -190,38 +173,43 @@ export default class Background extends React.Component {
             cloudsOrigin: [],
             cloudsDestination: [],
             parameters: [],
+            clouds:[],
+            FB_PATH:`simulations/${this.props.location.state.simulationID}`,
         }
     }
 
+    handleSubmitDeleteButton = () => {        
+        firebase.database().ref(this.state.FB_PATH).set(null, ()=> this.setState({FB_PATH:null}))
+    }
+
     render() {
-        if(!this._FB_PATH){
+        if(!this.state.FB_PATH){
             return <Redirect to={{pathname: '/'}}/>
         }
         const wrapperStyle = {display: "flex"}
         const XAxisDataKey = "__STEP__"
         return (
             <div>
-                <b>Simulation ID: {this.props.location.state.simulationID}</b>
+                <div>
+                    <b style={simulationIdStyle}>Simulation ID: {this.props.location.state.simulationID}</b>
+                    <form style={deleteSimulationFormStyle} onSubmit={this.handleSubmitDeleteButton}>
+                        <input type="button" value="Delete Simulation" style={deleteButtonStyle} onClick={this.handleSubmitDeleteButton} />
+                    </form>
+                </div>
                 <div style = {wrapperStyle}> 
                     <Board 
+                        FB_PATH = {this.state.FB_PATH}
                         stocks={this.state.stocks}
                         flows={this.state.flows}
                         arrows={this.state.arrows}
                         parameters={this.state.parameters}
-                        cloudsOrigin={this.state.cloudsOrigin}
-                        cloudsDestination={this.state.cloudsDestination}
-                        stockBeingEdited={this.state.stockBeingEdited}
-                        updatePosition={this.updatePosition}    
-                        updateCloudPosition={this.updateCloudPosition}
-                        updateParameterPosition={this.updateParameterPosition}
-                        ></Board>
+                        clouds={this.state.clouds}
+                        stockBeingEdited={this.state.stockBeingEdited}/>
                     <div>
-                        <StockList stocks={this.state.stocks}></StockList>
-                        <FlowList flows={this.state.flows}></FlowList>
-                        {/* <ArrowList arrows={this.state.arrows}></ArrowList> */}
+                        <StockList stocks={this.state.stocks}/>
+                        <FlowList flows={this.state.flows}/>
                         {this.state.simulationData.length>0
-                        &&<Chart simulationData={this.state.simulationData} XAxisDataKey={XAxisDataKey}></Chart>}
-                        
+                        &&<Chart simulationData={this.state.simulationData} XAxisDataKey={XAxisDataKey}/>}
                     </div>
             </div>
             <Toolbar 
@@ -239,8 +227,7 @@ export default class Background extends React.Component {
                 addCloud={this.addCloud}
                 addEquation={this.addEquation}
                 addSimulationData={this.addSimulationData}
-                XAxisDataKey={XAxisDataKey}
-            ></Toolbar>
+                XAxisDataKey={XAxisDataKey}/>
             </div>
         );
     }

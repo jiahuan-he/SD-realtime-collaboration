@@ -2,32 +2,24 @@
 
 exports[`Toolbar should render correctly in "debug" mode 1`] = `
 <div>
-  <AddStockForm
-    stockIDs={
-      Array [
-        "stock1",
-        "stock2",
-      ]
-    }
-  />
-  <EditStockForm
-    stockIDs={
-      Array [
-        "stock1",
-        "stock2",
-      ]
-    }
-  />
+  <AddStockForm />
+  <AddParameterForm />
+  <EditStockForm />
+  <AddFlowForm />
+  <AddArrowForm />
+  <AddEquationForm />
+  <SimulateForm />
 </div>
 `;
 
 exports[`Toolbar should render correctly in "debug" mode 2`] = `
 <div>
-  <AddStockForm
-    stockIDs={Array []}
-  />
-  <EditStockForm
-    stockIDs={Array []}
-  />
+  <AddStockForm />
+  <AddParameterForm />
+  <EditStockForm />
+  <AddFlowForm />
+  <AddArrowForm />
+  <AddEquationForm />
+  <SimulateForm />
 </div>
 `;

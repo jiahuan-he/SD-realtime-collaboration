@@ -17,11 +17,17 @@
 5. [Testing](#5-testing)  
 6. [Areas of Improvements](#6-areas-of-improvements)  
     6.1. [TypeScript](#61-typescript)  
-    6.2. [GUI](#61-gui)  
+    6.2. [GUI](#62-gui)  
+    6.3. [Authentication](#63-authentication)  
+    6.4. [More Features](#64-more-features)  
+    6.5. [More Testing](#65-more-testing)  
 
 ### 1. Motivation
-  1. The Current Software doesn’t support real-time collaboration (ex. Vensim)
-  2. The goal is to create a web-based tool that supports
+  1. A lot of System Dynamics modeling projects are often undertaken in large teams, so inter-team communication and collaboration are crucial.   
+  2. Many System Dynamics modeling projects also require close interaction with, contributions and feedback from many 
+  stakeholders.
+  3. Therefore, it is very important for a System Dynamics modeling tool to possess some real-time collaboration feature. However, the existing software do not have such feature. (ex. Vensim) 
+  4. The goal is to create a web-based tool that supports
       1. real-time collaboration: multiple clients can view/edit the same silumation in realtime.
       2. simulation: the system can run and visualize a System Dynamics simulation comprised of stocks, flows, and parameters.
 
@@ -35,17 +41,23 @@
 #### 2.2. npm packages
 run `npm install` to install the packages
 - [firebase](https://www.npmjs.com/package/firebase)  
+`Firebase Realtime Database` is the module being used in the system. It an important part of the system, which is used for storing data and syncing data accross browser clients. 
 - [mathjs](https://www.npmjs.com/package/mathjs)  
+This package is used for computing the simulation data by evaluating math expressions. See [4.3. Computing simulation data](#43-computing-simulation-data) for details.
 - [react](https://www.npmjs.com/package/react)  
+I use `react` for building the frontend. It's uni-directional data flow nature suits itself extremely-well for working with `Firebase Realtime Database`. See [4.2. Synchronization with `firebase`](#42-synchronization-with-firebase) for details. 
 - [react-dom](https://www.npmjs.com/package/react-dom)  
+An auxiliary package for `react`.
 - [react-scripts](https://www.npmjs.com/package/react-scripts)  
+An auxiliary package for `react`.
 - [recharts](https://www.npmjs.com/package/recharts)  
+An charting library for visualizing System Dynamics simulation. 
 
 #### 2.3. firebase 
 This project depends on firebase Real-time database. A `config.js` file needs to be filled and put under the path `./src/config.js`.
-The file needs to contain the following content
+The file needs to contain the following content. Note: __`export` key word is necessary.__
 ```javascript
-var firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "api-key",
   authDomain: "project-id.firebaseapp.com",
   databaseURL: "https://project-id.firebaseio.com",
@@ -62,6 +74,23 @@ Read the [official instruction](https://firebase.google.com/docs/web/setup) for 
 Run `npm start` will start the web app at port `http://localhost:3000/`  
 
 ### 3. User Manual
+#### 3.1. create/join a modelling workplace
+<img src="/gifs/0-enter-simulation-id.gif" width="500">
+
+#### 3.2. create the stocks
+<img src="/gifs/1-create-stocks.gif" width="500">
+
+#### 3.3. add the flow and parameter
+<img src="/gifs/2-flow-parameter.gif" width="500">
+
+#### 3.4. add the arrow and specify the equation
+<img src="/gifs/3-arrow-and-equation.gif" width="500">
+
+#### 3.5. set up simulation parameters and run the simulation
+<img src="/gifs/4-simulation.gif" width="500">
+
+#### 3.6. change the simulation parameters and rerun
+<img src="/gifs/5-rerun-simulation.gif" width="500">
 
 ### 4. Implementation
 
@@ -92,8 +121,7 @@ Run `npm start` will start the web app at port `http://localhost:3000/`
 #### 4.2. Synchronization with `firebase`
 <img src="assets/405-SD-colab-firebase.png" alt="drawing" width="400"/>
 
-- Firebase Real-time database is an essential part of the implementation. Real-time database serves as the `state` that lives on the cloud, which takes part in `react` framework's uni-directional dataflow.  
-  
+- Firebase Realtime Database is an essential part of the implementation, which maintains the `state` on the cloud
 - User interactions trigger actions to invoke the methods to modify the `state`
   ```javascript
   firebase.database().ref('state/stocks').set(stocks);
@@ -107,8 +135,7 @@ Run `npm start` will start the web app at port `http://localhost:3000/`
   })
   ```
 #### 4.3. Computing simulation data
-The simulation data is calculated at the client and pushed to the firebase realtime database instance, then the client(s)
-subscribing to the instance rerenders the view to generate the chart.   
+The simulation data is calculated at the client with the help from [mathjs](https://www.npmjs.com/package/mathjs) and pushed to the firebase realtime database instance, then the client(s) subscribing to the instance rerenders the view to generate the chart using [recharts](https://www.npmjs.com/package/recharts).   
 Consider the example that a model is constructed as such:
 ```
 tank1 ===flow1===> tank2
@@ -165,6 +192,7 @@ Final step `(t=5)`:
 }
 ```
 ### 5. Testing
+Currently, snapshot testing using `enzyme` covers most of the react components to ensure them render correctly. 
 ### 6. Areas of improvements
 #### 6.1. TypeScript
 - TypeScript's static type checking feature, along with proper IDE setup and development configureation, would make
@@ -173,3 +201,13 @@ the development faster by reducing debugging time caused by small errors
 #### 6.2. GUI 
 - More clicking, less typing: The system would be easier to use if some interactions with the system could be done
 by clicking instead of typing. Eg. selecting stocks/flows to edit the initial value and add equation
+- Aesthetics, customizable appearance etc. 
+
+#### 6.3. Authentication
+- More security measures should be implemented. Currently, users are able to "signin" using a shared "Simulation ID". However, it is not the most reliable measure.
+#### 6.4. More Features
+- Simulation roll back to previous state
+- In-app chat 
+- Save simulation data
+#### 6.5. More Testing
+- Unit testing, more snapshot testing covering all react components, etc.

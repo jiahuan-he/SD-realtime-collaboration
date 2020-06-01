@@ -1,17 +1,5 @@
 import React from 'react';
 
-const button = {
-    backgroundColor: "white",
-    border: "1px solid",
-    color: "black",
-    padding: "5px 12px",
-    cursor: "pointer",
-}
-
-const inputInvalid = {
-    border: "2px solid #ed6663"
-}
-
 export default class AddParameterForm extends React.Component {
     constructor(props) {
         super(props);
@@ -46,7 +34,7 @@ export default class AddParameterForm extends React.Component {
                 <label>
                     Parameter Name
                 <input 
-                    style={this.isValidParameterName()?null:inputInvalid} 
+                    style={this.isValidParameterName()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.parameterName} 
                     onChange={this.handleChangeName} 
@@ -55,11 +43,11 @@ export default class AddParameterForm extends React.Component {
                 <label>
                     Value
                 <input 
-                    style={this.isValidParameterValue()?null:inputInvalid} 
+                    style={this.isValidParameterValue()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.parameterValue} onChange={this.handleChangeValue} />
                 </label>
-                    <input type="button" value="Add Parameter" style={button}
+                    <input type="button" value="Add Parameter" style={this.props.button}
                         onClick={() => {
                             if(this.state.parameterName === "" || !this.isValidParameterName()) return
                             this.props.addParameter(this.state.parameterName, this.state.parameterValue)

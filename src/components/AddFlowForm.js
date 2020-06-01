@@ -1,17 +1,5 @@
 import React from 'react';
 
-const button = {
-    backgroundColor: "white",
-    border: "1px solid",
-    color: "black",
-    padding: "5px 12px",
-    cursor: "pointer",
-}
-
-const inputInvalid = {
-    border: "2px solid #ed6663"
-}
-
 export default class AddFlowForm extends React.Component {
     constructor(props) {
         super(props);
@@ -64,7 +52,7 @@ export default class AddFlowForm extends React.Component {
                 <label>
                     Flow Name
                 <input 
-                    style={this.isValidFlowID()?null:inputInvalid} 
+                    style={this.isValidFlowID()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.flowID} 
                     onChange={
@@ -77,19 +65,19 @@ export default class AddFlowForm extends React.Component {
                 <label>
                     From
                 <input 
-                    style={this.isValidFrom()?null:inputInvalid} 
+                    style={this.isValidFrom()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.from} onChange={this.handleChangeFrom} />
                 </label>
                 <label>
                     To
                 <input 
-                    style={this.isValidTo()?null:inputInvalid} 
+                    style={this.isValidTo()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.to} onChange={this.handleChangeTo}/>
                 </label>
 
-                <input type="button" value={"Add Flow"} style={button}
+                <input type="button" value={"Add Flow"} style={this.props.button}
                     onClick={() => {
                         if(!this.isValidFlowID()
                         || !this.isValidFrom()

@@ -7,6 +7,18 @@ import AddEquationForm from './AddEquationForm'
 import SimulateForm from './SimulateForm'
 import AddParameterForm from './AddParameterForm'
 
+const buttonStyle = {
+    backgroundColor: "white",
+    border: "1px solid",
+    color: "black",
+    padding: "5px 12px",
+    cursor: "pointer",
+}
+
+const inputInvalidStyle = {
+    border: "2px solid #ed6663"
+}
+
 export default class Toolbar extends React.Component {
     render() {
         return (
@@ -16,18 +28,21 @@ export default class Toolbar extends React.Component {
                     stocks={this.props.stocks}
                     flows={this.props.flows}
                     parameters={this.props.parameters}
-                    ></AddStockForm>
+                    button={buttonStyle}
+                    inputInvalidStyle={inputInvalidStyle}/>
                 <AddParameterForm
                     addParameter={this.props.addParameter}
                     stocks={this.props.stocks}
                     flows={this.props.flows}
                     parameters={this.props.parameters}
-                ></AddParameterForm>
+                    button={buttonStyle}
+                    inputInvalidStyle={inputInvalidStyle}/>
                 <EditStockForm 
                     updateStockValue={this.props.updateStockValue}
                     stocks={this.props.stocks}                    
                     highlightStock={this.props.highlightStock}
-                ></EditStockForm>
+                    button={buttonStyle}
+                    inputInvalidStyle={inputInvalidStyle}/>
                 <AddFlowForm
                     addFlow={this.props.addFlow}
                     stocks={this.props.stocks}
@@ -36,7 +51,8 @@ export default class Toolbar extends React.Component {
                     highlightStock={this.props.highlightStock}
                     addDependenciesToStockOrFlow={this.props.addDependenciesToStockOrFlow}
                     addCloud={this.props.addCloud}
-                ></AddFlowForm>                
+                    button={buttonStyle}
+                    inputInvalidStyle={inputInvalidStyle}/>
                 <AddArrowForm
                     stocks={this.props.stocks}
                     flows={this.props.flows}
@@ -44,20 +60,23 @@ export default class Toolbar extends React.Component {
                     arrows={this.props.arrows}
                     addDependenciesToStockOrFlow={this.props.addDependenciesToStockOrFlow}
                     addArrow={this.props.addArrow}
-                ></AddArrowForm>
+                    button={buttonStyle}
+                    inputInvalidStyle={inputInvalidStyle}/>
                 <AddEquationForm
                     stocks={this.props.stocks}
                     flows={this.props.flows}
                     addEquation={this.props.addEquation}
-                ></AddEquationForm>
+                    button={buttonStyle}
+                    inputInvalidStyle={inputInvalidStyle}/>
                 <SimulateForm
                     stocks={this.props.stocks}
                     flows={this.props.flows}
                     parameters={this.props.parameters}
                     addSimulationData={this.props.addSimulationData}
                     XAxisDataKey={this.props.XAxisDataKey}
-                >
-                </SimulateForm>
+                    button={buttonStyle}
+                    inputInvalidStyle={inputInvalidStyle}
+                    />                
             </div>
         )
     }

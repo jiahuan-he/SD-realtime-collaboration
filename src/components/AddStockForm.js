@@ -1,17 +1,5 @@
 import React from 'react';
 
-const button = {
-    backgroundColor: "white",
-    border: "1px solid",
-    color: "black",
-    padding: "5px 12px",
-    cursor: "pointer",
-}
-
-const inputInvalid = {
-    border: "2px solid #ed6663"
-}
-
 export default class AddStockForm extends React.Component {
     constructor(props) {
         super(props);
@@ -46,7 +34,7 @@ export default class AddStockForm extends React.Component {
                 <label>
                     Stock Name
                 <input 
-                    style={this.isValidStockID()?null:inputInvalid} 
+                    style={this.isValidStockID()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.stockName} 
                     onChange={this.handleChangeName} 
@@ -55,11 +43,11 @@ export default class AddStockForm extends React.Component {
                 <label>
                     Init Value
                 <input 
-                    style={this.isValidStockValue()?null:inputInvalid} 
+                    style={this.isValidStockValue()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.stockValue} onChange={this.handleChangeValue} />
                 </label>
-                    <input type="button" value="Add Stock" style={button}
+                    <input type="button" value="Add Stock" style={this.props.button}
                         onClick={() => {
                             if(this.state.stockName === "" || !this.isValidStockID() || !this.isValidStockValue()) return
                             this.props.addStock(this.state.stockName, this.state.stockValue)

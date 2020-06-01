@@ -1,17 +1,5 @@
 import React from 'react';
 
-const button = {
-    backgroundColor: "white",
-    border: "1px solid",
-    color: "black",
-    padding: "5px 12px",
-    cursor: "pointer",
-}
-
-const inputInvalid = {
-    border: "2px solid #ed6663"
-}
-
 export default class AddArrowForm extends React.Component {
     constructor(props) {
         super(props);
@@ -62,18 +50,18 @@ export default class AddArrowForm extends React.Component {
                 <label>
                     From
                 <input 
-                    style={this.isValidFrom()?null:inputInvalid} 
+                    style={this.isValidFrom()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.from} onChange={this.handleChangeFrom} />
                 </label>
                 <label>
                     To
                 <input 
-                    style={this.isValidTo()?null:inputInvalid} 
+                    style={this.isValidTo()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.to} onChange={this.handleChangeTo}/>
                 </label>
-                <input type="button" value={"Add Arrow"} style={button}
+                <input type="button" value={"Add Arrow"} style={this.props.button}
                     onClick={() => {
                         if(!this.isValidFrom() || !this.isValidTo()) return
                         this.props.addDependenciesToStockOrFlow(this.state.from, this.state.to)

@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditStockForm should render correctly in "debug" mode 1`] = `
+exports[`AddParameterForm should render correctly in "debug" mode 1`] = `
 <form>
   <label>
-    Stock Name
+    Parameter Name
     <input
       onChange={[Function]}
       style={
@@ -16,7 +16,7 @@ exports[`EditStockForm should render correctly in "debug" mode 1`] = `
     />
   </label>
   <label>
-    Init Value
+    Value
     <input
       onChange={[Function]}
       style={null}
@@ -36,7 +36,7 @@ exports[`EditStockForm should render correctly in "debug" mode 1`] = `
       }
     }
     type="button"
-    value="Edit Stock InitValue"
+    value="Add Parameter"
   />
 </form>
 `;
