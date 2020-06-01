@@ -1,18 +1,6 @@
 import React from 'react';
 import simulate from '../util/simulate'
 
-const button = {
-    backgroundColor: "white",
-    border: "1px solid",
-    color: "black",
-    padding: "5px 12px",
-    cursor: "pointer",
-}
-
-const inputInvalid = {
-    border: "2px solid #ed6663"
-}
-
 export default class SimulateForm extends React.Component {
     constructor(props) {
         super(props);
@@ -67,7 +55,7 @@ export default class SimulateForm extends React.Component {
                 <label>
                     Stocks
                 <input 
-                    style={this.isValidStocksToSimulate()?null:inputInvalid} 
+                    style={this.isValidStocksToSimulate()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.stocksToSimulate} 
                     onChange={
@@ -83,14 +71,14 @@ export default class SimulateForm extends React.Component {
                 <label>
                     Time From
                 <input 
-                    style={this.isValidTimeFrom()?null:inputInvalid} 
+                    style={this.isValidTimeFrom()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.timeFrom} onChange={this.handleChangeTimeFrom} />
                 </label>
                 <label>
                     Time To
                 <input 
-                    style={this.isValidTimeTo()?null:inputInvalid} 
+                    style={this.isValidTimeTo()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.timeTo} onChange={this.handleChangeTimeTo} />
                 </label>
@@ -98,12 +86,12 @@ export default class SimulateForm extends React.Component {
                 <label>
                     Time Step
                 <input 
-                    style={this.isValidTimeStep()?null:inputInvalid} 
+                    style={this.isValidTimeStep()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.timeStep} onChange={this.handleChangeTimeStep} />
                 </label>
                 
-                <input type="button" value="Simulate" style={button}
+                <input type="button" value="Simulate" style={this.props.button}
                     onClick={() => {
                         if(!this.isValidStocksToSimulate() 
                         || !this.isValidTimeFrom()

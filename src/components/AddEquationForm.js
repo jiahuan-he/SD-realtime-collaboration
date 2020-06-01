@@ -1,17 +1,5 @@
 import React from 'react';
 
-const button = {
-    backgroundColor: "white",
-    border: "1px solid",
-    color: "black",
-    padding: "5px 12px",
-    cursor: "pointer",
-}
-
-const inputInvalid = {
-    border: "2px solid #ed6663"
-}
-
 export default class AddEquationForm extends React.Component {
     constructor(props) {
         super(props);
@@ -50,18 +38,18 @@ export default class AddEquationForm extends React.Component {
                 <label>
                     Name
                 <input 
-                    style={this.isValidId()?null:inputInvalid} 
+                    style={this.isValidId()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.id} onChange={this.handleChangeId} />
                 </label>
                 <label>
                     Equation
                 <input 
-                    style={this.isValidEquation()?null:inputInvalid} 
+                    style={this.isValidEquation()?null:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.equation} onChange={this.handleChangeEquation}/>
                 </label>
-                <input type="button" value={"Add Equation"} style={button}
+                <input type="button" value={"Add Equation"} style={this.props.button}
                     onClick={() => {
                         if(!this.isValidId() || !this.isValidEquation()) return                        
                         this.props.addEquation(this.state.equation, this.state.id)
