@@ -164,7 +164,8 @@ export default class Background extends React.Component {
     }
 
     constructor(props) {
-        super(props)       
+        super(props)   
+        const FB_PATH = this.props.location.state?`simulations/${this.props.location.state.simulationID}`:null
         this.state = {
             stocks: [],
             flows: [],
@@ -174,7 +175,7 @@ export default class Background extends React.Component {
             cloudsDestination: [],
             parameters: [],
             clouds:[],
-            FB_PATH:`simulations/${this.props.location.state.simulationID}`,
+            FB_PATH:FB_PATH,
         }
     }
 
