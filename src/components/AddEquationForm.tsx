@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { CSSProperties, FormEvent } from 'react';
+import { I_Stock, I_Flow} from '../model';
 
-export default class AddEquationForm extends React.Component {
-    constructor(props) {
+interface State{
+    id: string,
+    equation:string,
+}
+
+interface Props{
+    stocks: Array<I_Stock>,
+    flows: Array<I_Flow>,
+    addEquation: (equation:string, id:string)=>void,
+    button: CSSProperties,
+    inputInvalid: CSSProperties,
+}
+
+
+export default class AddEquationForm extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             id: "",
@@ -9,12 +24,12 @@ export default class AddEquationForm extends React.Component {
         };
     }
 
-    handleChangeId = (event) => {
-        this.setState({ id: event.target.value});
+    handleChangeId = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ id: event.currentTarget.value});
     }
 
-    handleChangeEquation = (event) => {
-        this.setState({ equation: event.target.value});
+    handleChangeEquation = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ equation: event.currentTarget.value});
     }
 
     isValidId = () => {
@@ -34,18 +49,18 @@ export default class AddEquationForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form>
                 <label>
                     Name
                 <input 
-                    style={this.isValidId()?null:this.props.inputInvalid} 
+                    style={this.isValidId()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.id} onChange={this.handleChangeId} />
                 </label>
                 <label>
                     Equation
                 <input 
-                    style={this.isValidEquation()?null:this.props.inputInvalid} 
+                    style={this.isValidEquation()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.equation} onChange={this.handleChangeEquation}/>
                 </label>

@@ -1,7 +1,26 @@
-import React from 'react';
+import React, {FormEvent, CSSProperties } from 'react';
+import { I_Stock, I_Flow, I_Parameter } from '../model';
 
-export default class AddFlowForm extends React.Component {
-    constructor(props) {
+interface State{
+    flowID: string,
+    from: string,
+    to:string,
+}
+
+interface Props{
+    stocks: Array<I_Stock>,
+    flows: Array<I_Flow>,
+    parameters: Array<I_Parameter>,
+    addDependenciesToStockOrFlow: (from:string, to:string)=>void,
+    addFlow: (id:string, from:string, to:string)=>void,
+    addCloud: (id:string, from:string, to:string)=>void,
+    button: CSSProperties,
+    inputInvalid: CSSProperties,
+    highlightStock: (id:string) => void,
+}
+
+export default class AddFlowForm extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             flowID:"",
@@ -10,17 +29,17 @@ export default class AddFlowForm extends React.Component {
         };
     }
 
-    handleChangeName = (event) => {
-        const id = event.target.value.trim()
+    handleChangeName = (event: FormEvent<HTMLInputElement>) => {
+        const id = event.currentTarget.value.trim()
         this.setState({ flowID: id});
     }
 
-    handleChangeFrom = (event) => {
-        this.setState({ from: event.target.value});
+    handleChangeFrom = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ from: event.currentTarget.value});
     }
 
-    handleChangeTo = (event) => {
-        this.setState({ to: event.target.value});
+    handleChangeTo = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ to: event.currentTarget.value});
     }
 
     isValidFlowID = () => {
@@ -48,11 +67,11 @@ export default class AddFlowForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form>
                 <label>
                     Flow Name
                 <input 
-                    style={this.isValidFlowID()?null:this.props.inputInvalid} 
+                    style={this.isValidFlowID()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.flowID} 
                     onChange={
@@ -65,14 +84,14 @@ export default class AddFlowForm extends React.Component {
                 <label>
                     From
                 <input 
-                    style={this.isValidFrom()?null:this.props.inputInvalid} 
+                    style={this.isValidFrom()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.from} onChange={this.handleChangeFrom} />
                 </label>
                 <label>
                     To
                 <input 
-                    style={this.isValidTo()?null:this.props.inputInvalid} 
+                    style={this.isValidTo()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.to} onChange={this.handleChangeTo}/>
                 </label>

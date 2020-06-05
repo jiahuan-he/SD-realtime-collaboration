@@ -1,24 +1,29 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 
-const stock = {
+const stock: CSSProperties = {
     stroke: 'black',
     cursor: 'move',
     strokeWidth: "1px",
     fill: 'white'
 }
 
-const stockHighlight = {
+const stockHighlight: CSSProperties = {
     stroke: 'green',
     cursor: 'move',
     strokeWidth: "2px",
     fill: 'white'
 }
 
-const moveable = {
+const moveable: CSSProperties = {
     cursor: 'move',
 }
 
-export default ({posX, posY, id, initValue, highlight}) => 
+export const Stock: React.FC<{
+    posX: number, 
+    posY: number, 
+    id: string, 
+    initValue: number, 
+    highlight: boolean}> = ({posX, posY, id, initValue, highlight}) => 
 (
     <g x={posX} y={posY} id={id} style={moveable}>
         <rect x={posX} y={posY} width={"5%"} height={"5%"} style={highlight?stockHighlight:stock}/>

@@ -1,7 +1,22 @@
-import React from 'react';
+import React, {FormEvent, CSSProperties } from 'react';
+import { I_Stock} from '../model';
 
-export default class EditStockForm extends React.Component {
-    constructor(props) {
+interface State{
+    stockID: string,
+    stockValue: number,
+}
+
+interface Props{
+    stocks: Array<I_Stock>,
+    updateStockValue: (id:string, value:number) => void
+    highlightStock: (id:string) => void,
+    button: CSSProperties,
+    inputInvalid: CSSProperties,
+}
+
+
+export default class EditStockForm extends React.Component<Props, State>  {
+    constructor(props: Props) {
         super(props);
         this.state = {
             stockID:"",
@@ -9,14 +24,14 @@ export default class EditStockForm extends React.Component {
         };
     }
 
-    handleChangeName = (event) => {
-        const id = event.target.value.trim()
+    handleChangeName = (event: FormEvent<HTMLInputElement>) => {
+        const id = event.currentTarget.value.trim()
         this.setState({ stockID: id});
         this.props.highlightStock(id)
     }
 
-    handleChangeValue = (event) => {
-        this.setState({ stockValue: event.target.value});
+    handleChangeValue = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ stockValue: Number(event.currentTarget.value)});
     }
 
     isValidStockID = () => {
@@ -29,11 +44,11 @@ export default class EditStockForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form>
                 <label>
                     Stock Name
                 <input 
-                    style={this.isValidStockID()?null:this.props.inputInvalid} 
+                    style={this.isValidStockID()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.stockID} 
                     onChange={
@@ -46,13 +61,13 @@ export default class EditStockForm extends React.Component {
                 <label>
                     Init Value
                 <input 
-                    style={this.isValidStockValue()?null:this.props.inputInvalid} 
+                    style={this.isValidStockValue()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.stockValue} onChange={this.handleChangeValue} />
                 </label>
                     <input type="button" value="Edit Stock InitValue" style={this.props.button}
                         onClick={() => {
-                            if(!this.state.stockID === "" || !this.state.stockValue) return
+                            if(!this.state.stockID|| !this.state.stockValue) return
                             this.props.updateStockValue(this.state.stockID, this.state.stockValue)
                             this.setState({
                                 stockID:"",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FormEvent} from 'react'
 import firebase from '../firebase'
 import { Redirect } from 'react-router-dom'
 
@@ -11,9 +11,14 @@ const button = {
     cursor: "pointer",
 }
 
-export default class Background extends React.Component {
+interface State{
+    simulationID: string,
+    path: string,
+}
 
-    constructor(props) {
+export default class Background extends React.Component<any, State> {
+
+    constructor(props: any) {
         super(props)
         this.state = {
             simulationID: "",
@@ -21,8 +26,8 @@ export default class Background extends React.Component {
         }
     }
 
-    handleChange = (event) => {
-        const simulationID = event.target.value.trim()
+    handleChange = (event: FormEvent<HTMLInputElement>) => {
+        const simulationID = event.currentTarget.value.trim()
         this.setState({ simulationID: simulationID });
     }
 
@@ -44,7 +49,7 @@ export default class Background extends React.Component {
     render() {
         const form = (<form onSubmit={this.handleSubmit}>
             <label>SimulationID
-                <input type="text" value={this.state.value} onChange={this.handleChange} />
+                <input type="text" value={this.state.simulationID} onChange={this.handleChange} />
             </label>
             <input type="button" value="Create/Join Simulation" style={button} onClick={this.handleSubmit} />
         </form>)

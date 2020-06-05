@@ -1,5 +1,6 @@
 import React from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { SimulationData } from '../model';
 const colors = [
     "48466d",
     "3d84a8",
@@ -13,7 +14,7 @@ const colors = [
     "9e579d"
 ]
 
-export default ({simulationData, XAxisDataKey}) => {
+export const Chart: React.FC<{simulationData: SimulationData, XAxisDataKey: string}> = ({simulationData, XAxisDataKey}) => {
     const lines = Object.keys(simulationData[0])
     .filter(key => key !== XAxisDataKey)
     .map((key,i) => <Line key={i} type="monotone" dataKey={key} stroke={"#"+colors[i%colors.length]} />);

@@ -5,7 +5,12 @@ const moveableText = {
     fontSize: "large"
 }
 
-export default ({posX, posY, id, value}) => 
+export const Parameter: React.FC<{
+    posX: number, 
+    posY: number, 
+    id: string, 
+    value: number}> 
+    = ({posX, posY, id, value}) => 
 (<text x={posX} y={posY} id={id} style={moveableText}>
     {id}: {value}
     </text>

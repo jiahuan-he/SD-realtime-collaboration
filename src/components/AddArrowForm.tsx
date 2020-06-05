@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { Component, FormEvent, CSSProperties } from 'react';
+import { I_Stock, I_Flow, I_Parameter, I_Arrow } from '../model';
 
-export default class AddArrowForm extends React.Component {
-    constructor(props) {
+interface State{
+    from: string,
+    to:string,
+}
+
+interface Props{
+    arrows: Array<I_Arrow>,
+    stocks: Array<I_Stock>,
+    flows: Array<I_Flow>,
+    parameters: Array<I_Parameter>,
+    addDependenciesToStockOrFlow: (from:string, to:string)=>void,
+    addArrow: (from:string, to:string)=>void,
+    button: CSSProperties,
+    inputInvalid: CSSProperties,
+}
+
+export default class AddArrowForm extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             from: "",
@@ -9,12 +26,12 @@ export default class AddArrowForm extends React.Component {
         };
     }
 
-    handleChangeFrom = (event) => {
-        this.setState({ from: event.target.value});
+    handleChangeFrom = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ from: event.currentTarget.value});
     }
 
-    handleChangeTo = (event) => {
-        this.setState({ to: event.target.value});
+    handleChangeTo = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ to: event.currentTarget.value});
     }
 
     isValidFrom = () => {
@@ -46,18 +63,18 @@ export default class AddArrowForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form>
                 <label>
                     From
                 <input 
-                    style={this.isValidFrom()?null:this.props.inputInvalid} 
+                    style={this.isValidFrom()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.from} onChange={this.handleChangeFrom} />
                 </label>
                 <label>
                     To
                 <input 
-                    style={this.isValidTo()?null:this.props.inputInvalid} 
+                    style={this.isValidTo()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.to} onChange={this.handleChangeTo}/>
                 </label>

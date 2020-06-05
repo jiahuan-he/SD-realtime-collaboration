@@ -1,12 +1,12 @@
-import { Stock,
-     Flow, Parameter } from "../model"
+import { I_Stock,
+     I_Flow, I_Parameter } from "../model"
 
 const { evaluate } = require('mathjs')
     
 export default (
-        stocks: Array<Stock>, 
-        flows: Array<Flow>,
-        parameters: Array<Parameter>,
+        stocks: Array<I_Stock>, 
+        flows: Array<I_Flow>,
+        parameters: Array<I_Parameter>,
         timeFrom: number,
         timeTo: number,
         timeStep: number,

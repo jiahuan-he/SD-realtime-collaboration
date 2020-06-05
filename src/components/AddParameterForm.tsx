@@ -1,7 +1,22 @@
-import React from 'react';
+import React, {FormEvent, CSSProperties } from 'react';
+import { I_Stock, I_Flow, I_Parameter } from '../model';
 
-export default class AddParameterForm extends React.Component {
-    constructor(props) {
+interface State{
+    parameterName:string,
+    parameterValue:number,
+}
+
+interface Props{
+    stocks: Array<I_Stock>,
+    flows: Array<I_Flow>,
+    parameters: Array<I_Parameter>,
+    addParameter: (parameterName:string, parameterValue:number)=>void,
+    button: CSSProperties,
+    inputInvalid: CSSProperties,
+}
+
+export default class AddParameterForm extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             parameterName:"",
@@ -9,12 +24,12 @@ export default class AddParameterForm extends React.Component {
         };
     }
 
-    handleChangeName = (event) => {
-        this.setState({ parameterName: event.target.value.trim()});
+    handleChangeName = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ parameterName: event.currentTarget.value.trim()});
     }
 
-    handleChangeValue = (event) => {
-        this.setState({ parameterValue: event.target.value});
+    handleChangeValue = (event: FormEvent<HTMLInputElement>) => {
+        this.setState({ parameterValue: Number(event.currentTarget.value)});
     }
 
     isValidParameterName = () => {    
@@ -30,11 +45,11 @@ export default class AddParameterForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form>
                 <label>
                     Parameter Name
                 <input 
-                    style={this.isValidParameterName()?null:this.props.inputInvalid} 
+                    style={this.isValidParameterName()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.parameterName} 
                     onChange={this.handleChangeName} 
@@ -43,7 +58,7 @@ export default class AddParameterForm extends React.Component {
                 <label>
                     Value
                 <input 
-                    style={this.isValidParameterValue()?null:this.props.inputInvalid} 
+                    style={this.isValidParameterValue()?undefined:this.props.inputInvalid} 
                     type="text" 
                     value={this.state.parameterValue} onChange={this.handleChangeValue} />
                 </label>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { I_Pos } from '../model'
 
 const style ={
     stroke: "#2b580c",
@@ -7,7 +8,7 @@ const style ={
     opacity: 0.4,
 
 }
-export default ({from, to, markerId}) => {
+export const Flow: React.FC<{from: I_Pos, to: I_Pos, markerId: string}> = ({from, to, markerId}) => {
     return <line 
         x1={from.x} 
         y1={from.y} 
